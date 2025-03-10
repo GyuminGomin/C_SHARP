@@ -1,13 +1,25 @@
-﻿string str = "The quick brown fox jumps over the lazy dog.";
-// convert the message into a char array
-char[] charMessage = str.ToCharArray();
-// Reverse the chars
-Array.Reverse(charMessage);
-int x = 0;
-// count the o's
-foreach (char i in charMessage) { if (i == 'o') { x++; } }
-// convert it back to a string
-string new_message = new String(charMessage);
-// print it out
-Console.WriteLine(new_message);
-Console.WriteLine($"'o' appears {x} times.");
+﻿bool flag = false;
+do {
+    Console.WriteLine("Enter your role name (Administrator, Manager, or User)");
+    string role = Console.ReadLine();
+
+    switch (role)
+    {
+        case "Administrator":
+            Console.WriteLine($"Your input value ({role}) has been accepted");
+            flag = true;
+            break;
+        case "Manager":
+            Console.WriteLine($"Your input value ({role}) has been accepted");
+            flag = true;
+            break;
+        case "User":
+            Console.WriteLine($"Your input value ({role}) has been accepted");
+            flag = true;
+            break;
+        default:
+            Console.WriteLine($"The role name that you entered, \"{role}\" is not valid. Enter your role name (Administrator, Manager, or User)");
+            break;
+    }
+} while (!flag);
+

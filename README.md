@@ -72,6 +72,16 @@ Console.WriteLine($"Dice roll: {roll}");
 - 참고문서  
 <a href="https://learn.microsoft.com">https://learn.microsoft.com</a>
 
+- 조건 연산자
+``` c#
+string permission = "Admin|Manager";
+int level = 55;
+
+string message = permission.Contains("Admin") ?
+ (level > 55 ? "Welcome, Super Admin user." : "Welcome, Admin user.") : permission.Contains("Manager") ?
+ (level >= 20 ? "Contact an Admin for access." : "You do not have sufficient privileges.") : "You do not have sufficient privileges.";
+```
+
 ### 자바에는 존재하지 않는 C#만의 확장 메서드
 ``` c#
 ///////////////////////////// ArrayExtensions.cs
@@ -113,3 +123,21 @@ Console.WriteLine(fraudulentOrderIDs.ToStringCustom());
 Console.WriteLine(fraudulentOrderIDs2.ToStringCustom());
 ```
 
+### 자바와 다른 메소드들
+``` c#
+Console.WriteLine("Enter an integer value between 5 and 10");
+
+while (true) {
+    String input = Console.ReadLine();
+    // 중요!
+    int.TryParse(input, out int number);
+
+    if (number >= 5 && number <= 10) {
+        Console.WriteLine($"Your input value ({number}) has been accepted.");
+        break;
+    } else {
+        Console.WriteLine($"You entered {number}. Please enter a number between 5 and 10: ");
+        continue;
+    }
+}
+```
