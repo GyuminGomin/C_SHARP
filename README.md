@@ -98,6 +98,9 @@ stopAtEntry : 대상의 진입점에서 중지해야 하는 경우 선택적으�
 ``` console
 $ dotnet new console -o ./CsharpProjects/TestProject
 
+$ cd <Project 경로>
+
+$ dotnet build
 Ctrl + F5 로 빌드 및 실행
 또는
 $ dotnet run
@@ -106,7 +109,7 @@ $ dotnet run
 ### 새로운 프로젝트 시작 2
 ```
 in vscode
-1. C# Devkit 설치 in Extension Marketplace
+1. C# Devkit 설치 
 2. Ctrl + Shift + P
     - Welcome: Open Walkthrough
     - Get Started with C# Dev Kit
@@ -118,6 +121,30 @@ in vscode
     - Console App
         - 프로젝트 이름 설정
 5. Program.cs에서 Ctrl + F5 로 빌드 및 실행
+```
+
+### 직접 서버를 깔고 모든 초기 셋팅하기
+```
+1. VS Code 확장 프로그램 설치
+- C# Dev Kit
+- C# Extension (2025 3월 기준 bard83-최신)
+- .NET Install Tool for Extension Authors
+
+2. MVC 프로젝트 생성
+$ dotnet new mvc -n MyMvcApp (ASP.NET Core MVC 프로젝트 생성)
+
+3. MVC 프로젝트 시작
+$ dotnet watch run (핫 리로드 반영) -- 개발 시 이거 사용
+$ dotnet run (그냥 빌드 후 런)
+
+4. 라이브러리 추가 방법 (NuGet Package)
+$ dotnet add package System.Net.Http (Net.Http는 기본 제공이므로 별도 설치할 필요없지만 다른 패키지 추가할때도 같은 방식 사용하면 됨)
+
+$ dotnet add package Newtonsoft.JSON -- JSON Parsing Library (.csproj 파일에 기록됨)
+
+$ dotnet list package -- 설치된 패키지 목록 출력
+
+$ dotnet remove package Newtonsoft.JSON -- 패키지 제거
 ```
 
 ## 빌드

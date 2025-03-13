@@ -7,19 +7,7 @@ string[][] userEnteredValues = new string[][]
             new string[] { "0", "1", "2"}
 };
 
-string overallStatusMessage = "";
-
 Workflow1(userEnteredValues);
-
-if (overallStatusMessage == "operating procedure complete")
-{
-    Console.WriteLine("'Workflow1' completed successfully.");
-}
-else
-{
-    Console.WriteLine("An error occurred during 'Workflow1'.");
-    Console.WriteLine(overallStatusMessage);
-}
 
 static void Workflow1(string[][] userEnteredValues)
 {
@@ -30,19 +18,6 @@ try {
     foreach (string[] userEntries in userEnteredValues)
     {
         Process1(userEntries);
-
-        if (processStatusMessage == "process complete")
-        {
-            Console.WriteLine("'Process1' completed successfully.");
-            Console.WriteLine();
-        }
-        else
-        {
-            Console.WriteLine("'Process1' encountered an issue, process aborted.");
-            Console.WriteLine(processStatusMessage);
-            Console.WriteLine();
-            operationStatusMessage = processStatusMessage;
-        }
     }
 
     if (operationStatusMessage == "good")
@@ -62,8 +37,6 @@ try {
 
 static void Process1(String[] userEntries)
 {
-    string processStatus = "clean";
-    string returnMessage = "";
     int valueEntered;
 
     try {
@@ -77,15 +50,11 @@ static void Process1(String[] userEntries)
             }
         }
 
-        if (processStatus == "clean")
-        {
-            returnMessage = "process complete";
-        }
     } catch (InvalidCastException icex) {
-        returnMessage = "Invalid data. User input values must be valid integers.";
+        throw;
     } catch (DivideByZeroException dbzex) {
-        returnMessage = "Invalid data. User input values must be non-zero values.";
+        throw;
     } catch (Exception ex) {
-        returnMessage = "An error occurred during 'Process1'.";
+        throw;
     }
 }
