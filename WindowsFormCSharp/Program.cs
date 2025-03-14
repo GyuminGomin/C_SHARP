@@ -1,6 +1,6 @@
 namespace WindowsFormCSharp;
 using WindowsFormCSharp._LoginForms;
-
+using WindowsFormCSharp.Config;
 static class Program
 {
     /// <summary>

@@ -88,3 +88,4 @@ $RECYCLE.BIN/
 
 # Windows Form Project
 WindowsFormCSharp/.vs/
+WindowsFormCSharp/Config/*.config

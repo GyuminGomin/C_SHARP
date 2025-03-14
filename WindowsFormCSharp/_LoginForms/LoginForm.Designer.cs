@@ -28,31 +28,32 @@ partial class LoginForm
     /// </summary>
     private void InitializeComponent()
     {
-        textBox1 = new TextBox();
+        tb_Note = new TextBox();
         label1 = new Label();
         label2 = new Label();
         panel1 = new Panel();
-        textBox7 = new TextBox();
-        textBox6 = new TextBox();
-        textBox5 = new TextBox();
-        textBox4 = new TextBox();
+        tb_StaffPwd = new TextBox();
+        tb_StaffCode = new TextBox();
+        tb_Nm = new TextBox();
+        tb_TeamNm = new TextBox();
         label8 = new Label();
         label7 = new Label();
         label6 = new Label();
         label5 = new Label();
-        textBox3 = new TextBox();
-        textBox2 = new TextBox();
+        tb_PcTime = new TextBox();
+        tb_SystemTime = new TextBox();
         label4 = new Label();
         label3 = new Label();
         panel1.SuspendLayout();
         SuspendLayout();
         // 
-        // textBox1
+        // tb_Note
         // 
-        textBox1.Location = new Point(12, 30);
-        textBox1.Name = "textBox1";
-        textBox1.Size = new Size(256, 23);
-        textBox1.TabIndex = 0;
+        tb_Note.Location = new Point(12, 30);
+        tb_Note.Name = "tb_Note";
+        tb_Note.ReadOnly = true;
+        tb_Note.Size = new Size(256, 23);
+        tb_Note.TabIndex = 0;
         // 
         // label1
         // 
@@ -78,16 +79,16 @@ partial class LoginForm
         // panel1
         // 
         panel1.BackColor = Color.DarkCyan;
-        panel1.Controls.Add(textBox7);
-        panel1.Controls.Add(textBox6);
-        panel1.Controls.Add(textBox5);
-        panel1.Controls.Add(textBox4);
+        panel1.Controls.Add(tb_StaffPwd);
+        panel1.Controls.Add(tb_StaffCode);
+        panel1.Controls.Add(tb_Nm);
+        panel1.Controls.Add(tb_TeamNm);
         panel1.Controls.Add(label8);
         panel1.Controls.Add(label7);
         panel1.Controls.Add(label6);
         panel1.Controls.Add(label5);
-        panel1.Controls.Add(textBox3);
-        panel1.Controls.Add(textBox2);
+        panel1.Controls.Add(tb_PcTime);
+        panel1.Controls.Add(tb_SystemTime);
         panel1.Controls.Add(label4);
         panel1.Controls.Add(label3);
         panel1.Location = new Point(12, 86);
@@ -95,33 +96,37 @@ partial class LoginForm
         panel1.Size = new Size(256, 307);
         panel1.TabIndex = 3;
         // 
-        // textBox7
+        // tb_StaffPwd
         // 
-        textBox7.Location = new Point(86, 253);
-        textBox7.Name = "textBox7";
-        textBox7.Size = new Size(90, 23);
-        textBox7.TabIndex = 11;
+        tb_StaffPwd.Location = new Point(86, 253);
+        tb_StaffPwd.Name = "tb_StaffPwd";
+        tb_StaffPwd.Size = new Size(90, 23);
+        tb_StaffPwd.TabIndex = 11;
+        tb_StaffPwd.KeyDown += tb_StaffPwd_KeyDown;
         // 
-        // textBox6
+        // tb_StaffCode
         // 
-        textBox6.Location = new Point(86, 229);
-        textBox6.Name = "textBox6";
-        textBox6.Size = new Size(90, 23);
-        textBox6.TabIndex = 10;
+        tb_StaffCode.Location = new Point(86, 229);
+        tb_StaffCode.Name = "tb_StaffCode";
+        tb_StaffCode.Size = new Size(90, 23);
+        tb_StaffCode.TabIndex = 10;
+        tb_StaffCode.Leave += tb_StaffCode_Leave;
         // 
-        // textBox5
+        // tb_Nm
         // 
-        textBox5.Location = new Point(86, 205);
-        textBox5.Name = "textBox5";
-        textBox5.Size = new Size(90, 23);
-        textBox5.TabIndex = 9;
+        tb_Nm.Location = new Point(86, 205);
+        tb_Nm.Name = "tb_Nm";
+        tb_Nm.ReadOnly = true;
+        tb_Nm.Size = new Size(90, 23);
+        tb_Nm.TabIndex = 9;
         // 
-        // textBox4
+        // tb_TeamNm
         // 
-        textBox4.Location = new Point(86, 181);
-        textBox4.Name = "textBox4";
-        textBox4.Size = new Size(90, 23);
-        textBox4.TabIndex = 8;
+        tb_TeamNm.Location = new Point(86, 181);
+        tb_TeamNm.Name = "tb_TeamNm";
+        tb_TeamNm.ReadOnly = true;
+        tb_TeamNm.Size = new Size(90, 23);
+        tb_TeamNm.TabIndex = 8;
         // 
         // label8
         // 
@@ -167,19 +172,21 @@ partial class LoginForm
         label5.TabIndex = 4;
         label5.Text = "팀      명";
         // 
-        // textBox3
+        // tb_PcTime
         // 
-        textBox3.Location = new Point(89, 48);
-        textBox3.Name = "textBox3";
-        textBox3.Size = new Size(160, 23);
-        textBox3.TabIndex = 3;
+        tb_PcTime.Location = new Point(89, 48);
+        tb_PcTime.Name = "tb_PcTime";
+        tb_PcTime.ReadOnly = true;
+        tb_PcTime.Size = new Size(160, 23);
+        tb_PcTime.TabIndex = 3;
         // 
-        // textBox2
+        // tb_SystemTime
         // 
-        textBox2.Location = new Point(89, 23);
-        textBox2.Name = "textBox2";
-        textBox2.Size = new Size(160, 23);
-        textBox2.TabIndex = 2;
+        tb_SystemTime.Location = new Point(89, 23);
+        tb_SystemTime.Name = "tb_SystemTime";
+        tb_SystemTime.ReadOnly = true;
+        tb_SystemTime.Size = new Size(160, 23);
+        tb_SystemTime.TabIndex = 2;
         // 
         // label4
         // 
@@ -212,7 +219,7 @@ partial class LoginForm
         Controls.Add(panel1);
         Controls.Add(label2);
         Controls.Add(label1);
-        Controls.Add(textBox1);
+        Controls.Add(tb_Note);
         KeyPreview = true;
         Name = "LoginForm";
         Text = "SYSTEM LOGIN";
@@ -225,20 +232,20 @@ partial class LoginForm
 
     #endregion
 
-    private TextBox textBox1;
+    private TextBox tb_Note;
     private Label label1;
     private Label label2;
     private Panel panel1;
     private Label label3;
     private Label label5;
-    private TextBox textBox3;
-    private TextBox textBox2;
+    private TextBox tb_PcTime;
+    private TextBox tb_SystemTime;
     private Label label4;
     private Label label8;
     private Label label7;
     private Label label6;
-    private TextBox textBox7;
-    private TextBox textBox6;
-    private TextBox textBox5;
-    private TextBox textBox4;
+    private TextBox tb_StaffPwd;
+    private TextBox tb_StaffCode;
+    private TextBox tb_Nm;
+    private TextBox tb_TeamNm;
 }
