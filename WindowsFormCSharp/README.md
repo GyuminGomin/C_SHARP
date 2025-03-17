@@ -100,6 +100,12 @@ $ Install-Package Microsoft.EntityFrameworkCore -> 모르겠음
 $ Install-Package Microsoft.EntityFrameworkCore.Sqlite -> SqlLite 작동 위함
 $ Install-Package Oracle.EntityFrameworkCore -> Oracle 작동 위함
 ```
+
+- Dapper 설치
+``` bash
+$ Install-Package Dapper
+```
+
 - DbContext 생성
     1. Config > ODBC.cs 파일에 있는 방식 사용
     2. Query > LoginQuery.cs 보면 사용방법 확인 가능
@@ -131,3 +137,27 @@ query를 다 실행 시키고 나면,
     </CodeSnippet>
 </CodeSnippets>
 ```
+
+#### 어려운 Dapper와 EF의 개념
+- DbConnection이 폐기 되면
+
+DbConnection 객체는 IDisposable 인터페이스를 구현하므로, Dispose 메서드를 호출하여 명시적으로 자원을 해제할 수 있습니다. DbConnection 객체가 폐기되면, 연결된 데이터베이스 리소스가 해제되고, 연결 풀로 반환됩니다.
+DbContext는 DbConnection 객체를 내부적으로 관리하며, DbContext가 폐기될 때 DbConnection 객체도 함께 폐기됩니다. 따라서, DbContext를 사용하는 동안 DbConnection 객체는 DbContext의 수명 주기에 따라 관리됩니다.
+
+예를 들어, using 문을 사용하여 DbContext를 생성하고 사용하면, DbContext가 범위를 벗어날 때 자동으로 Dispose 메서드가 호출되어 DbConnection 객체도 함께 폐기됩니다.
+
+``` c#
+using (var context = ODBC.GetInstance())
+{
+    var connection = context.Database.GetDbConnection();
+    connection.Open();
+
+    // SQL 쿼리 실행
+    var result = connection.Query("SELECT * FROM SomeTable");
+
+    // 연결을 명시적으로 닫을 필요는 없음
+    // using 블록이 끝나면 DbContext와 함께 DbConnection도 폐기됨
+}
+```
+
+#### 

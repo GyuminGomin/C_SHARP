@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 using System.Data;
 using Oracle.ManagedDataAccess.Client;
 using Microsoft.EntityFrameworkCore;
+using System.Dynamic;
+using Dapper;
+using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Data.Common;
 
 namespace WindowsFormCSharp.Config
 {
@@ -14,6 +19,14 @@ namespace WindowsFormCSharp.Config
     {
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
         private static ODBC _instance;
+        private DbConnection _connection;
+        
+        // DbConnection을 클래스 수준에서 관리하고, 필요할 때 열고 닫는 형식으로 사용
+        public ODBC(DbContextOptions<ODBC> options) : base(options) 
+        {
+            _connection = this.Database.GetDbConnection();
+        }
+
         /*
          * DbContextOptions -> EF Core에서 데이터베이스 연결 설정을 포함하는 클래스
          * DbContextOptions<ODBC> -> ODBC라는 특정 DbContext에 대한 설정을 나타냄
@@ -21,8 +34,6 @@ namespace WindowsFormCSharp.Config
          * base(options) -> 부모 클래스의 생성자를 호출하는 구문
          * 따라서 ODBC 클래스가 DbContext를 상속받으면서, DbContextOptions<ODBC>를 부모 클래스인 DbContext에 전달하여 ODBC 객체가 설정되도록 하는 역할
          */
-        public ODBC(DbContextOptions<ODBC> options) : base(options) { }
-
         public static ODBC GetInstance()
         {
             if (_instance == null)
@@ -45,6 +56,12 @@ namespace WindowsFormCSharp.Config
             }
         }
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    // dynamic 엔터티에 대해 HasNoKey() 메서드를 호출하여 키가 없음을 나타냄
+        //    modelBuilder.Entity<dynamic>().HasNoKey();
+        //}
+
         /*
          * this.Database.GetDbConnection().CreateCommand() -> 현재 DbContext의 연결을 가져와서 Command 객체를 생성
          * command.CommandText = sql; -> Command 객체의 CommandText 속성에 SQL 쿼리를 설정
@@ -55,64 +72,82 @@ namespace WindowsFormCSharp.Config
          * 그 후, ExpandoObject를 List에 추가하여 반환
          */
         /*
-         * Select 쿼리를 실행하는 메서드
+         * params : 메서드에 전달되는 인수의 개수가 가변적일 때 사용
+         * ? : nullable 형식을 나타내는 연산자 (null이 가능)
+         * dynamic : 동적 타입 (컴파일 시점에 타입이 결정되지 않고, 런타임 시점에 결정되는 타입) -> object와 비슷하지만, object보다 더 유연하게 사용 가능
+         *      -> 현재 시점에서 List<dynamic>은 List<Dictionary<string, object>>와 같은 역할을 함
          */
-        public List<dynamic> SelectRawSql(string sql)
+        /*
+         * Select 쿼리를 실행하는 메서드 (기본적으로 클래스를 매핑해서 사용해야 하므로 새롭게 추가)
+         */
+        public List<Dictionary<string, object>> SelectRawSql(string sql, Dictionary<string, object> parameters)
         {
             try
             {
-                using (var command = this.Database.GetDbConnection().CreateCommand())
+                // Dapper를 사용하여 Raw SQL 실행
+                if (_connection.State != ConnectionState.Open)
                 {
-                    command.CommandText = sql;
-                    this.Database.OpenConnection();
-
-                    using (var result = command.ExecuteReader())
-                    {
-                        var entities = new List<dynamic>();
-                        while (result.Read())
-                        {
-                            var expandoObject = new System.Dynamic.ExpandoObject() as IDictionary<string, object>;
-                            for (var i = 0; i < result.FieldCount; i++)
-                            {
-                                expandoObject.Add(result.GetName(i), result.IsDBNull(i) ? null : result.GetValue(i));
-                            }
-                            entities.Add(expandoObject);
-                        }
-                        return entities;
-                    }
+                    _connection.Open();
                 }
-                
+               
+                var result = _connection.Query(sql, parameters).ToList();
+
+                // 결과를 Dictionary 형태로 변환
+                /*
+                * Dapper가 반환하는 IEnumerable<dynamic>을 List<Dictionary<string, object>>로 변환
+                */
+                var results = result.Select(row => (IDictionary<string, object>)row)
+                                    .Select(row => row.ToDictionary(k => k.Key, v => v.Value))
+                                    .ToList();
+                return results;
             } catch (Exception e)
             {
-                Console.WriteLine();
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-                return null;
+                throw;
             }
-            
+            finally
+            {
+                string modifiedSql = replaceParameterMarker(sql, parameters);
+                Console.WriteLine(modifiedSql);
+            }
         }
 
         /*
          * Insert, Update, Delete 쿼리를 실행하는 메서드
          */
-        public int ExecuteRawSql(string sql)
+        public int ExecuteRawSql(string sql, Dictionary<string, object> parameters)
         {
             try
             {
-                return this.Database.ExecuteSqlRaw(sql);
+                if (_connection.State != ConnectionState.Open)
+                {
+                    _connection.Open();
+                }
+                var result = _connection.Execute(sql, parameters);
+                return result;
             }
             catch (Exception e)
             {
-                Console.WriteLine();
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-                return -1;
+                throw;
+            }
+            finally
+            {
+                string modifiedSql = replaceParameterMarker(sql, parameters);
+                Console.WriteLine(modifiedSql);
             }
         }
 
-        private string ReplaceParametersWithPlaceholder(string sql)
+        // : 뒤에 /**p**/를 추가한 쿼리를 출력
+        private string replaceParameterMarker(string sql, Dictionary<string, object> parameters)
         {
-            return System.Text.RegularExpressions.Regex.Replace(sql, @"\{.*?\}", m => m.Groups[1].Value + " /**p**/");
+            // : 뒤에 /**p**/를 추가한 쿼리를 출력
+            string modifiedSql = Regex.Replace(sql, @":\w+", m => m.Value + " /**p**/");
+
+            foreach (var param in parameters)
+            {
+                modifiedSql = modifiedSql.Replace($":" + param.Key, '\''+param.Value?.ToString()+'\'');
+            }
+
+            return modifiedSql;
         }
     }
 }

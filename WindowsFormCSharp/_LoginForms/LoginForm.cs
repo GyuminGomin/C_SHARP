@@ -12,6 +12,8 @@ using WindowsFormCSharp.Config;
 using WindowsFormCSharp._PCMStartForms;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
+using ArrayExtensions;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace WindowsFormCSharp._LoginForms;
 public partial class LoginForm : Form
@@ -62,46 +64,63 @@ public partial class LoginForm : Form
 
     private void tb_StaffPwd_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.KeyCode == Keys.Enter)
-        {
-            // Cursor를 모래시계로 설정
-            Cursor.Current = Cursors.WaitCursor;
-
-            string id = this.tb_StaffCode.Text;
-            if (id == string.Empty || id == null)
+        using (IDbContextTransaction transaction = loginQuery.BeginTransaction())
+        { 
+            try
             {
-                MessageBox.Show("사용자 ID를 입력하십시오.", "오류");
-                this.tb_StaffCode.Focus();
-                Cursor.Current = Cursors.Default;
-                return;
-            }
-            string pwd = this.tb_StaffPwd.Text == null | this.tb_StaffPwd.Text == string.Empty ? "0" : this.tb_StaffPwd.Text;
-            if (pwd == string.Empty || pwd == null)
-            {
-                MessageBox.Show("사용자 비밀번호를 입력하십시오.", "오류");
-                this.tb_StaffPwd.Focus();
-                Cursor.Current = Cursors.Default;
-                return;
-            }
-
-            if (id.Equals("0") && pwd.Equals("0"))
-            {
-                var result = loginQuery.selectMemberInfo(id, pwd);
-
-                foreach (var item in result)
+                if (e.KeyCode == Keys.Enter)
                 {
-                    Console.WriteLine(item);
-                }
-            }
-            else
-            {
-                MessageBox.Show("사용자 ID 또는 비밀번호가 일치하지 않습니다.", "오류");
-                this.tb_StaffPwd.Text = String.Empty;
-                this.tb_StaffPwd.Focus();
-            }
+                    // Cursor를 모래시계로 설정
+                    Cursor.Current = Cursors.WaitCursor;
+                    string id = this.tb_StaffCode.Text;
+                    if (id == string.Empty || id == null)
+                    {
+                        MessageBox.Show("사용자 ID를 입력하십시오.", "오류");
+                        this.tb_StaffCode.Focus();
+                        Cursor.Current = Cursors.Default;
+                        return;
+                    }
+                    string pwd = this.tb_StaffPwd.Text == null | this.tb_StaffPwd.Text == string.Empty ? "0" : this.tb_StaffPwd.Text;
+                    if (pwd == string.Empty || pwd == null)
+                    {
+                        MessageBox.Show("사용자 비밀번호를 입력하십시오.", "오류");
+                        this.tb_StaffPwd.Focus();
+                        Cursor.Current = Cursors.Default;
+                        return;
+                    }
 
-            // Cursor를 기본으로 되돌림
-            Cursor.Current = Cursors.Default;
+                    Dictionary<string, object> memberInfoDict = new Dictionary<string, object>();
+                    memberInfoDict.Add("MEMBER_ID", id);
+                    memberInfoDict.Add("PASSWORD", pwd);
+                    if (pwd.Equals("0"))
+                    {
+                        var result = loginQuery.SelectMemberInfo(memberInfoDict);
+                        string gs_usr_grp = Convert.ToString(result[0]["NO_MEMBER_SEQ"]);
+                        string gs_userid = id;
+                        string gl_no_member_seq = Convert.ToString(result[0]["NO_MEMBER_SEQ"]);
+
+                        // ip 구하기 ( 여기서 null 처리 방법에 대해서 학습해야할 듯 )
+                        var result2 = loginQuery.GetIp(null);
+
+                        var result3 = loginQuery.GetMemberInfo(null);
+                    }
+                    else
+                    {
+                        MessageBox.Show("사용자 ID 또는 비밀번호가 일치하지 않습니다.", "오류");
+                        this.tb_StaffPwd.Text = String.Empty;
+                        this.tb_StaffPwd.Focus();
+                    }
+                    // Cursor를 기본으로 되돌림
+                    Cursor.Current = Cursors.Default;
+                }
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 }

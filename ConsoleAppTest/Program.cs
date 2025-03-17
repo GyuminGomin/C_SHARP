@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using ArrayExtensions;
 
 string[][] userEnteredValues = new string[][]
 {
@@ -6,6 +7,10 @@ string[][] userEnteredValues = new string[][]
             new string[] { "1", "two", "3"},
             new string[] { "0", "1", "2"}
 };
+
+string[] userEntries = new string[] { "1", "2", "3" };
+userEntries.ToStringCustom();
+
 
 Workflow1(userEnteredValues);
 
