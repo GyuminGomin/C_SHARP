@@ -28,7 +28,7 @@ namespace WindowsFormCSharp._LoginForms.Query
         {
             return _context.Database.BeginTransaction();
         }
-        public List<Dictionary<string, object>> SelectMemberInfo(Dictionary<string, object> memberInfo)
+        public List<Dictionary<string, object>> SelectMemberInfoQry(Dictionary<string, object>? input)
         {
             try
             {
@@ -44,14 +44,14 @@ namespace WindowsFormCSharp._LoginForms.Query
                        NO_COMPANY_SEQ
                 """;
 
-                return _context.SelectRawSql(sql, memberInfo);
+                return _context.SelectRawSql(sql, input);
             } catch (Exception e)
             {
                 throw;
             }
         }
 
-        public List<Dictionary<string, object>> GetIp(Dictionary<string, object> memberInfo)
+        public List<Dictionary<string, object>> GetIpQry(Dictionary<string, object>? input)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace WindowsFormCSharp._LoginForms.Query
                   FROM DUAL
                 """;
 
-                return _context.SelectRawSql(sql, memberInfo);
+                return _context.SelectRawSql(sql, input);
             }
             catch (Exception e)
             {
@@ -69,19 +69,37 @@ namespace WindowsFormCSharp._LoginForms.Query
             }
         }
 
-        public List<Dictionary<string, object>> GetMemberInfo(Dictionary<string, object> memberInfo)
+        public List<Dictionary<string, object>> GetWorksInfoQry(Dictionary<string, object>? input)
         {
             try
             {
                 string sql = """
-                /* LoginQuery.GetMemberInfo */
+                /* LoginQuery.GetWorksInfo */
                 SELECT NO_WORKS,
                        WORKS_NAME
                   FROM TB_WORKS
                  WHERE NO_WORKS = '178195'
                 """;
 
-                return _context.SelectRawSql(sql, memberInfo);
+                return _context.SelectRawSql(sql, input);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public List<Dictionary<string, object>> GetSysDateQry(Dictionary<string, object>? input)
+        {
+            try
+            {
+                string sql = """
+                /* LoginQuery.SetDate */
+                SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') GS_SYS_DATE
+                  FROM DUAL
+                """;
+
+                return _context.SelectRawSql(sql, input);
             }
             catch (Exception e)
             {

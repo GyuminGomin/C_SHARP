@@ -80,7 +80,7 @@ namespace WindowsFormCSharp.Config
         /*
          * Select 쿼리를 실행하는 메서드 (기본적으로 클래스를 매핑해서 사용해야 하므로 새롭게 추가)
          */
-        public List<Dictionary<string, object>> SelectRawSql(string sql, Dictionary<string, object> parameters)
+        public List<Dictionary<string, object>> SelectRawSql(string sql, Dictionary<string, object>? parameters)
         {
             try
             {
@@ -89,8 +89,15 @@ namespace WindowsFormCSharp.Config
                 {
                     _connection.Open();
                 }
-               
-                var result = _connection.Query(sql, parameters).ToList();
+
+                IEnumerable<dynamic> result = null;
+                if (parameters == null)
+                {
+                    result = _connection.Query(sql).ToList();
+                } else
+                {
+                    result = _connection.Query(sql, parameters).ToList();
+                }
 
                 // 결과를 Dictionary 형태로 변환
                 /*
@@ -106,15 +113,22 @@ namespace WindowsFormCSharp.Config
             }
             finally
             {
-                string modifiedSql = replaceParameterMarker(sql, parameters);
-                Console.WriteLine(modifiedSql);
+                string modifiedSql = null;
+                if (parameters != null)
+                {
+                    modifiedSql = replaceParameterMarker(sql, parameters);
+                } else
+                {
+                    modifiedSql = sql;
+                }
+                Console.WriteLine(modifiedSql+"\n");
             }
         }
 
         /*
          * Insert, Update, Delete 쿼리를 실행하는 메서드
          */
-        public int ExecuteRawSql(string sql, Dictionary<string, object> parameters)
+        public int ExecuteRawSql(string sql, Dictionary<string, object>? parameters)
         {
             try
             {

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ImageManage;
 
 namespace WindowsFormCSharp._PCMStartForms
 {
@@ -15,6 +16,9 @@ namespace WindowsFormCSharp._PCMStartForms
         public PCMStartForm()
         {
             InitializeComponent();
+
+
+            ImageManage.ImgListMangement();
         }
     }
 }

@@ -94,19 +94,27 @@ public partial class LoginForm : Form
                     memberInfoDict.Add("PASSWORD", pwd);
                     if (pwd.Equals("0"))
                     {
-                        var result = loginQuery.SelectMemberInfo(memberInfoDict);
-                        string gs_usr_grp = Convert.ToString(result[0]["NO_MEMBER_SEQ"]);
-                        string gs_userid = id;
-                        string gl_no_member_seq = Convert.ToString(result[0]["NO_MEMBER_SEQ"]);
+                        var result = loginQuery.SelectMemberInfoQry(memberInfoDict);
+                        var gs_usr_grp = result[0]["NO_MEMBER_SEQ"];
+                        var gs_userid = id;
+                        var gl_no_member_seq = result[0]["NO_MEMBER_SEQ"];
 
-                        // ip 구하기 ( 여기서 null 처리 방법에 대해서 학습해야할 듯 )
-                        var result2 = loginQuery.GetIp(null);
+                        // ip 구하기
+                        var result2 = loginQuery.GetIpQry(null);
+                        // 업체코드 정보
+                        var result3 = loginQuery.GetWorksInfoQry(null);
+                        // 날짜 설정
+                        var result4 = loginQuery.GetSysDateQry(null);
+                        var gs_work_date = result4[0]["GS_SYS_DATE"];
 
-                        var result3 = loginQuery.GetMemberInfo(null);
+                        // 시작 페이지 오픈
+                        var pcmStartForm = new PCMStartForm();
+                        pcmStartForm.Show();
+                        this.Hide(); // 숨기기라서 다른 창을 닫을 때 앱을 종료하는 과정이 필요함
                     }
                     else
                     {
-                        MessageBox.Show("사용자 ID 또는 비밀번호가 일치하지 않습니다.", "오류");
+                        MessageBox.Show("비밀번호 오류입니다. 다시 입력하세요.", "오류");
                         this.tb_StaffPwd.Text = String.Empty;
                         this.tb_StaffPwd.Focus();
                     }
