@@ -173,3 +173,60 @@ IDbContextTransaction은 DbContext와 연결된 트랜잭션을 관리합니다.
 이유는 Enumerator가 처음부터 끝까지 돌아가면서 삭제를 하면
 삭제된 요소의 인덱스가 변경되기 때문이다.
 ```
+
+2. UI 스레드 예외 처리기와 비 UI 스레드 예외 처리기
+```
+UI 스레드와 비 UI 스레드의 개념은 멀티스레딩 프로그래밍에서 매우 중요합니다. 특히 Windows Forms 애플리케이션과 같은 GUI 애플리케이션에서는 UI 스레드와 비 UI 스레드를 구분하여 작업을 처리하는 것이 중요합니다.
+UI 스레드
+UI 스레드는 사용자 인터페이스(UI)를 관리하는 스레드입니다. 이 스레드는 사용자 입력(마우스 클릭, 키보드 입력 등)을 처리하고, 화면에 UI 요소를 그리며, 이벤트를 처리합니다. Windows Forms 애플리케이션에서는 기본적으로 하나의 UI 스레드가 있으며, 이 스레드에서 모든 UI 관련 작업이 수행됩니다.
+특징
+•	UI 스레드는 단일 스레드로 동작합니다.
+•	UI 스레드에서 긴 작업을 수행하면 UI가 응답하지 않게 됩니다(프리징).
+•	UI 스레드에서 발생하는 예외는 Application.ThreadException 이벤트를 통해 처리할 수 있습니다.
+
+private void Button_Click(object sender, EventArgs e)
+{
+    // 이 코드는 UI 스레드에서 실행됩니다.
+    this.label1.Text = "Button clicked!";
+}
+
+```
+
+```
+비 UI 스레드는 UI 스레드 외부에서 실행되는 스레드입니다. 비 UI 스레드는 주로 긴 작업이나 백그라운드 작업을 수행하는 데 사용됩니다. 비 UI 스레드를 사용하면 UI 스레드가 긴 작업으로 인해 응답하지 않게 되는 문제를 피할 수 있습니다.
+특징
+•	비 UI 스레드는 여러 개 생성할 수 있습니다.
+•	비 UI 스레드에서 UI 요소에 직접 접근하면 예외가 발생할 수 있습니다. UI 요소에 접근하려면 Invoke 또는 BeginInvoke 메서드를 사용해야 합니다.
+•	비 UI 스레드에서 발생하는 예외는 AppDomain.CurrentDomain.UnhandledException 이벤트를 통해 처리할 수 있습니다.
+
+private void StartBackgroundWork()
+{
+    Task.Run(() =>
+    {
+        // 이 코드는 비 UI 스레드에서 실행됩니다.
+        // 긴 작업을 수행합니다.
+        Thread.Sleep(5000);
+
+        // UI 요소에 접근하려면 Invoke를 사용해야 합니다.
+        this.Invoke((MethodInvoker)delegate
+        {
+            this.label1.Text = "Background work completed!";
+        });
+    });
+}
+```
+
+```
+이 코드는 Windows Forms 애플리케이션에서 전역 예외 처리기를 설정하는 부분입니다. 전역 예외 처리기를 설정하면 애플리케이션에서 발생하는 모든 예외를 잡아 처리할 수 있습니다. 이 코드는 UI 스레드와 비 UI 스레드에서 발생하는 예외를 각각 처리합니다.
+코드 설명
+1.	Application.EnableVisualStyles();
+•	이 메서드는 애플리케이션의 시각적 스타일을 활성화합니다. 이를 통해 Windows XP 이상에서 제공하는 시각적 스타일을 사용할 수 있습니다.
+2.	Application.SetCompatibleTextRenderingDefault(false);
+•	이 메서드는 애플리케이션에서 텍스트 렌더링을 GDI+ 대신 GDI를 사용하도록 설정합니다. 일반적으로 false로 설정하여 최신 텍스트 렌더링 방식을 사용합니다.
+3.	Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+•	이 코드는 UI 스레드에서 발생하는 예외를 처리하기 위해 Application.ThreadException 이벤트에 Application_ThreadException 메서드를 등록합니다.
+•	Application.ThreadException 이벤트는 Windows Forms 애플리케이션에서 UI 스레드에서 발생하는 예외를 처리할 수 있도록 합니다.
+4.	AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+•	이 코드는 비 UI 스레드에서 발생하는 예외를 처리하기 위해 AppDomain.CurrentDomain.UnhandledException 이벤트에 CurrentDomain_UnhandledException 메서드를 등록합니다.
+•	AppDomain.CurrentDomain.UnhandledException 이벤트는 애플리케이션 도메인에서 처리되지 않은 예외를 잡아 처리할 수 있도록 합니다.
+```
