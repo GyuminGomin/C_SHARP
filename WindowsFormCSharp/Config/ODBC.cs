@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 using System.Data;
-using Oracle.ManagedDataAccess.Client;
-using Microsoft.EntityFrameworkCore;
-using System.Dynamic;
-using Dapper;
-using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore.Storage;
 using System.Data.Common;
-using System.Diagnostics;
+using System.Text.RegularExpressions;
+using Dapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace WindowsFormCSharp.Config
 {

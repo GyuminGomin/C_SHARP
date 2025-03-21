@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Oracle.ManagedDataAccess.Client;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 using WindowsFormCSharp.Config;
-using WindowsFormCSharp.Query;
 
-namespace WindowsFormCSharp._LoginForms.Query
+namespace WindowsFormCSharp._LoginForms
 {
 
-    class LoginQuery : Qry
+    class LoginQuery : Query
     {
         private readonly ODBC _context;
 

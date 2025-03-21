@@ -1,6 +1,4 @@
 namespace WindowsFormCSharp;
-using WindowsFormCSharp._LoginForms;
-using WindowsFormCSharp.Config;
 static class Program
 {
     /// <summary>
@@ -17,6 +15,9 @@ static class Program
         Application.SetCompatibleTextRenderingDefault(false);
         Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
         AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
+        // 콘솔 입력을 처리하는 스레드 시작
+        Task.Run(() => ProcessConsoleInput());
 
         ApplicationConfiguration.Initialize();
         //Application.Run(new _LoginForms.LoginForm()); // 로그인 절차 생략
@@ -41,5 +42,39 @@ static class Program
         Exception ex = (Exception)e.ExceptionObject;
         Console.WriteLine($"비 UI 스레드 예외 발생 : {currentTime} \n");
         Console.WriteLine(ex.ToString());
+    }
+
+    // 콘솔 입력을 처리하는 메서드
+    static void ProcessConsoleInput()
+    {
+        while (true)
+        {
+            Console.Write("Enter Command : ");
+            string input = Console.ReadLine();
+            if (input != null && !input.Equals(""))
+            {
+                if (input.Equals("cls", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.Clear();
+                }
+                else if (input.Equals("exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine(
+                    $"""
+                    ***************************************
+                           Unknown Command -> {input}
+                    MANUAL
+                    clear  ->   cls
+                    exit   ->   exit
+                    ***************************************
+                    """
+                    );
+                }
+            }
+        }
     }
 }

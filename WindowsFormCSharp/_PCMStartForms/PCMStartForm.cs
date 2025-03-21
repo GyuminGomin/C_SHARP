@@ -1,7 +1,5 @@
 ﻿using System.Drawing.Printing;
 using WindowsFormCSharp._PCMLabel;
-using WindowsFormCSharp.ImageManage;
-using WindowsFormCSharp.PrinterManage;
 
 namespace WindowsFormCSharp._PCMStartForms
 {
@@ -16,11 +14,11 @@ namespace WindowsFormCSharp._PCMStartForms
             // 부경양돈농협 로고 설정
             string[] images = new string[1];
             images[0] = "logo.png";
-            Bitmap[] bmps = ImgManage.ImgtoBitmap(images);
+            Bitmap[] bmps = ImageManage.ImgtoBitmap(images);
             this.pb_logo.Image = bmps[0];
 
             // comboBox 프린트 설정
-            PrintManage printManage = new PrintManage();
+            PrinterManage printManage = new PrinterManage();
             printManage.PrintSetting(this.cbm_01, this.rtb_02, this.btn_01, printerSettings, pageSettings);
         }
 

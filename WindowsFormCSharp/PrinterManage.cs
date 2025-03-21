@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WindowsFormCSharp;
+﻿using System.Drawing.Printing;
 
-namespace WindowsFormCSharp.PrinterManage
+namespace WindowsFormCSharp
 {
-    class PrintManage
+    class PrinterManage
     {
         private PrinterSettings printerSettings;
         private PageSettings pageSettings;

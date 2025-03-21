@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Text.RegularExpressions;
 
-namespace WindowsFormCSharp.ImageManage
+namespace WindowsFormCSharp
 {
-    public class ImgManage
+    public class ImageManage
     {
         static string pattern = @"\.(png|jpg|jpeg|gif|bmp|tiff|webp)$";
         static string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;

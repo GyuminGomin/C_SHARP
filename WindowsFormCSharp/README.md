@@ -166,7 +166,7 @@ IDbContextTransaction은 DbContext와 연결된 트랜잭션을 관리합니다.
 
 # 개발하면서 새롭게 깨달은 사실들 일지
 
-1. 반복문을 돌리는 리스트에서 요소 삭제
+## 반복문을 돌리는 리스트에서 요소 삭제
 ```
 만약 리스트에서 반복문을 돌릴 때, 해당 리스트의 요소를 삭제하고 싶다면
 반복문을 역순으로 돌려야 한다.
@@ -174,7 +174,7 @@ IDbContextTransaction은 DbContext와 연결된 트랜잭션을 관리합니다.
 삭제된 요소의 인덱스가 변경되기 때문이다.
 ```
 
-2. UI 스레드 예외 처리기와 비 UI 스레드 예외 처리기
+## UI 스레드 예외 처리기와 비 UI 스레드 예외 처리기
 ```
 UI 스레드와 비 UI 스레드의 개념은 멀티스레딩 프로그래밍에서 매우 중요합니다. 특히 Windows Forms 애플리케이션과 같은 GUI 애플리케이션에서는 UI 스레드와 비 UI 스레드를 구분하여 작업을 처리하는 것이 중요합니다.
 UI 스레드
@@ -231,7 +231,37 @@ private void StartBackgroundWork()
 •	AppDomain.CurrentDomain.UnhandledException 이벤트는 애플리케이션 도메인에서 처리되지 않은 예외를 잡아 처리할 수 있도록 합니다.
 ```
 
+## UI 쓰레드의 개념
+``` c#
+// 생성자 내에서 UI 스레드에서 버튼 클릭 강제 호출
+// UI 쓰레드를 쓰는 웹 애플리케이션은 단일 쓰레드로 개발을 한다. (작은 규모의 프로젝트에 유리)
+// 다중 쓰레드를 쓰는 분리형 웹 애플리케이션은 큰 규모의 프로젝트에 유리하다.
+this.BeginInvoke((MethodInvoker)delegate
+{
+    this.btn_kindCd2.PerformClick();
+});
+/*
+* BeginInvoke와 Invoke의 차이
+* BeginInvoke는 비동기적으로 호출되며, 호출 후 즉시 반환되어 UI 스레드가 버튼 클릭 이벤트를 처리할 때까지 다른 작업 가능
+* Invoke는 동기적으로 호출되며, 버튼 클릭 이벤트가 처리될 때까지 현재 스레드를 차단
+* 
+* 1. BeginInvoke란?
+* BeginInvoke는 .NET에서 UI 스레드에서 작업을 비동기적으로 실행할 때 사용되는 메서드입니다. UI 스레드에서만 접근할 수 있는 UI 요소를 조작하거나 이벤트를 호출하려면 UI 스레드에서 실행해야 하는데, BeginInvoke는 다른 스레드에서 UI 스레드에 작업을 요청하는 방법입니다.
+
+* BeginInvoke는 비동기적으로 동작하므로, 호출 후 즉시 반환되어 다른 코드가 실행되도록 하고, UI 스레드가 요청된 작업을 처리하게 됩니다. 이는 메인 UI 스레드가 이미 작업을 수행 중일 수 있기 때문에, 이 메서드가 다른 코드 실행을 차단하지 않고 요청된 작업을 처리하는 방식입니다.
+
+* 2. MethodInvoker와 delegate의 역할
+* MethodInvoker: 이는 매개변수가 없는 메서드를 실행할 수 있는 델리게이트 타입입니다. 즉, delegate {...} 안의 코드를 실행하는 델리게이트입니다.
+* delegate: 이는 익명 메서드(또는 람다)를 정의하는 방법입니다. delegate는 특정 작업을 정의하는 함수 포인터처럼 사용됩니다. 여기서 중요한 점은 delegate 안에 UI 스레드에서 실행할 작업을 정의하고 있다는 것입니다.
+* 따라서 this.BeginInvoke((MethodInvoker)delegate {...})는 btn_kindCd2.PerformClick();이라는 코드가 UI 스레드에서 실행되도록 요청하는 역할을 합니다.
+* 반드시 Form이 생성된 후 실행 시켜야 함
+*
+*/
+```
+
 # Visual Studio 2022 단축키 모음
 - `Ctrl + K, Ctrl + D` : 코드 정렬
 - `Ctrl + K, Ctrl + C` : 주석 처리
 - `Ctrl + R, Ctrl + G` : import 정리
+
+

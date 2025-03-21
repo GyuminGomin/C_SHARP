@@ -1,9 +1,7 @@
-using System;
-
 /**
  * toStringCustom method is an extension method for the Array class.
  */
-namespace WindowsFormCSharp.ArrayExtensions
+namespace WindowsFormCSharp
 {
     public static class ArrayExtensions
     {

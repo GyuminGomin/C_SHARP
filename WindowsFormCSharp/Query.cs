@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
-namespace WindowsFormCSharp.Query
+namespace WindowsFormCSharp
 {
-    class Qry
+    class Query
     {
-        public static DataTable fn_createDataTable<T>(T qry, Func<T, List<Dictionary<string, object>>> callback) where T : Qry
+        public static DataTable fn_createDataTable<T>(T qry, Func<T, List<Dictionary<string, object>>> callback) where T : Query
         {
             DataTable dt = new DataTable();
 

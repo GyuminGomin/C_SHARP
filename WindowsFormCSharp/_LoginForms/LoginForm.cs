@@ -1,19 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using WindowsFormCSharp._LoginForms.Query;
-using WindowsFormCSharp.Config;
-using WindowsFormCSharp._PCMStartForms;
-using Microsoft.EntityFrameworkCore;
-using System.Transactions;
-using WindowsFormCSharp.ArrayExtensions;
 using Microsoft.EntityFrameworkCore.Storage;
+using WindowsFormCSharp._PCMStartForms;
 
 namespace WindowsFormCSharp._LoginForms;
 public partial class LoginForm : Form

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 using WindowsFormCSharp.Config;
-using WindowsFormCSharp.Query;
+using WindowsFormCSharp;
 
-namespace WindowsFormCSharp._PCMLabel.Query
+namespace WindowsFormCSharp._PCMLabel
 {
-    class PCMLabelQuery : Qry
+    class PCMLabelQuery : Query
     {
         private readonly ODBC _context;
         public PCMLabelQuery()
@@ -106,6 +101,38 @@ namespace WindowsFormCSharp._PCMLabel.Query
                 throw;
             }
         }
+
+
+
+
+        public List<Dictionary<string, object>> GetSubItemCdKindQry(Dictionary<string, object>? input)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetSubItemCdKindQry */
+                SELECT ITEM_CD,
+                       ITEM_NAME,
+                       FRZ_DIV3,
+                       ENG_NAME
+                  FROM TB_ITEM TI
+                 WHERE SUBSTR(ITEM_CD,7,2) <> '00'
+                   AND TI.ITEM_MAIN = :ITEM_MAIN
+                   AND PROD_DIV = '1'
+                   AND KIND_CD = 7
+                 ORDER BY ITEM_CD
+                """;
+
+                return _context.SelectRawSql(sql, input);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+
+
 
 
     }
