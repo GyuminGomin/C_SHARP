@@ -3,7 +3,7 @@ using System;
 /**
  * toStringCustom method is an extension method for the Array class.
  */
-namespace ArrayExtensions
+namespace WindowsFormCSharp.ArrayExtensions
 {
     public static class ArrayExtensions
     {

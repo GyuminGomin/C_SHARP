@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Oracle.ManagedDataAccess.Client;
 using WindowsFormCSharp.Config;
+using WindowsFormCSharp.Query;
 
 namespace WindowsFormCSharp._LoginForms.Query
 {
 
-    public class LoginQuery
+    class LoginQuery : Qry
     {
         private readonly ODBC _context;
 
@@ -33,7 +34,7 @@ namespace WindowsFormCSharp._LoginForms.Query
             try
             {
                 string sql = """
-                /* LoginQuery.SelectMemberInfo */
+                /* LoginQuery.SelectMemberInfoQry */
                 SELECT COUNT(NO_MEMBER_SEQ) COUNT,
                        NO_MEMBER_SEQ,
                        NO_COMPANY_SEQ
@@ -56,7 +57,7 @@ namespace WindowsFormCSharp._LoginForms.Query
             try
             {
                 string sql = """
-                /* LoginQuery.GetIp */
+                /* LoginQuery.GetIpQry */
                 SELECT SYS_CONTEXT('userenv','ip_address') GS_USERIP
                   FROM DUAL
                 """;
@@ -74,7 +75,7 @@ namespace WindowsFormCSharp._LoginForms.Query
             try
             {
                 string sql = """
-                /* LoginQuery.GetWorksInfo */
+                /* LoginQuery.GetWorksInfoQry */
                 SELECT NO_WORKS,
                        WORKS_NAME
                   FROM TB_WORKS
@@ -94,7 +95,7 @@ namespace WindowsFormCSharp._LoginForms.Query
             try
             {
                 string sql = """
-                /* LoginQuery.SetDate */
+                /* LoginQuery.GetSysDateQry */
                 SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') GS_SYS_DATE
                   FROM DUAL
                 """;

@@ -230,3 +230,8 @@ private void StartBackgroundWork()
 •	이 코드는 비 UI 스레드에서 발생하는 예외를 처리하기 위해 AppDomain.CurrentDomain.UnhandledException 이벤트에 CurrentDomain_UnhandledException 메서드를 등록합니다.
 •	AppDomain.CurrentDomain.UnhandledException 이벤트는 애플리케이션 도메인에서 처리되지 않은 예외를 잡아 처리할 수 있도록 합니다.
 ```
+
+# Visual Studio 2022 단축키 모음
+- `Ctrl + K, Ctrl + D` : 코드 정렬
+- `Ctrl + K, Ctrl + C` : 주석 처리
+- `Ctrl + R, Ctrl + G` : import 정리

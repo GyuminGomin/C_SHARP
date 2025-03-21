@@ -12,6 +12,7 @@ using Dapper;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data.Common;
+using System.Diagnostics;
 
 namespace WindowsFormCSharp.Config
 {
@@ -113,6 +114,7 @@ namespace WindowsFormCSharp.Config
             }
             finally
             {
+                // 현재 실행되는 폼 정보를 콘솔에 출력
                 string modifiedSql = null;
                 if (parameters != null)
                 {

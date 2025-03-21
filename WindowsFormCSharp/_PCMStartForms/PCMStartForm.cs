@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ArrayExtensions;
-using ImageManage;
-using PrinterManage;
+﻿using System.Drawing.Printing;
 using WindowsFormCSharp._PCMLabel;
+using WindowsFormCSharp.ImageManage;
+using WindowsFormCSharp.PrinterManage;
 
 namespace WindowsFormCSharp._PCMStartForms
 {
@@ -38,7 +28,8 @@ namespace WindowsFormCSharp._PCMStartForms
 
         private void btn_bowl_Click(object sender, EventArgs e)
         {
-            new PCMLabelForm().Show();
+            // TODO 클릭시 프린트 정보를 보내 주는데, 다른 창이 열려있을 때도 전역적으로 공유 할 수 있도록 설정해야함
+            new PCMLabelForm(printerSettings, pageSettings).Show();
         }
 
         private void PCMStartForm_KeyDown(object sender, KeyEventArgs e)

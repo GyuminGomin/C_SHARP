@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>query_s</Title>
+			<Author>Gyu</Author>
+			<Description>Query Format Select</Description>
+			<Shortcut>query_s</Shortcut>
+		</Header>
+		<Snippet>
+			<Code Language="CSharp">
+				<![CDATA[
+                public List<Dictionary<string, object>> Query (Dictionary<string, object>? input)
+                {
+                    try
+                    {
+                        string sql = """
+                        
+                        """;
+
+                        return _context.SelectRawSql(sql, input);
+                    } catch (Exception e)
+                    {
+                        throw;
+                    }
+                }
+				]]>
+			</Code>
+			<Declarations>
+				<Literal>
+					<ID>$Cursor$</ID>
+					<ToolTip>Enter the method name</ToolTip>
+					<Default>Query</Default>
+				</Literal>
+			</Declarations>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

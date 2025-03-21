@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WindowsFormCSharp;
 
-namespace PrinterManage
+namespace WindowsFormCSharp.PrinterManage
 {
     class PrintManage
     {

@@ -12,7 +12,7 @@ using WindowsFormCSharp.Config;
 using WindowsFormCSharp._PCMStartForms;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
-using ArrayExtensions;
+using WindowsFormCSharp.ArrayExtensions;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace WindowsFormCSharp._LoginForms;
