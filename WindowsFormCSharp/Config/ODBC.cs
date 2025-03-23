@@ -2,8 +2,11 @@
 using System.Data;
 using System.Data.Common;
 using System.Text.RegularExpressions;
+using System.Transactions;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using WindowsFormCSharp.Data;
 
 namespace WindowsFormCSharp.Config
 {
@@ -12,7 +15,30 @@ namespace WindowsFormCSharp.Config
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
         private static ODBC _instance;
         private DbConnection _connection;
-        
+
+        private bool _tranasaction; // true - 트랜잭션 성공, false - 트랜잭션 실패
+
+        /*
+         * 중요!!!!
+         * 현재 프로젝트 SQL 연결 상태는
+         * 1. EF에서 OnConfiguring으로 DB Connector 설정
+         * 2. EF의 Database.GetDbConnection()으로 DbConnection 객체 생성
+         * 3. DB Context에서 DB Instacne 생성
+         * 4. Instacne로 CRUD Query 실행 설정 (Dapper의 Select와 Execute 실행)
+         */
+
+        /*
+         * optionsBuilder.IsConfigured -> 현재 DbContext가 구성되었는지 여부를 나타내는 속성
+         * ODBC 설정 connectionString에서 받은 정보를 통해 연결 설정
+         */
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseOracle(connectionString);
+            }
+        }
+
         // DbConnection을 클래스 수준에서 관리하고, 필요할 때 열고 닫는 형식으로 사용
         public ODBC(DbContextOptions<ODBC> options) : base(options) 
         {
@@ -36,23 +62,25 @@ namespace WindowsFormCSharp.Config
             return _instance;
         }
 
-        /*
-         * optionsBuilder.IsConfigured -> 현재 DbContext가 구성되었는지 여부를 나타내는 속성
-         * ODBC 설정 connectionString에서 받은 정보를 통해 연결 설정
-         */
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public void ExecuteWithTransaction(Action<IDbTransaction> action)
         {
-            if (!optionsBuilder.IsConfigured)
+            using (var transaction = _connection.BeginTransaction()) // 트랜잭션 시작
             {
-                optionsBuilder.UseOracle(connectionString);
-            }
+                try
+                {
+                    // 트랜잭션을 포함한 작업 시작
+                    action(transaction);
+                    // 모든 작업이 성공적으로 끝나면 커밋
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    // 예외가 발생하면 롤백
+                    transaction.Rollback();
+                    throw;
+                }
+            } 
         }
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    // dynamic 엔터티에 대해 HasNoKey() 메서드를 호출하여 키가 없음을 나타냄
-        //    modelBuilder.Entity<dynamic>().HasNoKey();
-        //}
 
         /*
          * this.Database.GetDbConnection().CreateCommand() -> 현재 DbContext의 연결을 가져와서 Command 객체를 생성
@@ -72,7 +100,7 @@ namespace WindowsFormCSharp.Config
         /*
          * Select 쿼리를 실행하는 메서드 (기본적으로 클래스를 매핑해서 사용해야 하므로 새롭게 추가)
          */
-        public List<Dictionary<string, object>> SelectRawSql(string sql, Dictionary<string, object>? parameters)
+        public List<Dictionary<string, object>> SelectRawSql(string sql, Dictionary<string, object>? parameters, IDbTransaction? transaction)
         {
             try
             {
@@ -121,7 +149,7 @@ namespace WindowsFormCSharp.Config
         /*
          * Insert, Update, Delete 쿼리를 실행하는 메서드
          */
-        public int ExecuteRawSql(string sql, Dictionary<string, object>? parameters)
+        public int ExecuteRawSql(string sql, Dictionary<string, object>? parameters, IDbTransaction transaction)
         {
             try
             {

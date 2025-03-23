@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using WindowsFormCSharp.Config;
 using WindowsFormCSharp;
+using System.Data;
 
 namespace WindowsFormCSharp._PCMLabel
 {
@@ -16,7 +17,7 @@ namespace WindowsFormCSharp._PCMLabel
             return _context.Database.BeginTransaction();
         }
 
-        public List<Dictionary<string, object>> FindProductQry(Dictionary<string, object>? input)
+        public List<Dictionary<string, object>> FindProductQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace WindowsFormCSharp._PCMLabel
                    AND PROD_DIV = 1
                 """;
 
-                return _context.SelectRawSql(sql, input);
+                return _context.SelectRawSql(sql, input, transaction);
             }
             catch (Exception e)
             {
@@ -81,7 +82,7 @@ namespace WindowsFormCSharp._PCMLabel
         }
 
 
-        public List<Dictionary<string, object>> GetItemCdKindQry(Dictionary<string, object>? input)
+        public List<Dictionary<string, object>> GetItemCdKindQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
@@ -94,7 +95,7 @@ namespace WindowsFormCSharp._PCMLabel
                  ORDER BY TI.ITEM_CD
                 """;
 
-                return _context.SelectRawSql(sql, input);
+                return _context.SelectRawSql(sql, input, transaction);
             }
             catch (Exception e)
             {
@@ -105,7 +106,7 @@ namespace WindowsFormCSharp._PCMLabel
 
 
 
-        public List<Dictionary<string, object>> GetSubItemCdKindQry(Dictionary<string, object>? input)
+        public List<Dictionary<string, object>> GetSubItemCdKindQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
@@ -123,7 +124,7 @@ namespace WindowsFormCSharp._PCMLabel
                  ORDER BY ITEM_CD
                 """;
 
-                return _context.SelectRawSql(sql, input);
+                return _context.SelectRawSql(sql, input, transaction);
             }
             catch (Exception e)
             {

@@ -15,7 +15,7 @@ namespace WindowsFormCSharp._PCMLabel
         /* ********************---------------------------------------- */
         // Region : Global Variables 전역 변수
         /* ********************---------------------------------------- */
-        PCMLabelQuery pcmLabelQuery = new PCMLabelQuery();
+        PCMLabelQuery pcmLabelQuery = new PCMLabelQuery();     
         MySelfLibrary mySelfLibrary = new MySelfLibrary();
         MySelfStyle mySelfStyle = new MySelfStyle();
         private PrinterSettings printerSettings;
@@ -64,7 +64,7 @@ namespace WindowsFormCSharp._PCMLabel
             string dtp_workDate = this.dtp_workDate.Value.ToString();
             temp_date = dtp_workDate.Substring(0, 4) + dtp_workDate.Substring(5, 2) + dtp_workDate.Substring(8, 2); // 작업일자
             // 품목정보 조회 (내수인것만 조회)
-            var result = pcmLabelQuery.FindProductQry(null);
+            var result = pcmLabelQuery.FindProductQry(null, null);
 
             // 발행수량
             this.mtb_printCnt.Text = mySelfLibrary.NumberFormatIntToString(1);
@@ -110,7 +110,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     dict = new Dictionary<string, object>();
                     dict.Add("KIND_CD", "7150__");
-                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict));
+                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict, null));
 
                     this.btn_kindCd1.Enabled = true;
 
@@ -120,7 +120,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     dict = new Dictionary<string, object>();
                     dict.Add("KIND_CD", "710155");
-                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict));
+                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict, null));
 
                     this.btn_kindCd1.Enabled = false;
 
@@ -134,7 +134,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     dict = new Dictionary<string, object>();
                     dict.Add("KIND_CD", "7151__");
-                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict));
+                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict, null);
 
                     Grid_CellFormat(dataTable, this.dgv_item, "ITEM_NAME", null);
                 }
@@ -246,7 +246,7 @@ namespace WindowsFormCSharp._PCMLabel
             Dictionary<string, object> dict = new Dictionary<string, object>();
             DataTable dataTable = new DataTable();
             dict.Add("ITEM_MAIN", item_main);
-            dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemCdKindQry(dict));
+            dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemCdKindQry(dict, null));
 
             Grid_CellFormat(dataTable, this.dgv_subItem, "ITEM_NAME", new Font("맑은 고딕", 10, FontStyle.Bold));
 
