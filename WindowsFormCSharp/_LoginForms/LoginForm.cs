@@ -80,17 +80,17 @@ public partial class LoginForm : Form
                     memberInfoDict.Add("PASSWORD", pwd);
                     if (pwd.Equals("0"))
                     {
-                        var result = loginQuery.SelectMemberInfoQry(memberInfoDict);
+                        var result = loginQuery.SelectMemberInfoQry(memberInfoDict, null);
                         var gs_usr_grp = result[0]["NO_MEMBER_SEQ"];
                         var gs_userid = id;
                         var gl_no_member_seq = result[0]["NO_MEMBER_SEQ"];
 
                         // ip 구하기
-                        var result2 = loginQuery.GetIpQry(null);
+                        var result2 = loginQuery.GetIpQry(null, null);
                         // 업체코드 정보
-                        var result3 = loginQuery.GetWorksInfoQry(null);
+                        var result3 = loginQuery.GetWorksInfoQry(null, null);
                         // 날짜 설정
-                        var result4 = loginQuery.GetSysDateQry(null);
+                        var result4 = loginQuery.GetSysDateQry(null, null);
                         var gs_work_date = result4[0]["GS_SYS_DATE"];
 
                         // 시작 페이지 오픈

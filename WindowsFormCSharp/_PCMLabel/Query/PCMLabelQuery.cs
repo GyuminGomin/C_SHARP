@@ -103,9 +103,6 @@ namespace WindowsFormCSharp._PCMLabel
             }
         }
 
-
-
-
         public List<Dictionary<string, object>> GetSubItemCdKindQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
@@ -132,9 +129,144 @@ namespace WindowsFormCSharp._PCMLabel
             }
         }
 
+        public List<Dictionary<string, object>> GetSubItemFilterEngNameQry(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetSubItemCdKindFilterQry */
+                SELECT ITEM_CD,
+                       ITEM_NAME,
+                       FRZ_DIV3,
+                       ENG_NAME
+                  FROM TB_ITEM TI
+                 WHERE SUBSTR(ITEM_CD,7,2) <> '00'
+                   AND TI.ITEM_MAIN = :ITEM_MAIN
+                   AND PROD_DIV = '1'
+                   AND KIND_CD = 7
+                   AND ENG_NAME LIKE '%1등급이상%'
+                 ORDER BY ITEM_CD
+                """;
 
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
 
+        public List<Dictionary<string, object>> GetTraceInfo(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetTraceInfo */
+                SELECT NVL(A.TRACE_NO, A.ID_CREATE) TRACE_NO
+                  FROM JOB_DETAIL A
+                 WHERE A.JOB_DATE = :TEMP_DATE
+                   AND A.KIND_CD = 7
+                   AND A.ITEM_CD = :ITEM_CD
+                """;
 
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
 
+        public List<Dictionary<string, object>> GetSubItemDetail(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetSubItemDetail */
+                SELECT A.ITEM_CD,
+                       B.ITEM_NAME,
+                       A.WORK_FRZ2,
+                       A.TRACE_NO
+                  FROM JOB_DETAIL A, TB_ITEM B
+                 WHERE A.JOB_DATE = (
+                                     SELECT MAX(JD.JOB_DATE)
+                                       FROM JOB_DETAIL JD
+                                      WHERE JD.KIND_CD = 7
+                                        AND JD.JOB_DATE > TO_CHAR(TO_DATE(:TEMP_DATE,'YYYYMMDD')-7,'YYYYMMDD')
+                                        AND JD.JOB_DATE < :TEMP_DATE
+                                    )
+                   AND A.KIND_CD = 7
+                   AND A.ITEM_CD = B.ITEM_CD
+                   AND A.ITEM_CD = :ITEM_CD
+                   AND A.WORK_FRZ2 > 0
+                """;
+
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public List<Dictionary<string, object>> GetOrderQtyEvery(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetOrderQty */
+                SELECT SUM(B.ORDER_QTY) ORDER_QTY
+                  FROM ORDER_REF A,
+                       ORDER_DETAIL B,
+                       TB_ITEM C,
+                       TB_COMPANY D
+                 WHERE A.KIND_CD = 7
+                   AND A.ORDER_DATE = B.ORDER_DATE
+                   AND A.ORDER_NO = B.ORDER_NO
+                   AND B.ITEM_CD = C.ITEM_CD
+                   AND A.NO_COMPANY_SEQ = D.NO_COMPANY_SEQ
+                   AND A.CHANG_NO = 7
+                   AND A.ORDER_DATE = :ORDER_DATE
+                   AND B.ITEM_CD = :ITEM_CD
+                   AND D.COMPANY_NAME LIKE '%에브리데이%'
+                """;
+
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public List<Dictionary<string, object>> GetOrderQtyNotEvery(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetOrderQty */
+                SELECT SUM(B.ORDER_QTY) ORDER_QTY
+                  FROM ORDER_REF A,
+                       ORDER_DETAIL B,
+                       TB_ITEM C,
+                       TB_COMPANY D
+                 WHERE A.KIND_CD = 7
+                   AND A.ORDER_DATE = B.ORDER_DATE
+                   AND A.ORDER_NO = B.ORDER_NO
+                   AND B.ITEM_CD = C.ITEM_CD
+                   AND A.NO_COMPANY_SEQ = D.NO_COMPANY_SEQ
+                   AND A.CHANG_NO = 7
+                   AND A.ORDER_DATE = :ORDER_DATE
+                   AND B.ITEM_CD = :ITEM_CD
+                   AND D.COMPANY_NAME NOT LIKE '%에브리데이%'
+                """;
+
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using System.Data;
+using Microsoft.EntityFrameworkCore.Storage;
 using WindowsFormCSharp.Config;
 
 namespace WindowsFormCSharp._LoginForms
@@ -20,7 +21,7 @@ namespace WindowsFormCSharp._LoginForms
         {
             return _context.Database.BeginTransaction();
         }
-        public List<Dictionary<string, object>> SelectMemberInfoQry(Dictionary<string, object>? input)
+        public List<Dictionary<string, object>> SelectMemberInfoQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
@@ -36,14 +37,14 @@ namespace WindowsFormCSharp._LoginForms
                        NO_COMPANY_SEQ
                 """;
 
-                return _context.SelectRawSql(sql, input);
+                return _context.SelectRawSql(sql, input, transaction);
             } catch (Exception e)
             {
                 throw;
             }
         }
 
-        public List<Dictionary<string, object>> GetIpQry(Dictionary<string, object>? input)
+        public List<Dictionary<string, object>> GetIpQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
@@ -53,7 +54,7 @@ namespace WindowsFormCSharp._LoginForms
                   FROM DUAL
                 """;
 
-                return _context.SelectRawSql(sql, input);
+                return _context.SelectRawSql(sql, input, transaction);
             }
             catch (Exception e)
             {
@@ -61,7 +62,7 @@ namespace WindowsFormCSharp._LoginForms
             }
         }
 
-        public List<Dictionary<string, object>> GetWorksInfoQry(Dictionary<string, object>? input)
+        public List<Dictionary<string, object>> GetWorksInfoQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
@@ -73,7 +74,7 @@ namespace WindowsFormCSharp._LoginForms
                  WHERE NO_WORKS = '178195'
                 """;
 
-                return _context.SelectRawSql(sql, input);
+                return _context.SelectRawSql(sql, input, transaction);
             }
             catch (Exception e)
             {
@@ -81,7 +82,7 @@ namespace WindowsFormCSharp._LoginForms
             }
         }
 
-        public List<Dictionary<string, object>> GetSysDateQry(Dictionary<string, object>? input)
+        public List<Dictionary<string, object>> GetSysDateQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
@@ -91,7 +92,7 @@ namespace WindowsFormCSharp._LoginForms
                   FROM DUAL
                 """;
 
-                return _context.SelectRawSql(sql, input);
+                return _context.SelectRawSql(sql, input, transaction);
             }
             catch (Exception e)
             {
