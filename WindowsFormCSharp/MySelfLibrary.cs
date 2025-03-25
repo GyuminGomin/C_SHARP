@@ -154,22 +154,26 @@ namespace WindowsFormCSharp
             //this.dgv_kindCd.DefaultCellStyle.SelectionBackColor = this.dgv_kindCd.DefaultCellStyle.BackColor;
             //this.dgv_kindCd.DefaultCellStyle.SelectionForeColor = this.dgv_kindCd.DefaultCellStyle.ForeColor;
             dgv.RowTemplate.Height = 60;
-            // -> Enter 이벤트가 생길 때 CurrentCell = null로 설정하면 포커스를 해제할 수 있지만
-            // 다시 Enter 이벤트가 발생하여 재귀적 문제가 발생한다는 에러만 뜨고 로직에는 문제 없음 (하지만 불편해서 사용 x)
-            //dgv.CellEnter += new DataGridViewCellEventHandler(DataGridViewSetEnter);
+        }
+    }
+
+    class MyselfDate
+    {
+        public DateTime SubtractDaysToDateTime(string date, int subtractDays)
+        {
+            // 문자열을 DateTime으로 변환 (yyyy-MM-dd 포맷)
+            DateTime parsedDate = DateTime.ParseExact(date, "yyyy-MM-dd", null);
+
+            // 날짜에서 원하는 일 수를 뺌
+            return parsedDate.AddDays(-subtractDays);
         }
 
-        //private void DataGridViewSetEnter(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    DataGridView dgv = sender as DataGridView;
+        public string SubtractDaysToString(string date, int subtractDays)
+        {
+            DateTime parsedDateTime = SubtractDaysToDateTime(date, subtractDays);
 
-        //    if (dgv.CurrentCell != null)
-        //    {
-        //        if (dgv.Rows[e.RowIndex].Cells[e.ColumnIndex] is not DataGridViewButtonCell)
-        //        {
-        //            dgv.CurrentCell = null;
-        //        }
-        //    }
-        //}
+            // 문자열로 다시 형변환
+            return parsedDateTime.ToString();
+        }
     }
 }

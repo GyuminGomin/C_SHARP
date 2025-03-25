@@ -156,12 +156,12 @@ namespace WindowsFormCSharp._PCMLabel
             }
         }
 
-        public List<Dictionary<string, object>> GetTraceInfo(Dictionary<string, object>? input, IDbTransaction? transaction)
+        public List<Dictionary<string, object>> GetTraceInfoQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
                 string sql = """
-                /* PCMLabelQuery.GetTraceInfo */
+                /* PCMLabelQuery.GetTraceInfoQry */
                 SELECT NVL(A.TRACE_NO, A.ID_CREATE) TRACE_NO
                   FROM JOB_DETAIL A
                  WHERE A.JOB_DATE = :TEMP_DATE
@@ -177,12 +177,12 @@ namespace WindowsFormCSharp._PCMLabel
             }
         }
 
-        public List<Dictionary<string, object>> GetSubItemDetail(Dictionary<string, object>? input, IDbTransaction? transaction)
+        public List<Dictionary<string, object>> GetSubItemDetailQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
                 string sql = """
-                /* PCMLabelQuery.GetSubItemDetail */
+                /* PCMLabelQuery.GetSubItemDetailQry */
                 SELECT A.ITEM_CD,
                        B.ITEM_NAME,
                        A.WORK_FRZ2,
@@ -209,12 +209,12 @@ namespace WindowsFormCSharp._PCMLabel
             }
         }
 
-        public List<Dictionary<string, object>> GetOrderQtyEvery(Dictionary<string, object>? input, IDbTransaction? transaction)
+        public List<Dictionary<string, object>> GetOrderQtyEveryQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
                 string sql = """
-                /* PCMLabelQuery.GetOrderQty */
+                /* PCMLabelQuery.GetOrderQtyEveryQry */
                 SELECT SUM(B.ORDER_QTY) ORDER_QTY
                   FROM ORDER_REF A,
                        ORDER_DETAIL B,
@@ -239,12 +239,12 @@ namespace WindowsFormCSharp._PCMLabel
             }
         }
 
-        public List<Dictionary<string, object>> GetOrderQtyNotEvery(Dictionary<string, object>? input, IDbTransaction? transaction)
+        public List<Dictionary<string, object>> GetOrderQtyNotEveryQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
                 string sql = """
-                /* PCMLabelQuery.GetOrderQty */
+                /* PCMLabelQuery.GetOrderQtyNotEveryQry */
                 SELECT SUM(B.ORDER_QTY) ORDER_QTY
                   FROM ORDER_REF A,
                        ORDER_DETAIL B,
@@ -259,6 +259,92 @@ namespace WindowsFormCSharp._PCMLabel
                    AND A.ORDER_DATE = :ORDER_DATE
                    AND B.ITEM_CD = :ITEM_CD
                    AND D.COMPANY_NAME NOT LIKE '%에브리데이%'
+                """;
+
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public List<Dictionary<string, object>> GetYukGagongItemInfoQry(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetYukGagongItemInfoQry */
+                SELECT ENG_NAME YONGDO, 
+                       BASE_WT_COOL SALE_WT,
+                       TRIM(BARCODE) BARCODE, -- 88 코드?
+                       REPLACE(NVL(BOGO_NO1,''),'-','') SUB_BUI,
+                       NVL(BOGO_NO2,'') CHANGE_BUI,
+                       NVL(CIRCUL_DATE, 0) CIRCUL_DATE,
+                       ITEM_NAME ITEM_NAME,
+                       FNC_ITEM_NAME(ITEM_MAIN) ITEM_MAIN
+                  FROM TB_ITEM
+                 WHERE ITEM_CD = :PCM_ITEM
+                """;
+
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        // 존재이유 : 부경축산물공판장만 작업하는가 아니면, 둘다 작업하는가, 제일리버스만 작업하는가를 가져오기 위해
+        public List<Dictionary<string, object>> GetYukGagongKillAreaL1Qry(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetYukGagongKillAreaL1Qry */
+                SELECT (XMLAGG(XMLELEMENT(x,',',TEXT) ORDER BY ORDB).EXTRACT('//TEXT()').getstringVal(), 2) KILL_AREA
+                  FROM (
+                        SELECT DISTINCT DECODE(SUBSTR(J.ID_MODIFY, 9, 4), '9195', '부경축산물공판장'
+                                                                        , '9925', '(주)제일리버스') TEXT,
+                               SUBSTR(J.ID_MODIFY, 9, 4) ORDB
+                          FROM JOB_ORDER J
+                         WHERE J.ID_CREATE = :TRACE_NO
+                      )
+                """;
+
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public List<Dictionary<string, object>> GetYukGagongKillAreaL0Qry(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetYukGagongKillAreaL0Qry */
+                SELECT DECODE(COUNT(*), 2, '김해축산물공판장,부경축산물공판장', MAX(AREA)) KILL_AREA
+                  FROM (
+                        SELECT DISTINCT B.GRADE,
+                               DECODE(B.WORK_AREA, 1, '김해축산물공판장','부경축산물공판장') AREA
+                          FROM OUT_REF A,
+                               PROD_COW B
+                         WHERE A.KIND_CD = 1
+                           AND A.BOX_NO = B.BOX_NO
+                           AND B.OLD_CODE IS NOT NULL
+                           AND A.OUT_FLAG = 1
+                           AND A.NO_COMPANY_SEQ = 10503
+                           AND B.PROD_DATE > TO_CHAR(ADD_MONTHS(SYSDATE, -12), 'YYYYMMDD')
+                           AND B.OLD_CODE IN (
+                                              SELECT JO.ID_MODIFY
+                                                FROM JOB_ORDER JO
+                                               WHERE JO.ID_CREATE = :TRACE_NO
+                                                 AND JO.KIND_CD = 7
+                                             )
+                      )
                 """;
 
                 return _context.SelectRawSql(sql, input, transaction);

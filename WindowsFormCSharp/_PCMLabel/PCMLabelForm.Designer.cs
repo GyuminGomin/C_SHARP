@@ -72,10 +72,10 @@
             cb_7day = new CheckBox();
             label9 = new Label();
             mtb_orderQtyEvery = new MaskedTextBox();
-            rdb_01 = new RadioButton();
-            radioButton1 = new RadioButton();
-            radioButton2 = new RadioButton();
-            radioButton3 = new RadioButton();
+            rdb_07 = new RadioButton();
+            rdb_08 = new RadioButton();
+            rdb_09 = new RadioButton();
+            rdb_10 = new RadioButton();
             groupBox6 = new GroupBox();
             button6 = new Button();
             button7 = new Button();
@@ -123,7 +123,7 @@
             groupBox3.Controls.Add(dgv_subItem);
             groupBox3.Location = new Point(569, 0);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(600, 496);
+            groupBox3.Size = new Size(600, 527);
             groupBox3.TabIndex = 3;
             groupBox3.TabStop = false;
             groupBox3.Text = "상세제품";
@@ -135,9 +135,10 @@
             dgv_subItem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_subItem.Location = new Point(6, 22);
             dgv_subItem.Name = "dgv_subItem";
-            dgv_subItem.Size = new Size(588, 468);
+            dgv_subItem.Size = new Size(588, 499);
             dgv_subItem.TabIndex = 5;
             dgv_subItem.CellClick += dgv_subItem_CellClick;
+            dgv_subItem.CellDoubleClick += dgv_subItem_CellDoubleClick;
             // 
             // btn_kindCd2
             // 
@@ -188,6 +189,7 @@
             dgv_item.Size = new Size(542, 224);
             dgv_item.TabIndex = 4;
             dgv_item.CellClick += dgv_item_CellClick;
+            dgv_item.CellDoubleClick += dgv_item_CellDoubleClick;
             // 
             // groupBox1
             // 
@@ -207,9 +209,9 @@
             // 
             groupBox8.Anchor = AnchorStyles.None;
             groupBox8.Controls.Add(dgv_traceInfo);
-            groupBox8.Location = new Point(5, 310);
+            groupBox8.Location = new Point(5, 315);
             groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(554, 106);
+            groupBox8.Size = new Size(554, 132);
             groupBox8.TabIndex = 19;
             groupBox8.TabStop = false;
             groupBox8.Text = "재고정보";
@@ -218,9 +220,9 @@
             // 
             dgv_traceInfo.BorderStyle = BorderStyle.Fixed3D;
             dgv_traceInfo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_traceInfo.Location = new Point(6, 22);
+            dgv_traceInfo.Location = new Point(6, 21);
             dgv_traceInfo.Name = "dgv_traceInfo";
-            dgv_traceInfo.Size = new Size(542, 78);
+            dgv_traceInfo.Size = new Size(542, 104);
             dgv_traceInfo.TabIndex = 5;
             // 
             // panel1
@@ -397,10 +399,13 @@
             // 
             // dtp_workDate
             // 
+            dtp_workDate.CustomFormat = "yyyy-MM-dd";
+            dtp_workDate.Format = DateTimePickerFormat.Custom;
             dtp_workDate.Location = new Point(64, 14);
             dtp_workDate.Name = "dtp_workDate";
             dtp_workDate.Size = new Size(179, 23);
             dtp_workDate.TabIndex = 5;
+            dtp_workDate.Value = new DateTime(2025, 3, 25, 0, 0, 0, 0);
             dtp_workDate.ValueChanged += dtp_workDate_ValueChanged;
             // 
             // label2
@@ -417,7 +422,7 @@
             groupBox2.Anchor = AnchorStyles.None;
             groupBox2.Controls.Add(panel2);
             groupBox2.Controls.Add(panel1);
-            groupBox2.Location = new Point(6, 422);
+            groupBox2.Location = new Point(6, 453);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(273, 387);
             groupBox2.TabIndex = 2;
@@ -426,6 +431,8 @@
             // 
             // dtp_orderDate
             // 
+            dtp_orderDate.CustomFormat = "yyyy-MM-dd";
+            dtp_orderDate.Format = DateTimePickerFormat.Custom;
             dtp_orderDate.Location = new Point(53, 27);
             dtp_orderDate.Name = "dtp_orderDate";
             dtp_orderDate.Size = new Size(160, 23);
@@ -436,7 +443,7 @@
             // 
             groupBox4.Anchor = AnchorStyles.None;
             groupBox4.Controls.Add(dtp_orderDate);
-            groupBox4.Location = new Point(285, 422);
+            groupBox4.Location = new Point(285, 453);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(274, 74);
             groupBox4.TabIndex = 4;
@@ -487,7 +494,7 @@
             groupBox5.Controls.Add(label8);
             groupBox5.Controls.Add(checkBox3);
             groupBox5.Controls.Add(cb_longSize);
-            groupBox5.Location = new Point(285, 494);
+            groupBox5.Location = new Point(285, 525);
             groupBox5.Name = "groupBox5";
             groupBox5.Size = new Size(274, 98);
             groupBox5.TabIndex = 5;
@@ -521,59 +528,59 @@
             mtb_orderQtyEvery.TabIndex = 16;
             mtb_orderQtyEvery.TextAlign = HorizontalAlignment.Right;
             // 
-            // rdb_01
+            // rdb_07
             // 
-            rdb_01.AutoSize = true;
-            rdb_01.Checked = true;
-            rdb_01.Location = new Point(194, 13);
-            rdb_01.Name = "rdb_01";
-            rdb_01.Size = new Size(51, 19);
-            rdb_01.TabIndex = 17;
-            rdb_01.TabStop = true;
-            rdb_01.Text = "07일\r\n";
-            rdb_01.UseVisualStyleBackColor = true;
+            rdb_07.AutoSize = true;
+            rdb_07.Checked = true;
+            rdb_07.Location = new Point(194, 13);
+            rdb_07.Name = "rdb_07";
+            rdb_07.Size = new Size(51, 19);
+            rdb_07.TabIndex = 17;
+            rdb_07.TabStop = true;
+            rdb_07.Text = "07일\r\n";
+            rdb_07.UseVisualStyleBackColor = true;
             // 
-            // radioButton1
+            // rdb_08
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(194, 35);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(51, 19);
-            radioButton1.TabIndex = 18;
-            radioButton1.Text = "08일\r\n";
-            radioButton1.UseVisualStyleBackColor = true;
+            rdb_08.AutoSize = true;
+            rdb_08.Location = new Point(194, 35);
+            rdb_08.Name = "rdb_08";
+            rdb_08.Size = new Size(51, 19);
+            rdb_08.TabIndex = 18;
+            rdb_08.Text = "08일\r\n";
+            rdb_08.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // rdb_09
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(194, 57);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(51, 19);
-            radioButton2.TabIndex = 19;
-            radioButton2.Text = "09일\r\n";
-            radioButton2.UseVisualStyleBackColor = true;
+            rdb_09.AutoSize = true;
+            rdb_09.Location = new Point(194, 57);
+            rdb_09.Name = "rdb_09";
+            rdb_09.Size = new Size(51, 19);
+            rdb_09.TabIndex = 19;
+            rdb_09.Text = "09일\r\n";
+            rdb_09.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // rdb_10
             // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(194, 80);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(51, 19);
-            radioButton3.TabIndex = 20;
-            radioButton3.Text = "10일\r\n";
-            radioButton3.UseVisualStyleBackColor = true;
+            rdb_10.AutoSize = true;
+            rdb_10.Location = new Point(194, 80);
+            rdb_10.Name = "rdb_10";
+            rdb_10.Size = new Size(51, 19);
+            rdb_10.TabIndex = 20;
+            rdb_10.Text = "10일\r\n";
+            rdb_10.UseVisualStyleBackColor = true;
             // 
             // groupBox6
             // 
             groupBox6.Anchor = AnchorStyles.None;
-            groupBox6.Controls.Add(radioButton3);
-            groupBox6.Controls.Add(radioButton2);
-            groupBox6.Controls.Add(radioButton1);
-            groupBox6.Controls.Add(rdb_01);
+            groupBox6.Controls.Add(rdb_10);
+            groupBox6.Controls.Add(rdb_09);
+            groupBox6.Controls.Add(rdb_08);
+            groupBox6.Controls.Add(rdb_07);
             groupBox6.Controls.Add(mtb_orderQtyEvery);
             groupBox6.Controls.Add(label9);
             groupBox6.Controls.Add(cb_7day);
-            groupBox6.Location = new Point(285, 590);
+            groupBox6.Location = new Point(285, 621);
             groupBox6.Name = "groupBox6";
             groupBox6.Size = new Size(274, 121);
             groupBox6.TabIndex = 17;
@@ -611,7 +618,7 @@
             groupBox7.Controls.Add(tb_status);
             groupBox7.Controls.Add(button7);
             groupBox7.Controls.Add(button6);
-            groupBox7.Location = new Point(285, 709);
+            groupBox7.Location = new Point(285, 740);
             groupBox7.Name = "groupBox7";
             groupBox7.Size = new Size(274, 100);
             groupBox7.TabIndex = 18;
@@ -640,7 +647,7 @@
             Controls.Add(groupBox1);
             Name = "PCMLabelForm";
             Text = "PCMLabelForm";
-            Load += PCMLabelForm_Load_1;
+            Load += PCMLabelForm_Load;
             ((System.ComponentModel.ISupportInitialize)oDBCBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)oDBCBindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dBContextBindingSource).EndInit();
@@ -708,10 +715,10 @@
         private CheckBox cb_7day;
         private Label label9;
         private MaskedTextBox mtb_orderQtyEvery;
-        private RadioButton rdb_01;
-        private RadioButton radioButton1;
-        private RadioButton radioButton2;
-        private RadioButton radioButton3;
+        private RadioButton rdb_07;
+        private RadioButton rdb_08;
+        private RadioButton rdb_09;
+        private RadioButton rdb_10;
         private GroupBox groupBox6;
         private Button button6;
         private Button button7;
