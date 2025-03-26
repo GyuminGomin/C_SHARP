@@ -186,7 +186,7 @@ namespace WindowsFormCSharp._PCMLabel
                 SELECT A.ITEM_CD,
                        B.ITEM_NAME,
                        A.WORK_FRZ2,
-                       A.TRACE_NO
+                       NVL(A.TRACE_NO, A.ID_CREATE) TRACE_NO
                   FROM JOB_DETAIL A, TB_ITEM B
                  WHERE A.JOB_DATE = (
                                      SELECT MAX(JD.JOB_DATE)
@@ -275,14 +275,14 @@ namespace WindowsFormCSharp._PCMLabel
             {
                 string sql = """
                 /* PCMLabelQuery.GetYukGagongItemInfoQry */
-                SELECT ENG_NAME YONGDO, 
-                       BASE_WT_COOL SALE_WT,
-                       TRIM(BARCODE) BARCODE, -- 88 코드?
+                SELECT ENG_NAME                         YONGDO, 
+                       BASE_WT_COOL                     SALE_WT,
+                       TRIM(BARCODE)                    BARCODE,
                        REPLACE(NVL(BOGO_NO1,''),'-','') SUB_BUI,
-                       NVL(BOGO_NO2,'') CHANGE_BUI,
-                       NVL(CIRCUL_DATE, 0) CIRCUL_DATE,
-                       ITEM_NAME ITEM_NAME,
-                       FNC_ITEM_NAME(ITEM_MAIN) ITEM_MAIN
+                       NVL(BOGO_NO2,'')                 CHANGE_BUI,
+                       NVL(CIRCUL_DATE, 0)              CIRCUL_DATE,
+                       ITEM_NAME                        ITEM_NAME,
+                       FNC_ITEM_NAME(ITEM_MAIN)         ITEM_MAIN
                   FROM TB_ITEM
                  WHERE ITEM_CD = :PCM_ITEM
                 """;

@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Drawing;
 using System.Drawing.Printing;
 using System.Reflection.Metadata.Ecma335;
 
@@ -20,6 +21,7 @@ namespace WindowsFormCSharp._PCMLabel
         MySelfLibrary mySelfLibrary = new MySelfLibrary();
         MySelfStyle mySelfStyle = new MySelfStyle();
         MyselfDate mySelfDate = new MyselfDate();
+        PrinterManage printerManage = new PrinterManage();
         private PrinterSettings printerSettings;
         private PageSettings pageSettings;
 
@@ -37,7 +39,6 @@ namespace WindowsFormCSharp._PCMLabel
         private int sum_wt; // 묶음번호에 합산된 BOX_WT
         private long m_PortNumber = 1; // 1~2 : Serial Port, 3 : USB Port
 
-
         private int prevRowIndexDgvItem = 0; // dgv_item (이전 정보)
         private int prevColindexDgvItem = 0;
         private int prevRowIndexDgvSub = 0; // dgv_subItem (이전 정보)
@@ -53,6 +54,7 @@ namespace WindowsFormCSharp._PCMLabel
         private DataTable dt_subItemOrderQtyNotEvery;
         private DataTable dt_yukgagongItem;
         private DataTable dt_yukgagongKillArea;
+        private DataTable dt_yukgagongTraceInfo;
         /* ********************---------------------------------------- */
         // Region : Functions 직접만든 함수
         /* ********************---------------------------------------- */
@@ -318,6 +320,7 @@ namespace WindowsFormCSharp._PCMLabel
                 dgv.AllowUserToAddRows = false; // 자동 추가 행 제거
                 dgv.AllowUserToResizeRows = false; // 로우 조절 불가능
                 dgv.AllowUserToResizeColumns = false; // 컬럼 조절 불가능
+                dgv.ReadOnly = true; // 다른 TextBoxColumn 수정 불가능
                 // 1, 2열은 텍스트, 3열은 버튼
                 DataGridViewColumn buttonColumn = new DataGridViewButtonColumn();
                 dgv.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "WORK_FRZ2", HeaderText = "재고수량", Width = 80 });
@@ -349,28 +352,31 @@ namespace WindowsFormCSharp._PCMLabel
                     if (e.RowIndex >= 0 && e.ColumnIndex == 2)
                     {
                         // 버튼을 클릭하면,
-                        this.mtb_traceNo.Text = dgv.CurrentRow.Cells["TRACE_NO"].Value.ToString();
+                        this.mtb_traceNo.Text = dt.Rows[e.RowIndex]["TRACE_NO"]?.ToString();
 
-                        // ubsendbarprint()
+                        InventoryLabelPrint();
                     }
                 };
             }
         }
 
-        private bool inventoryLabelPrint()
+        // TODO - DEBUGGING 필수 - 현재 프린트 미리보기가 안되고 있음
+        private void InventoryLabelPrint()
         {
             if (this.mtb_itemCd.Text.ToString().Trim().Equals("")) // 이거 절대 안탄다.
             {
                 MessageBox.Show("제품번호가 미존재, 제품을 선택하세요!", "확인");
-                return false;
-            } else if (this.mtb_weight.Text.ToString().Trim().Equals("")) // 이것도 절대 안탄다.
+                return;
+            }
+            else if (this.mtb_weight.Text.ToString().Trim().Equals("")) // 이것도 절대 안탄다.
             {
                 MessageBox.Show("중량 미존재, 중량을 입력하세요!", "확인");
-                return false;
-            } else if (this.mtb_count.Text.ToString().Trim().Equals("") || this.mtb_count.Text.ToString().Trim().Equals("0"))
+                return;
+            }
+            else if (this.mtb_count.Text.ToString().Trim().Equals("") || this.mtb_count.Text.ToString().Trim().Equals("0"))
             {
                 MessageBox.Show("수량 미존재, 수량을 입력하세요!", "확인");
-                return false;
+                return;
             }
 
             string pcm_item = this.mtb_itemCd.Text;
@@ -381,11 +387,12 @@ namespace WindowsFormCSharp._PCMLabel
             dic.Add("PCM_ITEM", pcm_item);
             dt_yukgagongItem = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetYukGagongItemInfoQry(dic, null));
 
-            string circul_date = dt_yukgagongItem.Rows[0]["CIRCUL_DATE"].ToString();
+            string circul_date = dt_yukgagongItem.Rows[0]["CIRCUL_DATE"]?.ToString();
+            string barcode = dt_yukgagongItem.Rows[0]["BARCODE"]?.ToString();
             if (Convert.ToInt32(circul_date) == 0)
             {
                 MessageBox.Show("[육가공 품목기준관리]유통기한 입력바랍니다.", "확인");
-                return false;
+                return;
             }
 
             if (this.cb_7day.Checked)
@@ -393,52 +400,58 @@ namespace WindowsFormCSharp._PCMLabel
                 if (this.rdb_07.Checked)
                 {
                     circul_date = "7";
-                } else if (this.rdb_08.Checked)
+                }
+                else if (this.rdb_08.Checked)
                 {
                     circul_date = "8";
-                } else if (this.rdb_09.Checked)
+                }
+                else if (this.rdb_09.Checked)
                 {
                     circul_date = "9";
-                } else if (this.rdb_10.Checked)
+                }
+                else if (this.rdb_10.Checked)
                 {
                     circul_date = "10";
                 }
             }
 
-            string utong =  mySelfDate.SubtractDaysToString(this.dtp_workDate.Text, Convert.ToInt32(circul_date)-1);
+            string utong = mySelfDate.SubtractDaysToString(this.dtp_workDate.Text, Convert.ToInt32(circul_date) - 1);
             string sale_wt = dt_yukgagongItem.Rows[0]["SALE_WT"]?.ToString();
 
-            if (Convert.ToInt32(sale_wt) < 1)
+            if (Convert.ToDecimal(sale_wt) < 1)
             {
-                sale_wt = Math.Round((Double)Convert.ToInt32(sale_wt)*1000, 0) + " g";
-            } else
+                sale_wt = Math.Round((Double)Convert.ToDecimal(sale_wt) * 1000, 0) + " g";
+            }
+            else
             {
                 sale_wt += " kg";
             }
 
-            if (trace_no.Substring(0,2).Equals("L1")) // 돈육
+            if (trace_no.Substring(0, 2).Equals("L1")) // 돈육
             {
-                if (trace_no.Substring(8, 4).Equals("9995") || trace_no.Substring(8, 4).Equals("9195") || trace_no.Substring(8, 4).Equals("9925")) {}
+                if (trace_no.Substring(8, 4).Equals("9995") || trace_no.Substring(8, 4).Equals("9195") || trace_no.Substring(8, 4).Equals("9925")) { }
                 else
                 {
                     MessageBox.Show("이력번호 입력확인 바랍니다.", "확인");
-                    return false;
+                    return;
                 }
-                
-                dt_yukgagongKillArea.Clear();
+
+                if (dt_yukgagongKillArea != null) dt_yukgagongKillArea.Columns.Clear();
                 dic.Clear();
                 dic.Add("TRACE_NO", trace_no);
                 dt_yukgagongKillArea = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetYukGagongKillAreaL1Qry(dic, null));
-            } else if (trace_no.Substring(0, 2).Equals("L0")) // 한우
+            }
+            else if (trace_no.Substring(0, 2).Equals("L0")) // 한우
             {
-                dt_yukgagongKillArea.Clear();
+                if (dt_yukgagongKillArea != null) dt_yukgagongKillArea.Columns.Clear();
                 dic.Clear();
                 dic.Add("TRACE_NO", trace_no);
                 dt_yukgagongKillArea = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetYukGagongKillAreaL0Qry(dic, null));
-            } else
+            }
+            else
             {
                 MessageBox.Show("이력번호 입력확인 바랍니다.", "확인");
-                return false;
+                return;
             }
 
             string change_bui = dt_yukgagongItem.Rows[0]["CHANGE_BUI"]?.ToString();
@@ -475,19 +488,21 @@ namespace WindowsFormCSharp._PCMLabel
                     if (trace_no.Substring(0, 2).Equals("L0"))
                     {
                         e.Graphics.DrawString("맑은고기 한우", font2, Brushes.Black, new PointF(w_size, h_size));
-                    } else
-                    {
-                        e.Graphics.DrawString("포크밸리", font2, Brushes.Black, new PointF(w_size, h_size));
-                    }
-                } else
-                {
-                    if (trace_no.Substring(0, 2).Equals("L0"))
-                    {
-                        e.Graphics.DrawString("맑은고기 한우", font2, Brushes.Black, new PointF(w_size, h_size-120));
                     }
                     else
                     {
-                        e.Graphics.DrawString("포크밸리", font2, Brushes.Black, new PointF(w_size+80, h_size-120));
+                        e.Graphics.DrawString("포크밸리", font2, Brushes.Black, new PointF(w_size, h_size));
+                    }
+                }
+                else
+                {
+                    if (trace_no.Substring(0, 2).Equals("L0"))
+                    {
+                        e.Graphics.DrawString("맑은고기 한우", font2, Brushes.Black, new PointF(w_size, h_size - 120));
+                    }
+                    else
+                    {
+                        e.Graphics.DrawString("포크밸리", font2, Brushes.Black, new PointF(w_size + 80, h_size - 120));
                     }
                 }
 
@@ -495,7 +510,8 @@ namespace WindowsFormCSharp._PCMLabel
                 if (change_bui == null)
                 {
                     bui = dt_yukgagongItem.Rows[0]["ITEM_MAIN"]?.ToString();
-                } else
+                }
+                else
                 {
                     bui = change_bui;
                 }
@@ -513,7 +529,8 @@ namespace WindowsFormCSharp._PCMLabel
                     if (change_bui == null)
                     {
                         e.Graphics.DrawString(bui, font2, Brushes.Black, new PointF(w_size - 150, h_size + 550));
-                    } else
+                    }
+                    else
                     {
                         e.Graphics.DrawString(bui, font5, Brushes.Black, new PointF(w_size - 200, h_size + 650));
                     }
@@ -524,7 +541,8 @@ namespace WindowsFormCSharp._PCMLabel
                     {
                         e.Graphics.DrawString(yongdo.Substring(0, yongdoNecessaryIndex), font8, Brushes.Black, new PointF(w_size + 1250, h_size + 350));
                         e.Graphics.DrawString(yongdo.Substring(yongdoNecessaryIndex), font4, Brushes.Black, new PointF(w_size + 1150, h_size + 570));
-                    } else
+                    }
+                    else
                     {
                         e.Graphics.DrawString(yongdo, font8, Brushes.Black, new PointF(w_size + 1250, h_size + 350));
                     }
@@ -544,7 +562,8 @@ namespace WindowsFormCSharp._PCMLabel
                     {
                         e.Graphics.DrawString(kill_area.Substring(0, killAreaNecessaryIndex), font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1700));
                         e.Graphics.DrawString(kill_area.Substring(killAreaNecessaryIndex), font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1900));
-                    } else
+                    }
+                    else
                     {
                         e.Graphics.DrawString(kill_area, font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1900));
                     }
@@ -552,20 +571,23 @@ namespace WindowsFormCSharp._PCMLabel
                     if (trace_no.Substring(0, 2).Equals("L0"))
                     {
                         e.Graphics.DrawString("201706086472", font1, Brushes.Black, new PointF(w_size - 150, h_size + 2380));
-                    } else
+                    }
+                    else
                     {
                         e.Graphics.DrawString("201706086471", font1, Brushes.Black, new PointF(w_size - 150, h_size + 2380));
                     }
 
                     // 생산이력번호
                     e.Graphics.DrawString(trace_no, font1, Brushes.Black, new PointF(w_size + 1100, h_size + 2380));
-                } else // 짧은 라벨용
+                }
+                else // 짧은 라벨용
                 {
                     // 부위명 대체가 있으면 내용이 길어짐으로 폰트조정
                     if (change_bui == null)
                     {
                         e.Graphics.DrawString(bui, font2, Brushes.Black, new PointF(w_size - 150, h_size + 300));
-                    } else
+                    }
+                    else
                     {
                         e.Graphics.DrawString(bui, font5, Brushes.Black, new PointF(w_size - 200, h_size + 300));
                     }
@@ -611,12 +633,58 @@ namespace WindowsFormCSharp._PCMLabel
                     e.Graphics.DrawString(trace_no, font1, Brushes.Black, new PointF(w_size + 1000, h_size + 1750));
                 }
 
-                // TODO - 등급
+                if (trace_no.Substring(0, 2).Equals("L0"))
+                {
+                    // 88코드
+                    e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font4, Brushes.Black, new PointF(w_size, h_size + 3360));
+                    e.Graphics.DrawString(new string(' ', 30), font4, Brushes.Black, new PointF(w_size, h_size + 3780));
+                    e.Graphics.DrawString(barcode, font6, Brushes.Black, new PointF(w_size + 400, h_size + 3680));
+
+                    // 등급
+                    if (sub_bui.Equals("(1+등급)"))
+                    {
+                        e.Graphics.DrawString("등급: 1++\t\t1   2   등외", font1, Brushes.Black, new PointF(w_size - 150, h_size + 3230));
+                        e.Graphics.DrawString("○", font3, Brushes.Black, new PointF(w_size + 840, h_size + 3160));
+                        e.Graphics.DrawString("1+", font1, Brushes.Black, new PointF(w_size + 900, h_size + 3230));
+                    }
+                    else
+                    {
+                        e.Graphics.DrawString("등급: 1++   1+\t   2   등외", font1, Brushes.Black, new PointF(w_size - 150, h_size + 3230));
+                        e.Graphics.DrawString("○", font3, Brushes.Black, new PointF(w_size + 1230, h_size + 3160));
+                        e.Graphics.DrawString("1", font1, Brushes.Black, new PointF(w_size + 1320, h_size + 3230));
+                    }
+                }
+                else
+                {
+                    if (this.cb_88.Checked)
+                    {
+                        // 긴 라벨 88 코드
+                        if (this.cb_longSize.Checked)
+                        {
+                            e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font7, Brushes.Black, new PointF(w_size + 200, h_size + 4400));
+                            e.Graphics.DrawString(barcode, font1, Brushes.Black, new PointF(w_size + 400, h_size + 4850));
+                        }
+                        else // 짧은 라벨 88 코드
+                        {
+                            e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font7, Brushes.Black, new PointF(w_size, h_size + 3300));
+                            e.Graphics.DrawString(new string(' ', 30), font4, Brushes.Black, new PointF(w_size, h_size + 3640));
+                            e.Graphics.DrawString(barcode, font6, Brushes.Black, new PointF(w_size + 400, h_size + 3540));
+                        }
+                    }
+                }
+
+                // 마지막 페이지 명시
+                e.HasMorePages = false;
             };
 
-
-                return false;
+            // 미리보기
+            PrintPreviewDialog preview = new PrintPreviewDialog();
+            preview.Document = printDoc;
+            preview.Width = 1000;
+            preview.Height = 800;
+            preview.Show(); // 사용자 확인 후 실제 인쇄 아님
         }
+
         /* ********************---------------------------------------- */
         // Region : Event Functions 이벤트 함수
         /* ********************---------------------------------------- */
@@ -708,12 +776,12 @@ namespace WindowsFormCSharp._PCMLabel
                 Dictionary<string, object> dic = new Dictionary<string, object>();
                 dic.Add("TEMP_DATE", temp_date);
                 dic.Add("ITEM_CD", item_cd);
-                var info = pcmLabelQuery.GetTraceInfoQry(dic, null);
+                dt_yukgagongTraceInfo = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetTraceInfoQry(dic, null));
                 dt_subItemDetail = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemDetailQry(dic, null));
                 Grid_CellFormat2(dt_subItemDetail, this.dgv_traceInfo, "재고 라벨발행", null);
 
                 this.mtb_itemCd.Text = item_cd;
-                this.mtb_traceNo.Text = info.Count == 0 ? "" : (string)info[0]["TRACE_NO"];
+                this.mtb_traceNo.Text = dt_yukgagongTraceInfo.Rows.Count > 0 ? dt_yukgagongTraceInfo.Rows[0]["TRACE_NO"]?.ToString() : "";
                 this.mtb_printCnt.Focus();
 
                 DataRow[] foundRows = dt_list.Select($"ITEM_CD = '{item_cd}'");
@@ -812,6 +880,11 @@ namespace WindowsFormCSharp._PCMLabel
             this.mtb_count.Focus();
 
             fn_itemView(item_kind_cd);
+        }
+
+        private void mtb_printCnt_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

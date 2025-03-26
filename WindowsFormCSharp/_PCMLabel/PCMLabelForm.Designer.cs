@@ -65,7 +65,7 @@
             dtp_orderDate = new DateTimePicker();
             groupBox4 = new GroupBox();
             cb_longSize = new CheckBox();
-            checkBox3 = new CheckBox();
+            cb_88 = new CheckBox();
             label8 = new Label();
             mtb_orderQtyNotEvery = new MaskedTextBox();
             groupBox5 = new GroupBox();
@@ -316,6 +316,7 @@
             mtb_printCnt.TabIndex = 15;
             mtb_printCnt.TextAlign = HorizontalAlignment.Right;
             mtb_printCnt.ValidatingType = typeof(int);
+            mtb_printCnt.TextChanged += mtb_printCnt_TextChanged;
             // 
             // label7
             // 
@@ -460,15 +461,15 @@
             cb_longSize.Text = "大용기 라벨";
             cb_longSize.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // cb_88
             // 
-            checkBox3.AutoSize = true;
-            checkBox3.Location = new Point(135, 24);
-            checkBox3.Name = "checkBox3";
-            checkBox3.Size = new Size(92, 19);
-            checkBox3.TabIndex = 1;
-            checkBox3.Text = "88코드 삭제";
-            checkBox3.UseVisualStyleBackColor = true;
+            cb_88.AutoSize = true;
+            cb_88.Location = new Point(135, 24);
+            cb_88.Name = "cb_88";
+            cb_88.Size = new Size(92, 19);
+            cb_88.TabIndex = 1;
+            cb_88.Text = "88코드 삭제";
+            cb_88.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -492,7 +493,7 @@
             groupBox5.Anchor = AnchorStyles.None;
             groupBox5.Controls.Add(mtb_orderQtyNotEvery);
             groupBox5.Controls.Add(label8);
-            groupBox5.Controls.Add(checkBox3);
+            groupBox5.Controls.Add(cb_88);
             groupBox5.Controls.Add(cb_longSize);
             groupBox5.Location = new Point(285, 525);
             groupBox5.Name = "groupBox5";
@@ -708,7 +709,7 @@
         private DateTimePicker dtp_orderDate;
         private GroupBox groupBox4;
         private CheckBox cb_longSize;
-        private CheckBox checkBox3;
+        private CheckBox cb_88;
         private Label label8;
         private MaskedTextBox mtb_orderQtyNotEvery;
         private GroupBox groupBox5;
