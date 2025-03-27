@@ -185,7 +185,7 @@ namespace WindowsFormCSharp._PCMLabel
                 /* PCMLabelQuery.GetSubItemDetailQry */
                 SELECT A.ITEM_CD,
                        B.ITEM_NAME,
-                       A.WORK_FRZ2,
+                       NVL(A.WORK_FRZ2, 0) WORK_FRZ2,
                        NVL(A.TRACE_NO, A.ID_CREATE) TRACE_NO
                   FROM JOB_DETAIL A, TB_ITEM B
                  WHERE A.JOB_DATE = (
@@ -215,7 +215,7 @@ namespace WindowsFormCSharp._PCMLabel
             {
                 string sql = """
                 /* PCMLabelQuery.GetOrderQtyEveryQry */
-                SELECT SUM(B.ORDER_QTY) ORDER_QTY
+                SELECT NVL(SUM(B.ORDER_QTY),0) ORDER_QTY
                   FROM ORDER_REF A,
                        ORDER_DETAIL B,
                        TB_ITEM C,
@@ -245,7 +245,7 @@ namespace WindowsFormCSharp._PCMLabel
             {
                 string sql = """
                 /* PCMLabelQuery.GetOrderQtyNotEveryQry */
-                SELECT SUM(B.ORDER_QTY) ORDER_QTY
+                SELECT NVL(SUM(B.ORDER_QTY), 0) ORDER_QTY
                   FROM ORDER_REF A,
                        ORDER_DETAIL B,
                        TB_ITEM C,

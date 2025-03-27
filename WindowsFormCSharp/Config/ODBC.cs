@@ -6,7 +6,6 @@ using System.Transactions;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using WindowsFormCSharp.Data;
 
 namespace WindowsFormCSharp.Config
 {

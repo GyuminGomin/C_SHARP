@@ -82,7 +82,7 @@ namespace WindowsFormCSharp
             return text.PadRight(padding);
         }
 
-        // DataTable
+        // DataTable -> TODO -> 아직 수정이 제대로 안되었다!!!!!!!!!!!! 수정 필요!!!!!!!!!
         public void DataTableTotalValue(DataTable dt)
         {
             int columnCount = dt.Columns.Count;
@@ -134,6 +134,13 @@ namespace WindowsFormCSharp
             string dtp_workDate = dtp.Value.ToString();
             return dtp_workDate.Substring(0, 4) + dtp_workDate.Substring(5, 2) + dtp_workDate.Substring(8, 2);
         }
+
+        // PowerBuilder의 값은 1unit 단위로 0.2646mm 정도 되므로 값을 대입할 경우 수정 필요
+        public float PowerBuilderToMilimeter(float pb_unit)
+        {
+            return pb_unit / 1000.0f * 25.4f;
+        }
+
     }
 
 

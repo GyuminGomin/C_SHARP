@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Policy;
 
 namespace WindowsFormCSharp._PCMLabel
 {
@@ -74,10 +75,7 @@ namespace WindowsFormCSharp._PCMLabel
             temp_date = mySelfLibrary.DateTimeFormat(this.dtp_workDate);
             order_date = mySelfLibrary.DateTimeFormat(this.dtp_orderDate);
 
-            long ll_ret1; // 조건형 변수
-            string ls_group_code; // 그룹코드
-            // 품목정보 조회 (내수인것만 조회)
-            dt_list = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).FindProductQry(null, null));
+            
 
             // 발행수량
             this.mtb_printCnt.Text = mySelfLibrary.NumberFormatIntToString(1);
@@ -98,8 +96,6 @@ namespace WindowsFormCSharp._PCMLabel
             {
                 this.cb_longSize.BackColor = Color.FromArgb(204, 204, 204);
             }
-            // TODO - 아직 이 위는 필요한 곳을 찾질 못함
-
 
             mySelfStyle.DataGridViewRectangle(this.dgv_item);
             mySelfStyle.DataGridViewRectangle(this.dgv_subItem);
@@ -314,6 +310,7 @@ namespace WindowsFormCSharp._PCMLabel
         {
             // 먼저 그리드 초기화
             dgv.Columns.Clear();
+            dgv.ColumnHeadersVisible = true; // 이걸 추가하니까 컬럼 헤더가 추가잘된다.
             if (dt.Rows.Count > 0)
             {
                 dgv.AutoGenerateColumns = false; // 컬럼 자동 생성 비활성화
@@ -322,10 +319,13 @@ namespace WindowsFormCSharp._PCMLabel
                 dgv.AllowUserToResizeColumns = false; // 컬럼 조절 불가능
                 dgv.ReadOnly = true; // 다른 TextBoxColumn 수정 불가능
                 // 1, 2열은 텍스트, 3열은 버튼
-                DataGridViewColumn buttonColumn = new DataGridViewButtonColumn();
+                DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
                 dgv.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "WORK_FRZ2", HeaderText = "재고수량", Width = 80 });
                 dgv.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TRACE_NO", HeaderText = "묶음번호", Width = 120 });
                 buttonColumn.Width = 250;
+                buttonColumn.HeaderText = "";
+                buttonColumn.Text = showValueColumn;
+                buttonColumn.UseColumnTextForButtonValue = true;
                 buttonColumn.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 if (font != null) buttonColumn.DefaultCellStyle.Font = font;
                 else buttonColumn.DefaultCellStyle.Font = new Font("맑은 고딕", 10, FontStyle.Bold);
@@ -333,42 +333,23 @@ namespace WindowsFormCSharp._PCMLabel
 
                 // 헤더, 셀 높이 지정
                 dgv.RowTemplate.Height = 30; // 모든 행의 기본 높이 설정
+                dgv.BackgroundColor = Color.White;
 
                 BindingSource bindingSource = new BindingSource();
                 bindingSource.DataSource = dt;
 
                 dgv.DataSource = bindingSource;
-
-                // 추가적 이벤트 핸들링을 통해 값 유지
-                dgv.CellFormatting += (sender, e) =>
-                {
-                    if (e.RowIndex >= 0 && e.ColumnIndex == 2)
-                    {
-                        e.Value = showValueColumn;
-                    }
-                };
-                dgv.CellClick += (sender, e) =>
-                {
-                    if (e.RowIndex >= 0 && e.ColumnIndex == 2)
-                    {
-                        // 버튼을 클릭하면,
-                        this.mtb_traceNo.Text = dt.Rows[e.RowIndex]["TRACE_NO"]?.ToString();
-
-                        InventoryLabelPrint();
-                    }
-                };
             }
         }
 
-        // TODO - DEBUGGING 필수 - 현재 프린트 미리보기가 안되고 있음
         private void InventoryLabelPrint()
         {
-            if (this.mtb_itemCd.Text.ToString().Trim().Equals("")) // 이거 절대 안탄다.
+            if (this.mtb_itemCd.Text.ToString().Trim().Equals(""))
             {
                 MessageBox.Show("제품번호가 미존재, 제품을 선택하세요!", "확인");
                 return;
             }
-            else if (this.mtb_weight.Text.ToString().Trim().Equals("")) // 이것도 절대 안탄다.
+            else if (this.mtb_weight.Text.ToString().Trim().Equals(""))
             {
                 MessageBox.Show("중량 미존재, 중량을 입력하세요!", "확인");
                 return;
@@ -388,43 +369,10 @@ namespace WindowsFormCSharp._PCMLabel
             dt_yukgagongItem = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetYukGagongItemInfoQry(dic, null));
 
             string circul_date = dt_yukgagongItem.Rows[0]["CIRCUL_DATE"]?.ToString();
-            string barcode = dt_yukgagongItem.Rows[0]["BARCODE"]?.ToString();
-            if (Convert.ToInt32(circul_date) == 0)
+            if (Convert.ToInt32(circul_date).Equals("0"))
             {
                 MessageBox.Show("[육가공 품목기준관리]유통기한 입력바랍니다.", "확인");
                 return;
-            }
-
-            if (this.cb_7day.Checked)
-            {
-                if (this.rdb_07.Checked)
-                {
-                    circul_date = "7";
-                }
-                else if (this.rdb_08.Checked)
-                {
-                    circul_date = "8";
-                }
-                else if (this.rdb_09.Checked)
-                {
-                    circul_date = "9";
-                }
-                else if (this.rdb_10.Checked)
-                {
-                    circul_date = "10";
-                }
-            }
-
-            string utong = mySelfDate.SubtractDaysToString(this.dtp_workDate.Text, Convert.ToInt32(circul_date) - 1);
-            string sale_wt = dt_yukgagongItem.Rows[0]["SALE_WT"]?.ToString();
-
-            if (Convert.ToDecimal(sale_wt) < 1)
-            {
-                sale_wt = Math.Round((Double)Convert.ToDecimal(sale_wt) * 1000, 0) + " g";
-            }
-            else
-            {
-                sale_wt += " kg";
             }
 
             if (trace_no.Substring(0, 2).Equals("L1")) // 돈육
@@ -454,235 +402,20 @@ namespace WindowsFormCSharp._PCMLabel
                 return;
             }
 
-            string change_bui = dt_yukgagongItem.Rows[0]["CHANGE_BUI"]?.ToString();
-            string sub_bui = dt_yukgagongItem.Rows[0]["SUB_BUI"]?.ToString();
-            string bui;
-            string yongdo = dt_yukgagongItem.Rows[0]["YONGDO"]?.ToString();
-            string item_name = dt_yukgagongItem.Rows[0]["ITEM_NAME"]?.ToString();
-            string kill_area = dt_yukgagongKillArea.Rows[0]["KILL_AREA"]?.ToString();
-
-            PrintDocument printDoc = new PrintDocument();
-            printDoc.PrinterSettings = printerSettings;
-            printDoc.DefaultPageSettings = pageSettings;
-
-            // 발행수량 만큼 프린트
-            printDoc.PrintPage += (sender, e) =>
-            {
-                // 폰트 설정
-                Font font1 = new Font("굴림체", 12, FontStyle.Regular);
-                Font font2 = new Font("HY헤드라인M", 14, FontStyle.Bold);
-                Font font3 = new Font("HY헤드라인M", 22, FontStyle.Regular);
-                Font font4 = new Font("굴림체", 10, FontStyle.Regular);
-                Font font5 = new Font("HY헤드라인M", 10, FontStyle.Bold);
-                Font font6 = new Font("굴림체", 8); // Zebra 바코드용
-                Font font7 = new Font("Code 128", 30); // Zebra 바코드용
-                Font font8 = new Font("HY헤드라인M", 16, FontStyle.Regular);
-
-                // 좌표 - 프린트 설정
-                long h_size = 1800 + 120;
-                long w_size = 300;
-
-                // 제품명
-                if (this.cb_longSize.Checked)
-                {
-                    if (trace_no.Substring(0, 2).Equals("L0"))
-                    {
-                        e.Graphics.DrawString("맑은고기 한우", font2, Brushes.Black, new PointF(w_size, h_size));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString("포크밸리", font2, Brushes.Black, new PointF(w_size, h_size));
-                    }
-                }
-                else
-                {
-                    if (trace_no.Substring(0, 2).Equals("L0"))
-                    {
-                        e.Graphics.DrawString("맑은고기 한우", font2, Brushes.Black, new PointF(w_size, h_size - 120));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString("포크밸리", font2, Brushes.Black, new PointF(w_size + 80, h_size - 120));
-                    }
-                }
-
-                // 부위명
-                if (change_bui == null)
-                {
-                    bui = dt_yukgagongItem.Rows[0]["ITEM_MAIN"]?.ToString();
-                }
-                else
-                {
-                    bui = change_bui;
-                }
-
-                // 서브부위명
-                if (sub_bui == null)
-                {
-                    bui += sub_bui;
-                }
-
-                // 긴라벨용
-                if (this.cb_longSize.Checked)
-                {
-                    // 부위명 대체가 있으면 내용이 길어짐으로 폰트조정
-                    if (change_bui == null)
-                    {
-                        e.Graphics.DrawString(bui, font2, Brushes.Black, new PointF(w_size - 150, h_size + 550));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString(bui, font5, Brushes.Black, new PointF(w_size - 200, h_size + 650));
-                    }
-
-                    int yongdoNecessaryIndex = yongdo.IndexOf(" ");
-                    // 용도
-                    if (yongdoNecessaryIndex > 0)
-                    {
-                        e.Graphics.DrawString(yongdo.Substring(0, yongdoNecessaryIndex), font8, Brushes.Black, new PointF(w_size + 1250, h_size + 350));
-                        e.Graphics.DrawString(yongdo.Substring(yongdoNecessaryIndex), font4, Brushes.Black, new PointF(w_size + 1150, h_size + 570));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString(yongdo, font8, Brushes.Black, new PointF(w_size + 1250, h_size + 350));
-                    }
-
-                    if (item_name.IndexOf("무항생") > 0)
-                    {
-                        e.Graphics.DrawString("(무항생제)", font5, Brushes.Black, new PointF(w_size + 450, h_size + 350));
-                    }
-
-                    // 중량
-                    e.Graphics.DrawString(sale_wt, font3, Brushes.Black, new PointF(w_size + 1400, h_size + 830));
-                    // 소비기한
-                    e.Graphics.DrawString(utong, font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1430));
-                    // 도축장
-                    int killAreaNecessaryIndex = kill_area.IndexOf(",");
-                    if (killAreaNecessaryIndex > 0)
-                    {
-                        e.Graphics.DrawString(kill_area.Substring(0, killAreaNecessaryIndex), font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1700));
-                        e.Graphics.DrawString(kill_area.Substring(killAreaNecessaryIndex), font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1900));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString(kill_area, font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1900));
-                    }
-
-                    if (trace_no.Substring(0, 2).Equals("L0"))
-                    {
-                        e.Graphics.DrawString("201706086472", font1, Brushes.Black, new PointF(w_size - 150, h_size + 2380));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString("201706086471", font1, Brushes.Black, new PointF(w_size - 150, h_size + 2380));
-                    }
-
-                    // 생산이력번호
-                    e.Graphics.DrawString(trace_no, font1, Brushes.Black, new PointF(w_size + 1100, h_size + 2380));
-                }
-                else // 짧은 라벨용
-                {
-                    // 부위명 대체가 있으면 내용이 길어짐으로 폰트조정
-                    if (change_bui == null)
-                    {
-                        e.Graphics.DrawString(bui, font2, Brushes.Black, new PointF(w_size - 150, h_size + 300));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString(bui, font5, Brushes.Black, new PointF(w_size - 200, h_size + 300));
-                    }
-
-                    // 용도
-                    int yongdoNecessaryIndex = yongdo.IndexOf(" ");
-                    if (yongdoNecessaryIndex > 0)
-                    {
-                        e.Graphics.DrawString(yongdo.Substring(0, yongdoNecessaryIndex), font8, Brushes.Black, new PointF(w_size + 1250, h_size + 200));
-                        e.Graphics.DrawString(yongdo.Substring(yongdoNecessaryIndex), font4, Brushes.Black, new PointF(w_size + 1150, h_size + 420));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString(yongdo, font8, Brushes.Black, new PointF(w_size + 1250, h_size + 150));
-                    }
-
-                    // 중량
-                    e.Graphics.DrawString(sale_wt, font3, Brushes.Black, new PointF(w_size + 1400, h_size + 530));
-                    // 소비기한
-                    e.Graphics.DrawString(utong, font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1000));
-                    // 도축장
-                    int killAreaNecessaryIndex = kill_area.IndexOf(",");
-                    if (killAreaNecessaryIndex > 0)
-                    {
-                        e.Graphics.DrawString(kill_area.Substring(0, killAreaNecessaryIndex), font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1250));
-                        e.Graphics.DrawString(kill_area.Substring(killAreaNecessaryIndex), font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1450));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString(kill_area, font1, Brushes.Black, new PointF(w_size + 1100, h_size + 1400));
-                    }
-
-                    if (trace_no.Substring(0, 2).Equals("L0"))
-                    {
-                        e.Graphics.DrawString("201706086472", font1, Brushes.Black, new PointF(w_size - 150, h_size + 1750));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString("201706086471", font1, Brushes.Black, new PointF(w_size - 150, h_size + 1750));
-                    }
-
-                    // 생산이력번호
-                    e.Graphics.DrawString(trace_no, font1, Brushes.Black, new PointF(w_size + 1000, h_size + 1750));
-                }
-
-                if (trace_no.Substring(0, 2).Equals("L0"))
-                {
-                    // 88코드
-                    e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font4, Brushes.Black, new PointF(w_size, h_size + 3360));
-                    e.Graphics.DrawString(new string(' ', 30), font4, Brushes.Black, new PointF(w_size, h_size + 3780));
-                    e.Graphics.DrawString(barcode, font6, Brushes.Black, new PointF(w_size + 400, h_size + 3680));
-
-                    // 등급
-                    if (sub_bui.Equals("(1+등급)"))
-                    {
-                        e.Graphics.DrawString("등급: 1++\t\t1   2   등외", font1, Brushes.Black, new PointF(w_size - 150, h_size + 3230));
-                        e.Graphics.DrawString("○", font3, Brushes.Black, new PointF(w_size + 840, h_size + 3160));
-                        e.Graphics.DrawString("1+", font1, Brushes.Black, new PointF(w_size + 900, h_size + 3230));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString("등급: 1++   1+\t   2   등외", font1, Brushes.Black, new PointF(w_size - 150, h_size + 3230));
-                        e.Graphics.DrawString("○", font3, Brushes.Black, new PointF(w_size + 1230, h_size + 3160));
-                        e.Graphics.DrawString("1", font1, Brushes.Black, new PointF(w_size + 1320, h_size + 3230));
-                    }
-                }
-                else
-                {
-                    if (this.cb_88.Checked)
-                    {
-                        // 긴 라벨 88 코드
-                        if (this.cb_longSize.Checked)
-                        {
-                            e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font7, Brushes.Black, new PointF(w_size + 200, h_size + 4400));
-                            e.Graphics.DrawString(barcode, font1, Brushes.Black, new PointF(w_size + 400, h_size + 4850));
-                        }
-                        else // 짧은 라벨 88 코드
-                        {
-                            e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font7, Brushes.Black, new PointF(w_size, h_size + 3300));
-                            e.Graphics.DrawString(new string(' ', 30), font4, Brushes.Black, new PointF(w_size, h_size + 3640));
-                            e.Graphics.DrawString(barcode, font6, Brushes.Black, new PointF(w_size + 400, h_size + 3540));
-                        }
-                    }
-                }
-
-                // 마지막 페이지 명시
-                e.HasMorePages = false;
-            };
+            this.pd_printDocument.PrinterSettings = printerSettings;
+            this.pd_printDocument.DefaultPageSettings = pageSettings;
 
             // 미리보기
-            PrintPreviewDialog preview = new PrintPreviewDialog();
-            preview.Document = printDoc;
-            preview.Width = 1000;
-            preview.Height = 800;
-            preview.Show(); // 사용자 확인 후 실제 인쇄 아님
+            this.ppd_printView.Document = this.pd_printDocument;
+            this.ppd_printView.Width = 1000;
+            this.ppd_printView.Height = 2000;
+
+            ppd_printView.ShowDialog(); // 사용자 확인 후 실제 인쇄 아님 (Show()는 비동기, ShowDialog()는 동기)
+        }
+
+        private PointF DpiToMM(long width, long height)
+        {
+            return new PointF(mySelfLibrary.PowerBuilderToMilimeter(width), mySelfLibrary.PowerBuilderToMilimeter(height));
         }
 
         /* ********************---------------------------------------- */
@@ -766,6 +499,9 @@ namespace WindowsFormCSharp._PCMLabel
             // 클릭한 셀이 버튼 셀인지 확인
             if (this.dgv_subItem.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewButtonCell)
             {
+                // 품목정보 조회 (내수인것만 조회) - 순서가 상관이 없음 (TODO - 셀 강제 클릭 이벤트를 발생시켰는데 적용이 안되는 이유 찾기)
+                dt_list = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).FindProductQry(null, null));
+
                 prevRowIndexDgvSub = e.RowIndex;
                 prevColIndexDgvSub = e.ColumnIndex;
 
@@ -808,23 +544,23 @@ namespace WindowsFormCSharp._PCMLabel
                 int cnt = 0;
                 if (this.cb_7day.Checked)
                 {
-                    if (dt_subItemOrderQtyEvery.Rows.Count > 0)
+                    cnt = Convert.ToInt32(dt_subItemOrderQtyEvery.Rows[0]["ORDER_QTY"]);
+                    if (cnt > 0)
                     {
-                        cnt = dt_subItemOrderQtyEvery.Rows[0]["ORDER_QTY"] == DBNull.Value ? 0 : Convert.ToInt32(dt_subItemOrderQtyEvery.Rows[0]["ORDER_QTY"]);
                         if (dt_subItemDetail.Rows.Count > 0)
                         {
-                            cnt -= dt_subItemDetail.Rows[0]["WORK_FRZ2"] == DBNull.Value ? 0 : Convert.ToInt32(dt_subItemDetail.Rows[0]["WORK_FRZ2"]);
+                            cnt -= Convert.ToInt32(dt_subItemDetail.Rows[0]["WORK_FRZ2"]);
                         }
                     }
                 }
                 else
                 {
-                    if (dt_subItemOrderQtyNotEvery.Rows.Count > 0)
+                    cnt = Convert.ToInt32(dt_subItemOrderQtyNotEvery.Rows[0]["ORDER_QTY"]);
+                    if (cnt > 0)
                     {
-                        cnt = dt_subItemOrderQtyNotEvery.Rows[0]["ORDER_QTY"] == DBNull.Value ? 0 : Convert.ToInt32(dt_subItemOrderQtyNotEvery.Rows[0]["ORDER_QTY"]);
                         if (dt_subItemDetail.Rows.Count > 0)
                         {
-                            cnt -= dt_subItemDetail.Rows[0]["WORK_FRZ2"] == DBNull.Value ? 0 : Convert.ToInt32(dt_subItemDetail.Rows[0]["WORK_FRZ2"]);
+                            cnt -= Convert.ToInt32(dt_subItemDetail.Rows[0]["WORK_FRZ2"]);
                         }
                     }
                 }
@@ -882,9 +618,328 @@ namespace WindowsFormCSharp._PCMLabel
             fn_itemView(item_kind_cd);
         }
 
-        private void mtb_printCnt_TextChanged(object sender, EventArgs e)
+        private void dgv_traceInfo_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+            if (e.RowIndex >= 0 && e.ColumnIndex == 2)
+            {
+                // 재고 라벨발행 버튼을 클릭하면,
+                this.mtb_traceNo.Text = dt_subItemDetail.Rows[e.RowIndex]["TRACE_NO"]?.ToString();
+                InventoryLabelPrint();
+            }
+        }
+
+        private void pd_printDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            string trace_no = this.mtb_traceNo.Text;
+            string change_bui = dt_yukgagongItem.Rows[0]["CHANGE_BUI"]?.ToString();
+            string sub_bui = dt_yukgagongItem.Rows[0]["SUB_BUI"]?.ToString();
+            string bui;
+            string yongdo = dt_yukgagongItem.Rows[0]["YONGDO"]?.ToString();
+            string item_name = dt_yukgagongItem.Rows[0]["ITEM_NAME"]?.ToString();
+            string kill_area = dt_yukgagongKillArea.Rows[0]["KILL_AREA"]?.ToString();
+            string sale_wt = dt_yukgagongItem.Rows[0]["SALE_WT"]?.ToString();
+            string circul_date = dt_yukgagongItem.Rows[0]["CIRCUL_DATE"]?.ToString();
+            string barcode = dt_yukgagongItem.Rows[0]["BARCODE"]?.ToString();
+            string utong = mySelfDate.SubtractDaysToString(this.dtp_workDate.Text, Convert.ToInt32(circul_date) - 1);
+            utong = utong.Substring(0, 4) + "." + utong.Substring(5, 2) + "." + utong.Substring(8, 2) + " 까지";
+
+            if (Convert.ToDecimal(sale_wt) < 1)
+            {
+                sale_wt = Math.Round((Double)Convert.ToDecimal(sale_wt) * 1000, 0) + " g";
+            }
+            else
+            {
+                sale_wt += " kg";
+            }
+
+            if (this.cb_7day.Checked)
+            {
+                if (this.rdb_07.Checked)
+                {
+                    circul_date = "7";
+                }
+                else if (this.rdb_08.Checked)
+                {
+                    circul_date = "8";
+                }
+                else if (this.rdb_09.Checked)
+                {
+                    circul_date = "9";
+                }
+                else if (this.rdb_10.Checked)
+                {
+                    circul_date = "10";
+                }
+            }
+
+            // 폰트 설정
+            Font font1 = new Font("굴림체", 12, FontStyle.Regular);
+            Font font2 = new Font("HYHeadLine", 14, FontStyle.Bold);
+            Font font3 = new Font("HYHeadLine", 22, FontStyle.Regular);
+            Font font4 = new Font("굴림체", 10, FontStyle.Regular);
+            Font font5 = new Font("HYHeadLine", 10, FontStyle.Bold); // HY헤드라인M
+            Font font6 = new Font("굴림체", 8); // Zebra 바코드용
+            Font font7 = new Font("Code 128", 30); // Zebra 바코드용
+            Font font8 = new Font("HYHeadLine", 16, FontStyle.Regular);
+
+            // 좌표 - 프린트 설정
+            long h_size = 1800 + 120; // PowerBuilder 기준
+            long w_size = 300; // PowerBuilder 기준
+
+            e.Graphics.PageUnit = GraphicsUnit.Millimeter; // 단위 mm로 수정
+
+            // 제품명
+            if (this.cb_longSize.Checked)
+            {
+                if (trace_no.Substring(0, 2).Equals("L0"))
+                {
+                    e.Graphics.DrawString("맑은고기 한우", font2, Brushes.Black, DpiToMM(w_size, h_size));
+                }
+                else
+                {
+                    e.Graphics.DrawString("포크밸리", font2, Brushes.Black, DpiToMM(w_size, h_size));
+                }
+            }
+            else
+            {
+                if (trace_no.Substring(0, 2).Equals("L0"))
+                {
+                    e.Graphics.DrawString("맑은고기 한우", font2, Brushes.Black, DpiToMM(w_size, h_size - 120));
+                }
+                else
+                {
+                    e.Graphics.DrawString("포크밸리", font2, Brushes.Black, DpiToMM(w_size + 80, h_size - 120));
+                }
+            }
+
+            // 부위명
+            if (string.IsNullOrEmpty(change_bui))
+            {
+                bui = dt_yukgagongItem.Rows[0]["ITEM_MAIN"]?.ToString();
+            }
+            else
+            {
+                bui = change_bui;
+            }
+
+            // 서브부위명
+            if (sub_bui != null)
+            {
+                bui += sub_bui;
+            }
+
+            // 긴라벨용
+            if (this.cb_longSize.Checked)
+            {
+                // 부위명 대체가 있으면 내용이 길어짐으로 폰트조정
+                if (change_bui == null)
+                {
+                    e.Graphics.DrawString(bui, font2, Brushes.Black, DpiToMM(w_size - 150, h_size + 550));
+                }
+                else
+                {
+                    e.Graphics.DrawString(bui, font5, Brushes.Black, DpiToMM(w_size - 200, h_size + 650));
+                }
+
+                int yongdoNecessaryIndex = yongdo.IndexOf(" ");
+                // 용도
+                if (yongdoNecessaryIndex > 0)
+                {
+                    e.Graphics.DrawString(yongdo.Substring(0, yongdoNecessaryIndex), font8, Brushes.Black, DpiToMM(w_size + 1250, h_size + 350));
+                    e.Graphics.DrawString(yongdo.Substring(yongdoNecessaryIndex), font4, Brushes.Black, DpiToMM(w_size + 1150, h_size + 570));
+                }
+                else
+                {
+                    e.Graphics.DrawString(yongdo, font8, Brushes.Black, DpiToMM(w_size + 1250, h_size + 350));
+                }
+
+                if (item_name.IndexOf("무항생") > 0)
+                {
+                    e.Graphics.DrawString("(무항생제)", font5, Brushes.Black, DpiToMM(w_size + 450, h_size + 350));
+                }
+
+                // 중량
+                e.Graphics.DrawString(sale_wt, font3, Brushes.Black, DpiToMM(w_size + 1400, h_size + 830));
+                // 소비기한
+                e.Graphics.DrawString(utong, font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 1430));
+                // 도축장
+                int killAreaNecessaryIndex = kill_area.IndexOf(",");
+                if (killAreaNecessaryIndex > 0)
+                {
+                    e.Graphics.DrawString(kill_area.Substring(0, killAreaNecessaryIndex), font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 1700));
+                    e.Graphics.DrawString(kill_area.Substring(killAreaNecessaryIndex), font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 1900));
+                }
+                else
+                {
+                    e.Graphics.DrawString(kill_area, font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 1900));
+                }
+
+                if (trace_no.Substring(0, 2).Equals("L0"))
+                {
+                    e.Graphics.DrawString("201706086472", font1, Brushes.Black, DpiToMM(w_size - 150, h_size + 2380));
+                }
+                else
+                {
+                    e.Graphics.DrawString("201706086471", font1, Brushes.Black, DpiToMM(w_size - 150, h_size + 2380));
+                }
+
+                // 생산이력번호
+                e.Graphics.DrawString(trace_no, font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 2380));
+            }
+            else // 짧은 라벨용
+            {
+                // 부위명 대체가 있으면 내용이 길어짐으로 폰트조정
+                if (change_bui == null)
+                {
+                    e.Graphics.DrawString(bui, font2, Brushes.Black, DpiToMM(w_size - 150, h_size + 300));
+                }
+                else
+                {
+                    e.Graphics.DrawString(bui, font5, Brushes.Black, DpiToMM(w_size - 200, h_size + 300));
+                }
+
+                // 용도
+                int yongdoNecessaryIndex = yongdo.IndexOf(" ");
+                if (yongdoNecessaryIndex > 0)
+                {
+                    e.Graphics.DrawString(yongdo.Substring(0, yongdoNecessaryIndex), font8, Brushes.Black, DpiToMM(w_size + 1250, h_size + 200));
+                    e.Graphics.DrawString(yongdo.Substring(yongdoNecessaryIndex), font4, Brushes.Black, DpiToMM(w_size + 1150, h_size + 420));
+                }
+                else
+                {
+                    e.Graphics.DrawString(yongdo, font8, Brushes.Black, DpiToMM(w_size + 1250, h_size + 150));
+                }
+
+                // 중량
+                e.Graphics.DrawString(sale_wt, font3, Brushes.Black, DpiToMM(w_size + 1400, h_size + 530));
+                // 소비기한
+                e.Graphics.DrawString(utong, font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 1000));
+                // 도축장
+                int killAreaNecessaryIndex = kill_area.IndexOf(",");
+                if (killAreaNecessaryIndex > 0)
+                {
+                    e.Graphics.DrawString(kill_area.Substring(0, killAreaNecessaryIndex), font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 1250));
+                    e.Graphics.DrawString(kill_area.Substring(killAreaNecessaryIndex), font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 1450));
+                }
+                else
+                {
+                    e.Graphics.DrawString(kill_area, font1, Brushes.Black, DpiToMM(w_size + 1100, h_size + 1400));
+                }
+
+                if (trace_no.Substring(0, 2).Equals("L0"))
+                {
+                    e.Graphics.DrawString("201706086472", font1, Brushes.Black, DpiToMM(w_size - 150, h_size + 1750));
+                }
+                else
+                {
+                    e.Graphics.DrawString("201706086471", font1, Brushes.Black, DpiToMM(w_size - 150, h_size + 1750));
+                }
+
+                // 생산이력번호
+                e.Graphics.DrawString(trace_no, font1, Brushes.Black, DpiToMM(w_size + 1000, h_size + 1750));
+            }
+
+            if (trace_no.Substring(0, 2).Equals("L0"))
+            {
+                // 88코드
+                e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font7, Brushes.Black, DpiToMM(w_size, h_size + 3360));
+                e.Graphics.DrawString(new string(' ', 30), font4, Brushes.Black, DpiToMM(w_size, h_size + 3780));
+                SizeF sizeBar = e.Graphics.MeasureString(barcode, font6).ToSize();
+                PointF pointBar = DpiToMM(w_size + 400, h_size + 3680);
+                e.Graphics.FillRectangle(Brushes.White, new RectangleF(pointBar.X, pointBar.Y, sizeBar.Width, sizeBar.Height));
+                e.Graphics.DrawString(barcode, font6, Brushes.Black, DpiToMM(w_size + 400, h_size + 3680));
+
+                // 등급
+                if (sub_bui.Equals("(1+등급)"))
+                {
+                    e.Graphics.DrawString("등급: 1++        1   2   등외", font1, Brushes.Black, DpiToMM(w_size - 150, h_size + 3230));
+                    SizeF size = e.Graphics.MeasureString("○", font3).ToSize();
+                    PointF point = DpiToMM(w_size + 840, h_size + 3160);
+                    e.Graphics.FillRectangle(Brushes.White, new RectangleF(point.X, point.Y, size.Width - 6, size.Height - 1));
+                    e.Graphics.DrawString("○", font3, Brushes.Black, DpiToMM(w_size + 840, h_size + 3160));
+                    e.Graphics.DrawString("1+", font1, Brushes.Black, DpiToMM(w_size + 900, h_size + 3230));
+                }
+                else
+                {
+                    e.Graphics.DrawString("등급: 1++   1+       2   등외", font1, Brushes.Black, DpiToMM(w_size - 150, h_size + 3230));
+                    SizeF size = e.Graphics.MeasureString("○", font3).ToSize();
+                    PointF point = DpiToMM(w_size + 1230, h_size + 3160);
+                    e.Graphics.FillRectangle(Brushes.White, new RectangleF(point.X + 1.5f, point.Y - 1f, size.Width - 1f, size.Height));
+                    e.Graphics.DrawString("○", font3, Brushes.Black, DpiToMM(w_size + 1230, h_size + 3160));
+                    e.Graphics.DrawString("1", font1, Brushes.Black, DpiToMM(w_size + 1320, h_size + 3230));
+                }
+            }
+            else
+            {
+                if (this.cb_88.Checked)
+                {
+                    // 긴 라벨 88 코드
+                    if (this.cb_longSize.Checked)
+                    {
+                        e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font7, Brushes.Black, DpiToMM(w_size + 200, h_size + 4400));
+                        SizeF sizeBar = e.Graphics.MeasureString(barcode, font1).ToSize();
+                        PointF pointBar = DpiToMM(w_size + 400, h_size + 4850);
+                        e.Graphics.FillRectangle(Brushes.White, new RectangleF(pointBar.X, pointBar.Y, sizeBar.Width, sizeBar.Height));
+                        e.Graphics.DrawString(barcode, font1, Brushes.Black, DpiToMM(w_size + 400, h_size + 4850));
+                    }
+                    else // 짧은 라벨 88 코드
+                    {
+                        e.Graphics.DrawString(printerManage.Fn_Barcode128(barcode), font7, Brushes.Black, DpiToMM(w_size, h_size + 3300));
+                        e.Graphics.DrawString(new string(' ', 30), font4, Brushes.Black, DpiToMM(w_size, h_size + 3640));
+                        SizeF sizeBar = e.Graphics.MeasureString(barcode, font6).ToSize();
+                        PointF pointBar = DpiToMM(w_size + 400, h_size + 3540);
+                        e.Graphics.FillRectangle(Brushes.White, new RectangleF(pointBar.X, pointBar.Y, sizeBar.Width, sizeBar.Height));
+                        e.Graphics.DrawString(barcode, font6, Brushes.Black, DpiToMM(w_size + 400, h_size + 3540));
+                    }
+                }
+            }
+
+            // 마지막 페이지 명시
+            e.HasMorePages = false;
+        }
+
+        // 대용기 라벨 클릭 시 (색깔 변경)
+        private void cb_longSize_Click(object sender, EventArgs e)
+        {
+            if (this.cb_longSize.Checked)
+            {
+                this.cb_longSize.BackColor = Color.FromArgb(000, 255, 000);
+            } else
+            {
+                this.cb_longSize.BackColor = Color.FromArgb(204, 204, 204);
+            }
+        }
+
+        // 에브리데이 라벨 클릭시 발행수량 초기화 혹은 생성
+        private void cb_7day_Click(object sender, EventArgs e)
+        {
+            int cnt = 0;
+            if (this.cb_7day.Checked)
+            {
+                this.cb_7day.BackColor = Color.FromArgb(000, 102, 255);
+
+                cnt = Convert.ToInt32(dt_subItemOrderQtyEvery.Rows[0]["ORDER_QTY"]);
+                if (cnt > 0)
+                {
+                    if (dt_subItemDetail.Rows.Count > 0)
+                    {
+                        cnt -= Convert.ToInt32(dt_subItemDetail.Rows[0]["WORK_FRZ2"]);
+                    }
+                }
+            } else
+            {
+                this.cb_7day.BackColor = Color.FromArgb(204, 204, 204);
+
+                cnt = Convert.ToInt32(dt_subItemOrderQtyNotEvery.Rows[0]["ORDER_QTY"]);
+                if (cnt > 0)
+                {
+                    if (dt_subItemDetail.Rows.Count > 0)
+                    {
+                        cnt -= Convert.ToInt32(dt_subItemDetail.Rows[0]["WORK_FRZ2"]);
+                    }
+                }
+            }
+            this.mtb_printCnt.Text = cnt.ToString();
         }
     }
 }

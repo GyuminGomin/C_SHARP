@@ -28,11 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            oDBCBindingSource = new BindingSource(components);
-            oDBCBindingSource1 = new BindingSource(components);
-            dBContextBindingSource = new BindingSource(components);
-            oracleCommand1 = new Oracle.ManagedDataAccess.Client.OracleCommand();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PCMLabelForm));
             groupBox3 = new GroupBox();
             dgv_subItem = new DataGridView();
             btn_kindCd2 = new Button();
@@ -81,10 +77,8 @@
             button7 = new Button();
             tb_status = new TextBox();
             groupBox7 = new GroupBox();
-            oracleCommand2 = new Oracle.ManagedDataAccess.Client.OracleCommand();
-            ((System.ComponentModel.ISupportInitialize)oDBCBindingSource).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)oDBCBindingSource1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dBContextBindingSource).BeginInit();
+            ppd_printView = new PrintPreviewDialog();
+            pd_printDocument = new System.Drawing.Printing.PrintDocument();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgv_subItem).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_item).BeginInit();
@@ -99,23 +93,6 @@
             groupBox6.SuspendLayout();
             groupBox7.SuspendLayout();
             SuspendLayout();
-            // 
-            // oDBCBindingSource
-            // 
-            oDBCBindingSource.DataSource = typeof(Config.ODBC);
-            // 
-            // oDBCBindingSource1
-            // 
-            oDBCBindingSource1.DataSource = typeof(Config.ODBC);
-            // 
-            // dBContextBindingSource
-            // 
-            dBContextBindingSource.DataSource = typeof(Data.DBContext);
-            // 
-            // oracleCommand1
-            // 
-            oracleCommand1.RowsToFetchPerRoundTrip = 0L;
-            oracleCommand1.Transaction = null;
             // 
             // groupBox3
             // 
@@ -220,10 +197,12 @@
             // 
             dgv_traceInfo.BorderStyle = BorderStyle.Fixed3D;
             dgv_traceInfo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_traceInfo.ColumnHeadersVisible = false;
             dgv_traceInfo.Location = new Point(6, 21);
             dgv_traceInfo.Name = "dgv_traceInfo";
             dgv_traceInfo.Size = new Size(542, 104);
             dgv_traceInfo.TabIndex = 5;
+            dgv_traceInfo.CellClick += dgv_traceInfo_CellClick;
             // 
             // panel1
             // 
@@ -233,14 +212,14 @@
             panel1.Controls.Add(label1);
             panel1.Controls.Add(btn_frzDiv2);
             panel1.Controls.Add(btn_frzDiv1);
-            panel1.Location = new Point(6, 22);
+            panel1.Location = new Point(6, 20);
             panel1.Name = "panel1";
             panel1.Size = new Size(261, 82);
             panel1.TabIndex = 1;
             // 
             // mtb_traceNo
             // 
-            mtb_traceNo.Location = new Point(83, 51);
+            mtb_traceNo.Location = new Point(88, 51);
             mtb_traceNo.Name = "mtb_traceNo";
             mtb_traceNo.Size = new Size(160, 23);
             mtb_traceNo.TabIndex = 4;
@@ -249,9 +228,11 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(3, 55);
+            label1.BackColor = Color.Turquoise;
+            label1.BorderStyle = BorderStyle.Fixed3D;
+            label1.Location = new Point(3, 54);
             label1.Name = "label1";
-            label1.Size = new Size(79, 15);
+            label1.Size = new Size(81, 17);
             label1.TabIndex = 3;
             label1.Text = "생산이력번호";
             // 
@@ -301,7 +282,7 @@
             // 
             // button5
             // 
-            button5.Location = new Point(137, 182);
+            button5.Location = new Point(142, 182);
             button5.Name = "button5";
             button5.Size = new Size(106, 67);
             button5.TabIndex = 16;
@@ -310,46 +291,49 @@
             // 
             // mtb_printCnt
             // 
-            mtb_printCnt.Location = new Point(64, 185);
+            mtb_printCnt.Location = new Point(69, 185);
             mtb_printCnt.Name = "mtb_printCnt";
             mtb_printCnt.Size = new Size(67, 23);
             mtb_printCnt.TabIndex = 15;
             mtb_printCnt.TextAlign = HorizontalAlignment.Right;
             mtb_printCnt.ValidatingType = typeof(int);
-            mtb_printCnt.TextChanged += mtb_printCnt_TextChanged;
             // 
             // label7
             // 
-            label7.AutoSize = true;
-            label7.Location = new Point(4, 188);
+            label7.BackColor = Color.Turquoise;
+            label7.BorderStyle = BorderStyle.Fixed3D;
+            label7.Location = new Point(5, 188);
             label7.Name = "label7";
-            label7.Size = new Size(55, 15);
+            label7.Size = new Size(57, 17);
             label7.TabIndex = 14;
             label7.Text = "발행수량";
             // 
             // mtb_weight
             // 
-            mtb_weight.Location = new Point(64, 152);
+            mtb_weight.Location = new Point(69, 152);
             mtb_weight.Name = "mtb_weight";
+            mtb_weight.ReadOnly = true;
             mtb_weight.Size = new Size(179, 23);
             mtb_weight.TabIndex = 13;
             mtb_weight.TextAlign = HorizontalAlignment.Right;
             // 
             // label6
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(4, 156);
+            label6.BackColor = Color.Turquoise;
+            label6.BorderStyle = BorderStyle.Fixed3D;
+            label6.Location = new Point(5, 155);
             label6.Name = "label6";
-            label6.Size = new Size(53, 15);
+            label6.Size = new Size(57, 17);
             label6.TabIndex = 12;
             label6.Text = "중량[Kg]";
             // 
             // mtb_count
             // 
             mtb_count.InsertKeyMode = InsertKeyMode.Insert;
-            mtb_count.Location = new Point(64, 120);
+            mtb_count.Location = new Point(69, 120);
             mtb_count.Name = "mtb_count";
             mtb_count.PromptChar = ' ';
+            mtb_count.ReadOnly = true;
             mtb_count.RejectInputOnFirstFailure = true;
             mtb_count.Size = new Size(179, 23);
             mtb_count.TabIndex = 11;
@@ -357,33 +341,36 @@
             // 
             // label5
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(4, 124);
+            label5.BackColor = Color.Turquoise;
+            label5.BorderStyle = BorderStyle.Fixed3D;
+            label5.Location = new Point(5, 122);
             label5.Name = "label5";
-            label5.Size = new Size(51, 15);
+            label5.Size = new Size(57, 17);
             label5.TabIndex = 10;
             label5.Text = "수량[Ea]";
             // 
             // mtb_boxWt
             // 
-            mtb_boxWt.Location = new Point(64, 86);
+            mtb_boxWt.Location = new Point(69, 86);
             mtb_boxWt.Name = "mtb_boxWt";
+            mtb_boxWt.ReadOnly = true;
             mtb_boxWt.Size = new Size(179, 23);
             mtb_boxWt.TabIndex = 9;
             mtb_boxWt.TextAlign = HorizontalAlignment.Right;
             // 
             // label4
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(3, 90);
+            label4.BackColor = Color.Turquoise;
+            label4.BorderStyle = BorderStyle.Fixed3D;
+            label4.Location = new Point(5, 89);
             label4.Name = "label4";
-            label4.Size = new Size(55, 15);
+            label4.Size = new Size(57, 17);
             label4.TabIndex = 8;
             label4.Text = "기준중량";
             // 
             // mtb_itemCd
             // 
-            mtb_itemCd.Location = new Point(64, 51);
+            mtb_itemCd.Location = new Point(69, 51);
             mtb_itemCd.Name = "mtb_itemCd";
             mtb_itemCd.Size = new Size(179, 23);
             mtb_itemCd.TabIndex = 7;
@@ -391,18 +378,20 @@
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(3, 55);
+            label3.BackColor = Color.Turquoise;
+            label3.BorderStyle = BorderStyle.Fixed3D;
+            label3.Location = new Point(5, 54);
             label3.Name = "label3";
-            label3.Size = new Size(55, 15);
+            label3.Size = new Size(57, 17);
             label3.TabIndex = 6;
             label3.Text = "제품번호";
             // 
             // dtp_workDate
             // 
             dtp_workDate.CustomFormat = "yyyy-MM-dd";
+            dtp_workDate.DropDownAlign = LeftRightAlignment.Right;
             dtp_workDate.Format = DateTimePickerFormat.Custom;
-            dtp_workDate.Location = new Point(64, 14);
+            dtp_workDate.Location = new Point(69, 14);
             dtp_workDate.Name = "dtp_workDate";
             dtp_workDate.Size = new Size(179, 23);
             dtp_workDate.TabIndex = 5;
@@ -411,10 +400,11 @@
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(3, 20);
+            label2.BackColor = Color.Turquoise;
+            label2.BorderStyle = BorderStyle.Fixed3D;
+            label2.Location = new Point(5, 17);
             label2.Name = "label2";
-            label2.Size = new Size(55, 15);
+            label2.Size = new Size(57, 17);
             label2.TabIndex = 4;
             label2.Text = "작업일자";
             // 
@@ -425,7 +415,7 @@
             groupBox2.Controls.Add(panel1);
             groupBox2.Location = new Point(6, 453);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(273, 387);
+            groupBox2.Size = new Size(273, 379);
             groupBox2.TabIndex = 2;
             groupBox2.TabStop = false;
             groupBox2.Text = "라벨정보";
@@ -454,17 +444,18 @@
             // cb_longSize
             // 
             cb_longSize.AutoSize = true;
-            cb_longSize.Location = new Point(9, 24);
+            cb_longSize.Location = new Point(22, 29);
             cb_longSize.Name = "cb_longSize";
             cb_longSize.Size = new Size(90, 19);
             cb_longSize.TabIndex = 0;
             cb_longSize.Text = "大용기 라벨";
             cb_longSize.UseVisualStyleBackColor = true;
+            cb_longSize.Click += cb_longSize_Click;
             // 
             // cb_88
             // 
             cb_88.AutoSize = true;
-            cb_88.Location = new Point(135, 24);
+            cb_88.Location = new Point(154, 29);
             cb_88.Name = "cb_88";
             cb_88.Size = new Size(92, 19);
             cb_88.TabIndex = 1;
@@ -473,17 +464,19 @@
             // 
             // label8
             // 
-            label8.AutoSize = true;
-            label8.Location = new Point(6, 56);
+            label8.BackColor = Color.FromArgb(204, 204, 204);
+            label8.Location = new Point(19, 64);
             label8.Name = "label8";
-            label8.Size = new Size(43, 15);
+            label8.Size = new Size(50, 15);
             label8.TabIndex = 2;
             label8.Text = "발주량";
+            label8.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // mtb_orderQtyNotEvery
             // 
-            mtb_orderQtyNotEvery.Location = new Point(53, 53);
+            mtb_orderQtyNotEvery.Location = new Point(74, 60);
             mtb_orderQtyNotEvery.Name = "mtb_orderQtyNotEvery";
+            mtb_orderQtyNotEvery.ReadOnly = true;
             mtb_orderQtyNotEvery.Size = new Size(57, 23);
             mtb_orderQtyNotEvery.TabIndex = 16;
             mtb_orderQtyNotEvery.TextAlign = HorizontalAlignment.Right;
@@ -505,26 +498,31 @@
             // cb_7day
             // 
             cb_7day.AutoSize = true;
-            cb_7day.Location = new Point(9, 24);
+            cb_7day.Checked = true;
+            cb_7day.CheckState = CheckState.Checked;
+            cb_7day.Location = new Point(18, 36);
             cb_7day.Name = "cb_7day";
             cb_7day.Size = new Size(114, 19);
             cb_7day.TabIndex = 0;
             cb_7day.Text = "에브리데이 라벨";
             cb_7day.UseVisualStyleBackColor = true;
+            cb_7day.Click += cb_7day_Click;
             // 
             // label9
             // 
-            label9.AutoSize = true;
-            label9.Location = new Point(17, 66);
+            label9.BackColor = Color.FromArgb(204, 204, 204);
+            label9.Location = new Point(18, 80);
             label9.Name = "label9";
-            label9.Size = new Size(43, 15);
+            label9.Size = new Size(50, 15);
             label9.TabIndex = 2;
             label9.Text = "발주량";
+            label9.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // mtb_orderQtyEvery
             // 
-            mtb_orderQtyEvery.Location = new Point(66, 61);
+            mtb_orderQtyEvery.Location = new Point(73, 76);
             mtb_orderQtyEvery.Name = "mtb_orderQtyEvery";
+            mtb_orderQtyEvery.ReadOnly = true;
             mtb_orderQtyEvery.Size = new Size(57, 23);
             mtb_orderQtyEvery.TabIndex = 16;
             mtb_orderQtyEvery.TextAlign = HorizontalAlignment.Right;
@@ -533,7 +531,7 @@
             // 
             rdb_07.AutoSize = true;
             rdb_07.Checked = true;
-            rdb_07.Location = new Point(194, 13);
+            rdb_07.Location = new Point(182, 18);
             rdb_07.Name = "rdb_07";
             rdb_07.Size = new Size(51, 19);
             rdb_07.TabIndex = 17;
@@ -544,7 +542,7 @@
             // rdb_08
             // 
             rdb_08.AutoSize = true;
-            rdb_08.Location = new Point(194, 35);
+            rdb_08.Location = new Point(182, 40);
             rdb_08.Name = "rdb_08";
             rdb_08.Size = new Size(51, 19);
             rdb_08.TabIndex = 18;
@@ -554,7 +552,7 @@
             // rdb_09
             // 
             rdb_09.AutoSize = true;
-            rdb_09.Location = new Point(194, 57);
+            rdb_09.Location = new Point(182, 62);
             rdb_09.Name = "rdb_09";
             rdb_09.Size = new Size(51, 19);
             rdb_09.TabIndex = 19;
@@ -564,7 +562,7 @@
             // rdb_10
             // 
             rdb_10.AutoSize = true;
-            rdb_10.Location = new Point(194, 80);
+            rdb_10.Location = new Point(182, 85);
             rdb_10.Name = "rdb_10";
             rdb_10.Size = new Size(51, 19);
             rdb_10.TabIndex = 20;
@@ -583,32 +581,34 @@
             groupBox6.Controls.Add(cb_7day);
             groupBox6.Location = new Point(285, 621);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(274, 121);
+            groupBox6.Size = new Size(274, 113);
             groupBox6.TabIndex = 17;
             groupBox6.TabStop = false;
             groupBox6.Text = "에브리 라벨 발행 정보";
             // 
             // button6
             // 
-            button6.Location = new Point(35, 22);
+            button6.Font = new Font("맑은 고딕", 12F);
+            button6.Location = new Point(30, 20);
             button6.Name = "button6";
-            button6.Size = new Size(75, 23);
+            button6.Size = new Size(100, 40);
             button6.TabIndex = 0;
             button6.Text = "프린터설정";
             button6.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
-            button7.Location = new Point(170, 22);
+            button7.Font = new Font("맑은 고딕", 12F);
+            button7.Location = new Point(145, 20);
             button7.Name = "button7";
-            button7.Size = new Size(75, 23);
+            button7.Size = new Size(100, 40);
             button7.TabIndex = 1;
             button7.Text = "종료";
             button7.UseVisualStyleBackColor = true;
             // 
             // tb_status
             // 
-            tb_status.Location = new Point(10, 55);
+            tb_status.Location = new Point(10, 67);
             tb_status.Name = "tb_status";
             tb_status.Size = new Size(257, 23);
             tb_status.TabIndex = 2;
@@ -619,17 +619,26 @@
             groupBox7.Controls.Add(tb_status);
             groupBox7.Controls.Add(button7);
             groupBox7.Controls.Add(button6);
-            groupBox7.Location = new Point(285, 740);
+            groupBox7.Location = new Point(285, 732);
             groupBox7.Name = "groupBox7";
             groupBox7.Size = new Size(274, 100);
             groupBox7.TabIndex = 18;
             groupBox7.TabStop = false;
             groupBox7.Text = "기타정보";
             // 
-            // oracleCommand2
+            // ppd_printView
             // 
-            oracleCommand2.RowsToFetchPerRoundTrip = 0L;
-            oracleCommand2.Transaction = null;
+            ppd_printView.AutoScrollMargin = new Size(0, 0);
+            ppd_printView.AutoScrollMinSize = new Size(0, 0);
+            ppd_printView.ClientSize = new Size(400, 300);
+            ppd_printView.Enabled = true;
+            ppd_printView.Icon = (Icon)resources.GetObject("ppd_printView.Icon");
+            ppd_printView.Name = "ppd_printView";
+            ppd_printView.Visible = false;
+            // 
+            // pd_printDocument
+            // 
+            pd_printDocument.PrintPage += pd_printDocument_PrintPage;
             // 
             // PCMLabelForm
             // 
@@ -649,9 +658,6 @@
             Name = "PCMLabelForm";
             Text = "PCMLabelForm";
             Load += PCMLabelForm_Load;
-            ((System.ComponentModel.ISupportInitialize)oDBCBindingSource).EndInit();
-            ((System.ComponentModel.ISupportInitialize)oDBCBindingSource1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dBContextBindingSource).EndInit();
             groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgv_subItem).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgv_item).EndInit();
@@ -675,10 +681,6 @@
         }
 
         #endregion
-        private BindingSource oDBCBindingSource;
-        private BindingSource oDBCBindingSource1;
-        private BindingSource dBContextBindingSource;
-        private Oracle.ManagedDataAccess.Client.OracleCommand oracleCommand1;
         private GroupBox groupBox3;
         private Button btn_kindCd2;
         private Button btn_kindCd1;
@@ -727,6 +729,7 @@
         private GroupBox groupBox7;
         private DataGridView dgv_subItem;
         private DataGridView dgv_traceInfo;
-        private Oracle.ManagedDataAccess.Client.OracleCommand oracleCommand2;
+        private PrintPreviewDialog ppd_printView;
+        private System.Drawing.Printing.PrintDocument pd_printDocument;
     }
 }
