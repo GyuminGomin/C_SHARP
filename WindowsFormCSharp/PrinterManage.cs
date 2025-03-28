@@ -33,8 +33,13 @@ namespace WindowsFormCSharp
             richTextBox.ScrollBars = RichTextBoxScrollBars.Horizontal;
             richTextBox.WordWrap = false;
 
-            // 프린트 종류 설정
-            pageSettings = new PageSettings(printerSettings);
+            if (pageSettings != null) {}
+            else
+            {
+                // 초기에 생성
+                pageSettings = new PageSettings(printerSettings);
+            }
+
             pageSetupDialog = new PageSetupDialog();
             pageSetupDialog.PageSettings = pageSettings;
             pageSetupDialog.PrinterSettings = printerSettings;
@@ -44,7 +49,21 @@ namespace WindowsFormCSharp
             {
                 comboBox.Items.Add(printer);
             }
-            comboBox.SelectedIndex = 0;
+            // 현재 설정된 프린터가 있는 경우 해당 프린터를 기본 선택
+            if (!string.IsNullOrWhiteSpace(printerSettings?.PrinterName))
+            {
+                int index = comboBox.Items.IndexOf(printerSettings.PrinterName);
+                if (index >= 0)
+                {
+                    comboBox.SelectedIndex = index;
+                } else
+                {
+                    comboBox.SelectedIndex = 0; // 기본값
+                }
+            } else
+            {
+                comboBox.SelectedIndex = 0;
+            }
             
             // 프린트 설정 버튼 클릭
             button.Click += btn_Click;

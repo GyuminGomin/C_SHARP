@@ -51,7 +51,7 @@ public partial class LoginForm : Form
     private void tb_StaffPwd_KeyDown(object sender, KeyEventArgs e)
     {
         using (IDbContextTransaction transaction = loginQuery.BeginTransaction())
-        { 
+        {
             try
             {
                 if (e.KeyCode == Keys.Enter)
@@ -94,7 +94,7 @@ public partial class LoginForm : Form
                         var gs_work_date = result4[0]["GS_SYS_DATE"];
 
                         // 시작 페이지 오픈
-                        var pcmStartForm = new PCMStartForm();
+                        var pcmStartForm = new PCMStartForm(null, null);
                         pcmStartForm.Show();
                         this.Hide(); // 숨기기라서 다른 창을 닫을 때 앱을 종료하는 과정이 필요함
                     }
@@ -116,5 +116,10 @@ public partial class LoginForm : Form
                 Console.WriteLine(ex.ToString());
             }
         }
+    }
+
+    private void LoginForm_Shown(object sender, EventArgs e)
+    {
+        this.tb_StaffCode.Focus();
     }
 }

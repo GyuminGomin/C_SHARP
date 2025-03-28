@@ -11,6 +11,11 @@ namespace WindowsFormCSharp
             return "[" + string.Join(", ", array) + "]";
         }
 
+        public static string ToStringCustom<T>(this List<T> list)
+        {
+            return "[" + string.Join(", ", list) + "]";
+        }
+
         // Extract number array from array
         public static string[] ExtractNumbersCustom(this string[] array)
         {

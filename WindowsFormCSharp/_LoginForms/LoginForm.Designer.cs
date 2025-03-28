@@ -100,6 +100,7 @@ partial class LoginForm
         // 
         tb_StaffPwd.Location = new Point(86, 253);
         tb_StaffPwd.Name = "tb_StaffPwd";
+        tb_StaffPwd.PasswordChar = '*';
         tb_StaffPwd.Size = new Size(90, 23);
         tb_StaffPwd.TabIndex = 11;
         tb_StaffPwd.KeyDown += tb_StaffPwd_KeyDown;
@@ -221,8 +222,11 @@ partial class LoginForm
         Controls.Add(label1);
         Controls.Add(tb_Note);
         KeyPreview = true;
+        MaximizeBox = false;
+        MinimizeBox = false;
         Name = "LoginForm";
         Text = "SYSTEM LOGIN";
+        Shown += LoginForm_Shown;
         KeyDown += LoginForm_KeyDown;
         panel1.ResumeLayout(false);
         panel1.PerformLayout();

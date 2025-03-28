@@ -7,7 +7,8 @@ namespace WindowsFormCSharp._PCMStartForms
     {
         private PrinterSettings printerSettings = new PrinterSettings();
         private PageSettings pageSettings;
-        public PCMStartForm()
+
+        public PCMStartForm(PrinterSettings ps1, PageSettings ps2)
         {
             InitializeComponent();
 
@@ -17,6 +18,12 @@ namespace WindowsFormCSharp._PCMStartForms
             Bitmap[] bmps = ImageManage.ImgtoBitmap(images);
             this.pb_logo.Image = bmps[0];
 
+            if (ps1 == null) { }
+            else
+            {
+                printerSettings = ps1;
+                pageSettings = ps2;
+            }
             // comboBox 프린트 설정
             PrinterManage printManage = new PrinterManage();
             printManage.PrintSetting(this.cbm_01, this.rtb_02, this.btn_01, printerSettings, pageSettings);
@@ -24,22 +31,30 @@ namespace WindowsFormCSharp._PCMStartForms
 
         // TODO tab index 이동 할 때, 프린트 설정은 이동하지 않도록 설정할 필요가 있음
 
-        private void btn_bowl_Click(object sender, EventArgs e)
-        {
-            // TODO 클릭시 프린트 정보를 보내 주는데, 다른 창이 열려있을 때도 전역적으로 공유 할 수 있도록 설정해야함
-            new PCMLabelForm(printerSettings, pageSettings).Show();
-        }
+        
 
         private void PCMStartForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
-                if (MessageBox.Show("PCMStartForm 창을 닫겠습니까?", "창 닫기", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("앱을 종료하시겠습니까?", "종료", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    // 현재 창 닫기
-                    this.FindForm().Close();
+                    // 앱 종료
+                    Application.Exit();
                 }
             }
+        }
+        // 기본라벨발행
+        private void btn_bowl_Click(object sender, EventArgs e)
+        {
+            new PCMLabelForm(printerSettings, pageSettings).Show();
+            this.Close(); // 기존 창 닫기
+        }
+        // 일반냉장라벨발행
+        private void btn_refrigeration_Click(object sender, EventArgs e)
+        {
+            new PCMLabelProdStdForm(printerSettings, pageSettings).Show();
+            this.Close();
         }
     }
 }

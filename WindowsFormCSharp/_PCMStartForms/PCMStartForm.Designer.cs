@@ -144,6 +144,7 @@
             btn_refrigeration.TabIndex = 32;
             btn_refrigeration.Text = "일반냉장 라벨발행 (생산출고)";
             btn_refrigeration.UseVisualStyleBackColor = false;
+            btn_refrigeration.Click += btn_refrigeration_Click;
             // 
             // btn_bowl
             // 
@@ -210,6 +211,8 @@
             Controls.Add(cbm_01);
             Controls.Add(l_print);
             KeyPreview = true;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "PCMStartForm";
             Text = "PCMStartForm";
             KeyDown += PCMStartForm_KeyDown;

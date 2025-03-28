@@ -5,10 +5,10 @@ using System.Data;
 
 namespace WindowsFormCSharp._PCMLabel
 {
-    class PCMLabelQuery : Query
+    class PCMLabelProdStdQuery : Query
     {
         private readonly ODBC _context;
-        public PCMLabelQuery()
+        public PCMLabelProdStdQuery()
         {
             _context = ODBC.GetInstance();
         }
@@ -146,6 +146,29 @@ namespace WindowsFormCSharp._PCMLabel
                    AND KIND_CD = 7
                    AND ENG_NAME LIKE '%1등급이상%'
                  ORDER BY ITEM_CD
+                """;
+
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public List<Dictionary<string, object>> GetTraceNoIsExistQry(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelQuery.GetTraceNoIsExistQry */
+                SELECT NVL(A.TRACE_NO, A.ID_CREATE) TRACE_NO
+                  FROM JOB_DETAIL A, TB_ITEM B
+                 WHERE A.JOB_DATE = :TEMP_DATE
+                   AND A.KIND_CD = 7
+                   AND A.ITEM_CD = B.ITEM_CD
+                   AND SUBSTR(NVL(A.TRACE_NO, A.ID_CREATE), 0, 2) = :GBN
+                 GROUP BY NVL(A.TRACE_NO, A.ID_CREATE)
                 """;
 
                 return _context.SelectRawSql(sql, input, transaction);
@@ -302,7 +325,7 @@ namespace WindowsFormCSharp._PCMLabel
             {
                 string sql = """
                 /* PCMLabelQuery.GetYukGagongKillAreaL1Qry */
-                SELECT (XMLAGG(XMLELEMENT(x,',',TEXT) ORDER BY ORDB).EXTRACT('//TEXT()').getstringVal(), 2) KILL_AREA
+                SELECT SUBSTR(XMLAGG(XMLELEMENT(x,',',TEXT) ORDER BY ORDB).EXTRACT('//text()').GETSTRINGVAL(), 2) KILL_AREA
                   FROM (
                         SELECT DISTINCT DECODE(SUBSTR(J.ID_MODIFY, 9, 4), '9195', '부경축산물공판장'
                                                                         , '9925', '(주)제일리버스') TEXT,

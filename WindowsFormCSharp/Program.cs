@@ -20,8 +20,8 @@ static class Program
         Task.Run(() => ProcessConsoleInput());
 
         ApplicationConfiguration.Initialize();
-        //Application.Run(new _LoginForms.LoginForm()); // 로그인 절차 생략
-        Application.Run(new _PCMStartForms.PCMStartForm());
+        Application.Run(new _LoginForms.LoginForm()); // 로그인 절차 생략
+        //Application.Run(new _PCMStartForms.PCMStartForm(null, null));
     }
 
     [System.Runtime.InteropServices.DllImport("kernel32.dll")]

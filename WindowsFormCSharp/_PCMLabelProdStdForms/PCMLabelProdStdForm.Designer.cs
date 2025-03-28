@@ -29,11 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PCMLabelForm));
-            groupBox3 = new GroupBox();
-            dgv_subItem = new DataGridView();
             btn_kindCd2 = new Button();
             btn_kindCd1 = new Button();
-            cb_coupang = new CheckBox();
             dgv_item = new DataGridView();
             groupBox1 = new GroupBox();
             groupBox8 = new GroupBox();
@@ -42,9 +39,8 @@
             mtb_traceNo = new MaskedTextBox();
             label1 = new Label();
             btn_frzDiv2 = new Button();
-            btn_frzDiv1 = new Button();
             panel2 = new Panel();
-            button5 = new Button();
+            btn_print = new Button();
             mtb_printCnt = new MaskedTextBox();
             label7 = new Label();
             mtb_weight = new MaskedTextBox();
@@ -60,27 +56,22 @@
             groupBox2 = new GroupBox();
             dtp_orderDate = new DateTimePicker();
             groupBox4 = new GroupBox();
-            cb_longSize = new CheckBox();
-            cb_88 = new CheckBox();
-            label8 = new Label();
-            mtb_orderQtyNotEvery = new MaskedTextBox();
             groupBox5 = new GroupBox();
-            cb_7day = new CheckBox();
-            label9 = new Label();
-            mtb_orderQtyEvery = new MaskedTextBox();
-            rdb_07 = new RadioButton();
-            rdb_08 = new RadioButton();
-            rdb_09 = new RadioButton();
-            rdb_10 = new RadioButton();
-            groupBox6 = new GroupBox();
-            button6 = new Button();
-            button7 = new Button();
+            btn_popupPrint = new Button();
+            btn_exit = new Button();
             tb_status = new TextBox();
             groupBox7 = new GroupBox();
             ppd_printView = new PrintPreviewDialog();
             pd_printDocument = new System.Drawing.Printing.PrintDocument();
-            groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgv_subItem).BeginInit();
+            label10 = new Label();
+            button1 = new Button();
+            dataGridView1 = new DataGridView();
+            groupBox6 = new GroupBox();
+            dataGridView2 = new DataGridView();
+            button2 = new Button();
+            button3 = new Button();
+            button4 = new Button();
+            dgv_subItem = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgv_item).BeginInit();
             groupBox1.SuspendLayout();
             groupBox8.SuspendLayout();
@@ -90,32 +81,12 @@
             groupBox2.SuspendLayout();
             groupBox4.SuspendLayout();
             groupBox5.SuspendLayout();
-            groupBox6.SuspendLayout();
             groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_subItem).BeginInit();
             SuspendLayout();
-            // 
-            // groupBox3
-            // 
-            groupBox3.Anchor = AnchorStyles.None;
-            groupBox3.Controls.Add(dgv_subItem);
-            groupBox3.Location = new Point(569, 0);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(600, 527);
-            groupBox3.TabIndex = 3;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "상세제품";
-            // 
-            // dgv_subItem
-            // 
-            dgv_subItem.Anchor = AnchorStyles.None;
-            dgv_subItem.BorderStyle = BorderStyle.Fixed3D;
-            dgv_subItem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_subItem.Location = new Point(6, 22);
-            dgv_subItem.Name = "dgv_subItem";
-            dgv_subItem.Size = new Size(588, 499);
-            dgv_subItem.TabIndex = 5;
-            dgv_subItem.CellClick += dgv_subItem_CellClick;
-            dgv_subItem.CellDoubleClick += dgv_subItem_CellDoubleClick;
             // 
             // btn_kindCd2
             // 
@@ -135,6 +106,7 @@
             // 
             btn_kindCd1.Enabled = false;
             btn_kindCd1.Font = new Font("맑은 고딕", 15F, FontStyle.Bold);
+            btn_kindCd1.ForeColor = Color.Black;
             btn_kindCd1.Location = new Point(117, 17);
             btn_kindCd1.Name = "btn_kindCd1";
             btn_kindCd1.Size = new Size(100, 55);
@@ -143,19 +115,6 @@
             btn_kindCd1.TextAlign = ContentAlignment.TopCenter;
             btn_kindCd1.UseVisualStyleBackColor = true;
             btn_kindCd1.Click += btn_kindCd1_Click;
-            // 
-            // cb_coupang
-            // 
-            cb_coupang.AutoSize = true;
-            cb_coupang.Font = new Font("맑은 고딕", 15F);
-            cb_coupang.ForeColor = Color.Red;
-            cb_coupang.Location = new Point(450, 39);
-            cb_coupang.Name = "cb_coupang";
-            cb_coupang.Size = new Size(71, 32);
-            cb_coupang.TabIndex = 2;
-            cb_coupang.Text = "쿠팡";
-            cb_coupang.UseVisualStyleBackColor = true;
-            cb_coupang.CheckedChanged += cb_coupang_CheckedChanged;
             // 
             // dgv_item
             // 
@@ -171,11 +130,12 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.None;
+            groupBox1.Controls.Add(label10);
             groupBox1.Controls.Add(dgv_item);
-            groupBox1.Controls.Add(cb_coupang);
             groupBox1.Controls.Add(btn_kindCd1);
             groupBox1.Controls.Add(btn_kindCd2);
-            groupBox1.Location = new Point(5, 0);
+            groupBox1.ForeColor = Color.White;
+            groupBox1.Location = new Point(5, 1);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(554, 309);
             groupBox1.TabIndex = 0;
@@ -186,9 +146,10 @@
             // 
             groupBox8.Anchor = AnchorStyles.None;
             groupBox8.Controls.Add(dgv_traceInfo);
-            groupBox8.Location = new Point(5, 315);
+            groupBox8.ForeColor = Color.White;
+            groupBox8.Location = new Point(285, 313);
             groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(554, 132);
+            groupBox8.Size = new Size(274, 104);
             groupBox8.TabIndex = 19;
             groupBox8.TabStop = false;
             groupBox8.Text = "재고정보";
@@ -198,9 +159,9 @@
             dgv_traceInfo.BorderStyle = BorderStyle.Fixed3D;
             dgv_traceInfo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_traceInfo.ColumnHeadersVisible = false;
-            dgv_traceInfo.Location = new Point(6, 21);
+            dgv_traceInfo.Location = new Point(6, 20);
             dgv_traceInfo.Name = "dgv_traceInfo";
-            dgv_traceInfo.Size = new Size(542, 104);
+            dgv_traceInfo.Size = new Size(262, 76);
             dgv_traceInfo.TabIndex = 5;
             dgv_traceInfo.CellClick += dgv_traceInfo_CellClick;
             // 
@@ -211,7 +172,6 @@
             panel1.Controls.Add(mtb_traceNo);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(btn_frzDiv2);
-            panel1.Controls.Add(btn_frzDiv1);
             panel1.Location = new Point(6, 20);
             panel1.Name = "panel1";
             panel1.Size = new Size(261, 82);
@@ -224,12 +184,15 @@
             mtb_traceNo.Size = new Size(160, 23);
             mtb_traceNo.TabIndex = 4;
             mtb_traceNo.TextAlign = HorizontalAlignment.Center;
+            mtb_traceNo.Click += mtb_selectAll;
+            mtb_traceNo.Enter += mtb_selectAll;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.Turquoise;
             label1.BorderStyle = BorderStyle.Fixed3D;
+            label1.ForeColor = Color.Black;
             label1.Location = new Point(3, 54);
             label1.Name = "label1";
             label1.Size = new Size(81, 17);
@@ -239,6 +202,7 @@
             // btn_frzDiv2
             // 
             btn_frzDiv2.Font = new Font("맑은 고딕", 12F);
+            btn_frzDiv2.ForeColor = Color.Black;
             btn_frzDiv2.Location = new Point(134, 5);
             btn_frzDiv2.Name = "btn_frzDiv2";
             btn_frzDiv2.Size = new Size(100, 40);
@@ -247,22 +211,11 @@
             btn_frzDiv2.UseVisualStyleBackColor = true;
             btn_frzDiv2.Click += btn_frzDiv2_Click;
             // 
-            // btn_frzDiv1
-            // 
-            btn_frzDiv1.Font = new Font("맑은 고딕", 12F);
-            btn_frzDiv1.Location = new Point(22, 5);
-            btn_frzDiv1.Name = "btn_frzDiv1";
-            btn_frzDiv1.Size = new Size(100, 40);
-            btn_frzDiv1.TabIndex = 1;
-            btn_frzDiv1.Text = "냉동";
-            btn_frzDiv1.UseVisualStyleBackColor = true;
-            btn_frzDiv1.Click += btn_frzDiv1_Click;
-            // 
             // panel2
             // 
             panel2.BackColor = Color.DarkGray;
             panel2.BorderStyle = BorderStyle.Fixed3D;
-            panel2.Controls.Add(button5);
+            panel2.Controls.Add(btn_print);
             panel2.Controls.Add(mtb_printCnt);
             panel2.Controls.Add(label7);
             panel2.Controls.Add(mtb_weight);
@@ -277,32 +230,39 @@
             panel2.Controls.Add(label2);
             panel2.Location = new Point(6, 110);
             panel2.Name = "panel2";
-            panel2.Size = new Size(261, 259);
+            panel2.Size = new Size(261, 232);
             panel2.TabIndex = 2;
             // 
-            // button5
+            // btn_print
             // 
-            button5.Location = new Point(142, 182);
-            button5.Name = "button5";
-            button5.Size = new Size(106, 67);
-            button5.TabIndex = 16;
-            button5.Text = "라벨\r\n발행";
-            button5.UseVisualStyleBackColor = true;
+            btn_print.BackColor = Color.Red;
+            btn_print.Font = new Font("맑은 고딕", 15F, FontStyle.Bold);
+            btn_print.ForeColor = Color.White;
+            btn_print.Location = new Point(142, 157);
+            btn_print.Name = "btn_print";
+            btn_print.Size = new Size(106, 67);
+            btn_print.TabIndex = 16;
+            btn_print.Text = "라벨\r\n발행";
+            btn_print.UseVisualStyleBackColor = false;
+            btn_print.Click += btn_print_Click;
             // 
             // mtb_printCnt
             // 
-            mtb_printCnt.Location = new Point(69, 185);
+            mtb_printCnt.Location = new Point(69, 159);
             mtb_printCnt.Name = "mtb_printCnt";
             mtb_printCnt.Size = new Size(67, 23);
             mtb_printCnt.TabIndex = 15;
             mtb_printCnt.TextAlign = HorizontalAlignment.Right;
             mtb_printCnt.ValidatingType = typeof(int);
+            mtb_printCnt.Click += mtb_selectAll;
+            mtb_printCnt.Enter += mtb_selectAll;
             // 
             // label7
             // 
             label7.BackColor = Color.Turquoise;
             label7.BorderStyle = BorderStyle.Fixed3D;
-            label7.Location = new Point(5, 188);
+            label7.ForeColor = Color.Black;
+            label7.Location = new Point(5, 162);
             label7.Name = "label7";
             label7.Size = new Size(57, 17);
             label7.TabIndex = 14;
@@ -310,7 +270,7 @@
             // 
             // mtb_weight
             // 
-            mtb_weight.Location = new Point(69, 152);
+            mtb_weight.Location = new Point(69, 130);
             mtb_weight.Name = "mtb_weight";
             mtb_weight.ReadOnly = true;
             mtb_weight.Size = new Size(179, 23);
@@ -321,7 +281,8 @@
             // 
             label6.BackColor = Color.Turquoise;
             label6.BorderStyle = BorderStyle.Fixed3D;
-            label6.Location = new Point(5, 155);
+            label6.ForeColor = Color.Black;
+            label6.Location = new Point(5, 133);
             label6.Name = "label6";
             label6.Size = new Size(57, 17);
             label6.TabIndex = 12;
@@ -330,7 +291,7 @@
             // mtb_count
             // 
             mtb_count.InsertKeyMode = InsertKeyMode.Insert;
-            mtb_count.Location = new Point(69, 120);
+            mtb_count.Location = new Point(69, 101);
             mtb_count.Name = "mtb_count";
             mtb_count.PromptChar = ' ';
             mtb_count.ReadOnly = true;
@@ -343,7 +304,8 @@
             // 
             label5.BackColor = Color.Turquoise;
             label5.BorderStyle = BorderStyle.Fixed3D;
-            label5.Location = new Point(5, 122);
+            label5.ForeColor = Color.Black;
+            label5.Location = new Point(5, 104);
             label5.Name = "label5";
             label5.Size = new Size(57, 17);
             label5.TabIndex = 10;
@@ -351,7 +313,7 @@
             // 
             // mtb_boxWt
             // 
-            mtb_boxWt.Location = new Point(69, 86);
+            mtb_boxWt.Location = new Point(69, 72);
             mtb_boxWt.Name = "mtb_boxWt";
             mtb_boxWt.ReadOnly = true;
             mtb_boxWt.Size = new Size(179, 23);
@@ -362,7 +324,8 @@
             // 
             label4.BackColor = Color.Turquoise;
             label4.BorderStyle = BorderStyle.Fixed3D;
-            label4.Location = new Point(5, 89);
+            label4.ForeColor = Color.Black;
+            label4.Location = new Point(5, 75);
             label4.Name = "label4";
             label4.Size = new Size(57, 17);
             label4.TabIndex = 8;
@@ -370,7 +333,7 @@
             // 
             // mtb_itemCd
             // 
-            mtb_itemCd.Location = new Point(69, 51);
+            mtb_itemCd.Location = new Point(69, 43);
             mtb_itemCd.Name = "mtb_itemCd";
             mtb_itemCd.Size = new Size(179, 23);
             mtb_itemCd.TabIndex = 7;
@@ -380,7 +343,8 @@
             // 
             label3.BackColor = Color.Turquoise;
             label3.BorderStyle = BorderStyle.Fixed3D;
-            label3.Location = new Point(5, 54);
+            label3.ForeColor = Color.Black;
+            label3.Location = new Point(5, 46);
             label3.Name = "label3";
             label3.Size = new Size(57, 17);
             label3.TabIndex = 6;
@@ -402,6 +366,7 @@
             // 
             label2.BackColor = Color.Turquoise;
             label2.BorderStyle = BorderStyle.Fixed3D;
+            label2.ForeColor = Color.Black;
             label2.Location = new Point(5, 17);
             label2.Name = "label2";
             label2.Size = new Size(57, 17);
@@ -413,12 +378,13 @@
             groupBox2.Anchor = AnchorStyles.None;
             groupBox2.Controls.Add(panel2);
             groupBox2.Controls.Add(panel1);
-            groupBox2.Location = new Point(6, 453);
+            groupBox2.ForeColor = Color.White;
+            groupBox2.Location = new Point(6, 313);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(273, 379);
+            groupBox2.Size = new Size(273, 351);
             groupBox2.TabIndex = 2;
             groupBox2.TabStop = false;
-            groupBox2.Text = "라벨정보";
+            groupBox2.Text = "박스정보";
             // 
             // dtp_orderDate
             // 
@@ -434,181 +400,55 @@
             // 
             groupBox4.Anchor = AnchorStyles.None;
             groupBox4.Controls.Add(dtp_orderDate);
-            groupBox4.Location = new Point(285, 453);
+            groupBox4.ForeColor = Color.White;
+            groupBox4.Location = new Point(285, 423);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(274, 74);
             groupBox4.TabIndex = 4;
             groupBox4.TabStop = false;
             groupBox4.Text = "주문일자";
             // 
-            // cb_longSize
-            // 
-            cb_longSize.AutoSize = true;
-            cb_longSize.Location = new Point(22, 29);
-            cb_longSize.Name = "cb_longSize";
-            cb_longSize.Size = new Size(90, 19);
-            cb_longSize.TabIndex = 0;
-            cb_longSize.Text = "大용기 라벨";
-            cb_longSize.UseVisualStyleBackColor = true;
-            cb_longSize.Click += cb_longSize_Click;
-            // 
-            // cb_88
-            // 
-            cb_88.AutoSize = true;
-            cb_88.Location = new Point(154, 29);
-            cb_88.Name = "cb_88";
-            cb_88.Size = new Size(92, 19);
-            cb_88.TabIndex = 1;
-            cb_88.Text = "88코드 삭제";
-            cb_88.UseVisualStyleBackColor = true;
-            // 
-            // label8
-            // 
-            label8.BackColor = Color.FromArgb(204, 204, 204);
-            label8.Location = new Point(19, 64);
-            label8.Name = "label8";
-            label8.Size = new Size(50, 15);
-            label8.TabIndex = 2;
-            label8.Text = "발주량";
-            label8.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // mtb_orderQtyNotEvery
-            // 
-            mtb_orderQtyNotEvery.Location = new Point(74, 60);
-            mtb_orderQtyNotEvery.Name = "mtb_orderQtyNotEvery";
-            mtb_orderQtyNotEvery.ReadOnly = true;
-            mtb_orderQtyNotEvery.Size = new Size(57, 23);
-            mtb_orderQtyNotEvery.TabIndex = 16;
-            mtb_orderQtyNotEvery.TextAlign = HorizontalAlignment.Right;
-            // 
             // groupBox5
             // 
             groupBox5.Anchor = AnchorStyles.None;
-            groupBox5.Controls.Add(mtb_orderQtyNotEvery);
-            groupBox5.Controls.Add(label8);
-            groupBox5.Controls.Add(cb_88);
-            groupBox5.Controls.Add(cb_longSize);
-            groupBox5.Location = new Point(285, 525);
+            groupBox5.Controls.Add(dataGridView1);
+            groupBox5.ForeColor = Color.White;
+            groupBox5.Location = new Point(285, 500);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(274, 98);
+            groupBox5.Size = new Size(274, 308);
             groupBox5.TabIndex = 5;
             groupBox5.TabStop = false;
-            groupBox5.Text = "일반 라벨 발행 정보";
+            groupBox5.Text = "일반발주 주문리스트";
             // 
-            // cb_7day
+            // btn_popupPrint
             // 
-            cb_7day.AutoSize = true;
-            cb_7day.Checked = true;
-            cb_7day.CheckState = CheckState.Checked;
-            cb_7day.Location = new Point(18, 36);
-            cb_7day.Name = "cb_7day";
-            cb_7day.Size = new Size(114, 19);
-            cb_7day.TabIndex = 0;
-            cb_7day.Text = "에브리데이 라벨";
-            cb_7day.UseVisualStyleBackColor = true;
-            cb_7day.Click += cb_7day_Click;
+            btn_popupPrint.Font = new Font("맑은 고딕", 12F);
+            btn_popupPrint.ForeColor = Color.Black;
+            btn_popupPrint.Location = new Point(16, 20);
+            btn_popupPrint.Name = "btn_popupPrint";
+            btn_popupPrint.Size = new Size(100, 40);
+            btn_popupPrint.TabIndex = 0;
+            btn_popupPrint.Text = "프린터설정";
+            btn_popupPrint.UseVisualStyleBackColor = true;
+            btn_popupPrint.Click += btn_popupPrint_Click;
             // 
-            // label9
+            // btn_exit
             // 
-            label9.BackColor = Color.FromArgb(204, 204, 204);
-            label9.Location = new Point(18, 80);
-            label9.Name = "label9";
-            label9.Size = new Size(50, 15);
-            label9.TabIndex = 2;
-            label9.Text = "발주량";
-            label9.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // mtb_orderQtyEvery
-            // 
-            mtb_orderQtyEvery.Location = new Point(73, 76);
-            mtb_orderQtyEvery.Name = "mtb_orderQtyEvery";
-            mtb_orderQtyEvery.ReadOnly = true;
-            mtb_orderQtyEvery.Size = new Size(57, 23);
-            mtb_orderQtyEvery.TabIndex = 16;
-            mtb_orderQtyEvery.TextAlign = HorizontalAlignment.Right;
-            // 
-            // rdb_07
-            // 
-            rdb_07.AutoSize = true;
-            rdb_07.Checked = true;
-            rdb_07.Location = new Point(182, 18);
-            rdb_07.Name = "rdb_07";
-            rdb_07.Size = new Size(51, 19);
-            rdb_07.TabIndex = 17;
-            rdb_07.TabStop = true;
-            rdb_07.Text = "07일\r\n";
-            rdb_07.UseVisualStyleBackColor = true;
-            // 
-            // rdb_08
-            // 
-            rdb_08.AutoSize = true;
-            rdb_08.Location = new Point(182, 40);
-            rdb_08.Name = "rdb_08";
-            rdb_08.Size = new Size(51, 19);
-            rdb_08.TabIndex = 18;
-            rdb_08.Text = "08일\r\n";
-            rdb_08.UseVisualStyleBackColor = true;
-            // 
-            // rdb_09
-            // 
-            rdb_09.AutoSize = true;
-            rdb_09.Location = new Point(182, 62);
-            rdb_09.Name = "rdb_09";
-            rdb_09.Size = new Size(51, 19);
-            rdb_09.TabIndex = 19;
-            rdb_09.Text = "09일\r\n";
-            rdb_09.UseVisualStyleBackColor = true;
-            // 
-            // rdb_10
-            // 
-            rdb_10.AutoSize = true;
-            rdb_10.Location = new Point(182, 85);
-            rdb_10.Name = "rdb_10";
-            rdb_10.Size = new Size(51, 19);
-            rdb_10.TabIndex = 20;
-            rdb_10.Text = "10일\r\n";
-            rdb_10.UseVisualStyleBackColor = true;
-            // 
-            // groupBox6
-            // 
-            groupBox6.Anchor = AnchorStyles.None;
-            groupBox6.Controls.Add(rdb_10);
-            groupBox6.Controls.Add(rdb_09);
-            groupBox6.Controls.Add(rdb_08);
-            groupBox6.Controls.Add(rdb_07);
-            groupBox6.Controls.Add(mtb_orderQtyEvery);
-            groupBox6.Controls.Add(label9);
-            groupBox6.Controls.Add(cb_7day);
-            groupBox6.Location = new Point(285, 621);
-            groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(274, 113);
-            groupBox6.TabIndex = 17;
-            groupBox6.TabStop = false;
-            groupBox6.Text = "에브리 라벨 발행 정보";
-            // 
-            // button6
-            // 
-            button6.Font = new Font("맑은 고딕", 12F);
-            button6.Location = new Point(30, 20);
-            button6.Name = "button6";
-            button6.Size = new Size(100, 40);
-            button6.TabIndex = 0;
-            button6.Text = "프린터설정";
-            button6.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            button7.Font = new Font("맑은 고딕", 12F);
-            button7.Location = new Point(145, 20);
-            button7.Name = "button7";
-            button7.Size = new Size(100, 40);
-            button7.TabIndex = 1;
-            button7.Text = "종료";
-            button7.UseVisualStyleBackColor = true;
+            btn_exit.Font = new Font("맑은 고딕", 12F);
+            btn_exit.ForeColor = Color.Black;
+            btn_exit.Location = new Point(16, 66);
+            btn_exit.Name = "btn_exit";
+            btn_exit.Size = new Size(240, 40);
+            btn_exit.TabIndex = 1;
+            btn_exit.Text = "종료";
+            btn_exit.UseVisualStyleBackColor = true;
+            btn_exit.Click += btn_exit_Click;
             // 
             // tb_status
             // 
-            tb_status.Location = new Point(10, 67);
+            tb_status.BackColor = Color.Yellow;
+            tb_status.BorderStyle = BorderStyle.FixedSingle;
+            tb_status.Location = new Point(10, 112);
             tb_status.Name = "tb_status";
             tb_status.Size = new Size(257, 23);
             tb_status.TabIndex = 2;
@@ -616,12 +456,14 @@
             // groupBox7
             // 
             groupBox7.Anchor = AnchorStyles.None;
+            groupBox7.Controls.Add(button1);
             groupBox7.Controls.Add(tb_status);
-            groupBox7.Controls.Add(button7);
-            groupBox7.Controls.Add(button6);
-            groupBox7.Location = new Point(285, 732);
+            groupBox7.Controls.Add(btn_exit);
+            groupBox7.Controls.Add(btn_popupPrint);
+            groupBox7.ForeColor = Color.White;
+            groupBox7.Location = new Point(6, 662);
             groupBox7.Name = "groupBox7";
-            groupBox7.Size = new Size(274, 100);
+            groupBox7.Size = new Size(274, 146);
             groupBox7.TabIndex = 18;
             groupBox7.TabStop = false;
             groupBox7.Text = "기타정보";
@@ -640,29 +482,129 @@
             // 
             pd_printDocument.PrintPage += pd_printDocument_PrintPage;
             // 
+            // label10
+            // 
+            label10.BorderStyle = BorderStyle.Fixed3D;
+            label10.Font = new Font("맑은 고딕", 21F);
+            label10.ForeColor = Color.White;
+            label10.Location = new Point(290, 20);
+            label10.Name = "label10";
+            label10.Size = new Size(258, 45);
+            label10.TabIndex = 5;
+            label10.Text = "일반냉장발주 라벨";
+            label10.TextAlign = ContentAlignment.TopCenter;
+            // 
+            // button1
+            // 
+            button1.Font = new Font("맑은 고딕", 12F);
+            button1.ForeColor = Color.Black;
+            button1.Location = new Point(157, 20);
+            button1.Name = "button1";
+            button1.Size = new Size(100, 40);
+            button1.TabIndex = 3;
+            button1.Text = "통 계";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.BorderStyle = BorderStyle.Fixed3D;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.ColumnHeadersVisible = false;
+            dataGridView1.Location = new Point(6, 17);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(262, 280);
+            dataGridView1.TabIndex = 17;
+            // 
+            // groupBox6
+            // 
+            groupBox6.Anchor = AnchorStyles.None;
+            groupBox6.Controls.Add(button4);
+            groupBox6.Controls.Add(button3);
+            groupBox6.Controls.Add(button2);
+            groupBox6.Controls.Add(dataGridView2);
+            groupBox6.ForeColor = Color.White;
+            groupBox6.Location = new Point(569, 500);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Size = new Size(600, 308);
+            groupBox6.TabIndex = 20;
+            groupBox6.TabStop = false;
+            groupBox6.Text = "생산정보";
+            // 
+            // dataGridView2
+            // 
+            dataGridView2.BorderStyle = BorderStyle.Fixed3D;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.ColumnHeadersVisible = false;
+            dataGridView2.Location = new Point(6, 58);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.Size = new Size(588, 239);
+            dataGridView2.TabIndex = 17;
+            // 
+            // button2
+            // 
+            button2.Font = new Font("맑은 고딕", 12F);
+            button2.ForeColor = Color.Black;
+            button2.Location = new Point(6, 17);
+            button2.Name = "button2";
+            button2.Size = new Size(125, 33);
+            button2.TabIndex = 18;
+            button2.Text = "조회";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Font = new Font("맑은 고딕", 12F);
+            button3.ForeColor = Color.Black;
+            button3.Location = new Point(137, 17);
+            button3.Name = "button3";
+            button3.Size = new Size(125, 33);
+            button3.TabIndex = 19;
+            button3.Text = "저장";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            button4.Font = new Font("맑은 고딕", 12F);
+            button4.ForeColor = Color.Black;
+            button4.Location = new Point(268, 17);
+            button4.Name = "button4";
+            button4.Size = new Size(125, 33);
+            button4.TabIndex = 20;
+            button4.Text = "삭제";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // dgv_subItem
+            // 
+            dgv_subItem.Anchor = AnchorStyles.None;
+            dgv_subItem.BorderStyle = BorderStyle.Fixed3D;
+            dgv_subItem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_subItem.Location = new Point(571, 9);
+            dgv_subItem.Name = "dgv_subItem";
+            dgv_subItem.Size = new Size(598, 488);
+            dgv_subItem.TabIndex = 21;
+            // 
             // PCMLabelForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
-            BackColor = Color.Gray;
+            BackColor = Color.Green;
             ClientSize = new Size(1184, 839);
+            Controls.Add(dgv_subItem);
+            Controls.Add(groupBox6);
             Controls.Add(groupBox8);
             Controls.Add(groupBox7);
-            Controls.Add(groupBox6);
             Controls.Add(groupBox5);
             Controls.Add(groupBox4);
-            Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
+            KeyPreview = true;
             Name = "PCMLabelForm";
-            Text = "PCMLabelForm";
+            Text = "PCMLabelProdStdForm";
+            FormClosing += PCMLabelForm_FormClosing;
             Load += PCMLabelForm_Load;
-            groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgv_subItem).EndInit();
+            KeyDown += PCMLabelForm_KeyDown;
             ((System.ComponentModel.ISupportInitialize)dgv_item).EndInit();
             groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             groupBox8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgv_traceInfo).EndInit();
             panel1.ResumeLayout(false);
@@ -672,19 +614,18 @@
             groupBox2.ResumeLayout(false);
             groupBox4.ResumeLayout(false);
             groupBox5.ResumeLayout(false);
-            groupBox5.PerformLayout();
-            groupBox6.ResumeLayout(false);
-            groupBox6.PerformLayout();
             groupBox7.ResumeLayout(false);
             groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            groupBox6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_subItem).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-        private GroupBox groupBox3;
         private Button btn_kindCd2;
         private Button btn_kindCd1;
-        private CheckBox cb_coupang;
         private DataGridView dgv_item;
         private GroupBox groupBox1;
         private GroupBox groupBox8;
@@ -692,9 +633,8 @@
         private MaskedTextBox mtb_traceNo;
         private Label label1;
         private Button btn_frzDiv2;
-        private Button btn_frzDiv1;
         private Panel panel2;
-        private Button button5;
+        private Button btn_print;
         private MaskedTextBox mtb_printCnt;
         private Label label7;
         private MaskedTextBox mtb_weight;
@@ -710,26 +650,22 @@
         private GroupBox groupBox2;
         private DateTimePicker dtp_orderDate;
         private GroupBox groupBox4;
-        private CheckBox cb_longSize;
-        private CheckBox cb_88;
-        private Label label8;
-        private MaskedTextBox mtb_orderQtyNotEvery;
         private GroupBox groupBox5;
-        private CheckBox cb_7day;
-        private Label label9;
-        private MaskedTextBox mtb_orderQtyEvery;
-        private RadioButton rdb_07;
-        private RadioButton rdb_08;
-        private RadioButton rdb_09;
-        private RadioButton rdb_10;
-        private GroupBox groupBox6;
-        private Button button6;
-        private Button button7;
+        private Button btn_popupPrint;
+        private Button btn_exit;
         private TextBox tb_status;
         private GroupBox groupBox7;
-        private DataGridView dgv_subItem;
         private DataGridView dgv_traceInfo;
         private PrintPreviewDialog ppd_printView;
         private System.Drawing.Printing.PrintDocument pd_printDocument;
+        private Label label10;
+        private Button button1;
+        private DataGridView dataGridView1;
+        private GroupBox groupBox6;
+        private DataGridView dataGridView2;
+        private Button button4;
+        private Button button3;
+        private Button button2;
+        private DataGridView dgv_subItem;
     }
 }
