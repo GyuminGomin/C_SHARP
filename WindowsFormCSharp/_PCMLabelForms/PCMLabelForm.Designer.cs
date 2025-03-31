@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormCSharp._PCMLabel
 {
-    partial class PCMLabelProdStdForm
+    partial class PCMLabelForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PCMLabelProdStdForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PCMLabelForm));
             groupBox3 = new GroupBox();
             dgv_subItem = new DataGridView();
             btn_kindCd2 = new Button();

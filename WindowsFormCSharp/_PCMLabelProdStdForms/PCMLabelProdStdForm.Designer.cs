@@ -1,6 +1,6 @@
-﻿namespace WindowsFormCSharp._PCMLabel
+﻿namespace WindowsFormCSharp._PCMLabelProdStdForms
 {
-    partial class PCMLabelForm
+    partial class PCMLabelProdStdForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PCMLabelForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PCMLabelProdStdForm));
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
             btn_kindCd2 = new Button();
             btn_kindCd1 = new Button();
             dgv_item = new DataGridView();
             groupBox1 = new GroupBox();
+            label10 = new Label();
             groupBox8 = new GroupBox();
             dgv_traceInfo = new DataGridView();
             panel1 = new Panel();
@@ -57,21 +71,39 @@
             dtp_orderDate = new DateTimePicker();
             groupBox4 = new GroupBox();
             groupBox5 = new GroupBox();
+            dgv_list3 = new DataGridView();
             btn_popupPrint = new Button();
             btn_exit = new Button();
             tb_status = new TextBox();
             groupBox7 = new GroupBox();
+            button1 = new Button();
             ppd_printView = new PrintPreviewDialog();
             pd_printDocument = new System.Drawing.Printing.PrintDocument();
-            label10 = new Label();
-            button1 = new Button();
-            dataGridView1 = new DataGridView();
             groupBox6 = new GroupBox();
-            dataGridView2 = new DataGridView();
-            button2 = new Button();
-            button3 = new Button();
+            tableLayoutPanel1 = new TableLayoutPanel();
             button4 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            dgv_list2 = new DataGridView();
+            No = new DataGridViewTextBoxColumn();
+            Column1 = new DataGridViewCheckBoxColumn();
+            OUT_FLAG = new DataGridViewTextBoxColumn();
+            Column3 = new DataGridViewTextBoxColumn();
+            Column4 = new DataGridViewTextBoxColumn();
+            Column11 = new DataGridViewTextBoxColumn();
+            Column5 = new DataGridViewTextBoxColumn();
+            Column6 = new DataGridViewTextBoxColumn();
+            Column7 = new DataGridViewTextBoxColumn();
+            Column8 = new DataGridViewTextBoxColumn();
+            Column9 = new DataGridViewTextBoxColumn();
+            Column10 = new DataGridViewTextBoxColumn();
             dgv_subItem = new DataGridView();
+            label8 = new Label();
+            label9 = new Label();
+            label11 = new Label();
+            label12 = new Label();
+            label13 = new Label();
+            label14 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_item).BeginInit();
             groupBox1.SuspendLayout();
             groupBox8.SuspendLayout();
@@ -81,10 +113,11 @@
             groupBox2.SuspendLayout();
             groupBox4.SuspendLayout();
             groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_list3).BeginInit();
             groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_list2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_subItem).BeginInit();
             SuspendLayout();
             // 
@@ -141,6 +174,18 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "MAIN";
+            // 
+            // label10
+            // 
+            label10.BorderStyle = BorderStyle.Fixed3D;
+            label10.Font = new Font("맑은 고딕", 21F);
+            label10.ForeColor = Color.White;
+            label10.Location = new Point(290, 20);
+            label10.Name = "label10";
+            label10.Size = new Size(258, 45);
+            label10.TabIndex = 5;
+            label10.Text = "일반냉장발주 라벨";
+            label10.TextAlign = ContentAlignment.TopCenter;
             // 
             // groupBox8
             // 
@@ -411,7 +456,7 @@
             // groupBox5
             // 
             groupBox5.Anchor = AnchorStyles.None;
-            groupBox5.Controls.Add(dataGridView1);
+            groupBox5.Controls.Add(dgv_list3);
             groupBox5.ForeColor = Color.White;
             groupBox5.Location = new Point(285, 500);
             groupBox5.Name = "groupBox5";
@@ -419,6 +464,16 @@
             groupBox5.TabIndex = 5;
             groupBox5.TabStop = false;
             groupBox5.Text = "일반발주 주문리스트";
+            // 
+            // dgv_list3
+            // 
+            dgv_list3.BorderStyle = BorderStyle.Fixed3D;
+            dgv_list3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_list3.ColumnHeadersVisible = false;
+            dgv_list3.Location = new Point(6, 17);
+            dgv_list3.Name = "dgv_list3";
+            dgv_list3.Size = new Size(262, 280);
+            dgv_list3.TabIndex = 17;
             // 
             // btn_popupPrint
             // 
@@ -468,6 +523,17 @@
             groupBox7.TabStop = false;
             groupBox7.Text = "기타정보";
             // 
+            // button1
+            // 
+            button1.Font = new Font("맑은 고딕", 12F);
+            button1.ForeColor = Color.Black;
+            button1.Location = new Point(157, 20);
+            button1.Name = "button1";
+            button1.Size = new Size(100, 40);
+            button1.TabIndex = 3;
+            button1.Text = "통 계";
+            button1.UseVisualStyleBackColor = true;
+            // 
             // ppd_printView
             // 
             ppd_printView.AutoScrollMargin = new Size(0, 0);
@@ -482,46 +548,14 @@
             // 
             pd_printDocument.PrintPage += pd_printDocument_PrintPage;
             // 
-            // label10
-            // 
-            label10.BorderStyle = BorderStyle.Fixed3D;
-            label10.Font = new Font("맑은 고딕", 21F);
-            label10.ForeColor = Color.White;
-            label10.Location = new Point(290, 20);
-            label10.Name = "label10";
-            label10.Size = new Size(258, 45);
-            label10.TabIndex = 5;
-            label10.Text = "일반냉장발주 라벨";
-            label10.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // button1
-            // 
-            button1.Font = new Font("맑은 고딕", 12F);
-            button1.ForeColor = Color.Black;
-            button1.Location = new Point(157, 20);
-            button1.Name = "button1";
-            button1.Size = new Size(100, 40);
-            button1.TabIndex = 3;
-            button1.Text = "통 계";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.BorderStyle = BorderStyle.Fixed3D;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.ColumnHeadersVisible = false;
-            dataGridView1.Location = new Point(6, 17);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(262, 280);
-            dataGridView1.TabIndex = 17;
-            // 
             // groupBox6
             // 
             groupBox6.Anchor = AnchorStyles.None;
+            groupBox6.Controls.Add(tableLayoutPanel1);
             groupBox6.Controls.Add(button4);
             groupBox6.Controls.Add(button3);
             groupBox6.Controls.Add(button2);
-            groupBox6.Controls.Add(dataGridView2);
+            groupBox6.Controls.Add(dgv_list2);
             groupBox6.ForeColor = Color.White;
             groupBox6.Location = new Point(569, 500);
             groupBox6.Name = "groupBox6";
@@ -530,37 +564,25 @@
             groupBox6.TabStop = false;
             groupBox6.Text = "생산정보";
             // 
-            // dataGridView2
+            // tableLayoutPanel1
             // 
-            dataGridView2.BorderStyle = BorderStyle.Fixed3D;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.ColumnHeadersVisible = false;
-            dataGridView2.Location = new Point(6, 58);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.Size = new Size(588, 239);
-            dataGridView2.TabIndex = 17;
-            // 
-            // button2
-            // 
-            button2.Font = new Font("맑은 고딕", 12F);
-            button2.ForeColor = Color.Black;
-            button2.Location = new Point(6, 17);
-            button2.Name = "button2";
-            button2.Size = new Size(125, 33);
-            button2.TabIndex = 18;
-            button2.Text = "조회";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            button3.Font = new Font("맑은 고딕", 12F);
-            button3.ForeColor = Color.Black;
-            button3.Location = new Point(137, 17);
-            button3.Name = "button3";
-            button3.Size = new Size(125, 33);
-            button3.TabIndex = 19;
-            button3.Text = "저장";
-            button3.UseVisualStyleBackColor = true;
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.Controls.Add(label14, 2, 1);
+            tableLayoutPanel1.Controls.Add(label13, 1, 1);
+            tableLayoutPanel1.Controls.Add(label12, 0, 1);
+            tableLayoutPanel1.Controls.Add(label11, 2, 0);
+            tableLayoutPanel1.Controls.Add(label9, 1, 0);
+            tableLayoutPanel1.Controls.Add(label8, 0, 0);
+            tableLayoutPanel1.Location = new Point(2, 267);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(333, 38);
+            tableLayoutPanel1.TabIndex = 21;
             // 
             // button4
             // 
@@ -573,6 +595,179 @@
             button4.Text = "삭제";
             button4.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            button3.Font = new Font("맑은 고딕", 12F);
+            button3.ForeColor = Color.Black;
+            button3.Location = new Point(137, 17);
+            button3.Name = "button3";
+            button3.Size = new Size(125, 33);
+            button3.TabIndex = 19;
+            button3.Text = "저장";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Font = new Font("맑은 고딕", 12F);
+            button2.ForeColor = Color.Black;
+            button2.Location = new Point(6, 17);
+            button2.Name = "button2";
+            button2.Size = new Size(125, 33);
+            button2.TabIndex = 18;
+            button2.Text = "조회";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // dgv_list2
+            // 
+            dgv_list2.AllowUserToAddRows = false;
+            dgv_list2.AllowUserToResizeColumns = false;
+            dgv_list2.AllowUserToResizeRows = false;
+            dgv_list2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            dgv_list2.BorderStyle = BorderStyle.Fixed3D;
+            dgv_list2.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.ActiveCaption;
+            dataGridViewCellStyle1.Font = new Font("맑은 고딕", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgv_list2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgv_list2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgv_list2.Columns.AddRange(new DataGridViewColumn[] { No, Column1, OUT_FLAG, Column3, Column4, Column11, Column5, Column6, Column7, Column8, Column9, Column10 });
+            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle13.BackColor = SystemColors.Window;
+            dataGridViewCellStyle13.Font = new Font("맑은 고딕", 9F);
+            dataGridViewCellStyle13.ForeColor = Color.White;
+            dataGridViewCellStyle13.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = DataGridViewTriState.False;
+            dgv_list2.DefaultCellStyle = dataGridViewCellStyle13;
+            dgv_list2.EnableHeadersVisualStyles = false;
+            dgv_list2.Location = new Point(6, 58);
+            dgv_list2.MultiSelect = false;
+            dgv_list2.Name = "dgv_list2";
+            dgv_list2.RowHeadersVisible = false;
+            dgv_list2.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgv_list2.RowTemplate.DefaultCellStyle.ForeColor = Color.Black;
+            dgv_list2.Size = new Size(588, 207);
+            dgv_list2.TabIndex = 17;
+            dgv_list2.CellFormatting += dgv_list2_CellFormatting;
+            // 
+            // No
+            // 
+            No.DataPropertyName = "ROWNUM";
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            No.DefaultCellStyle = dataGridViewCellStyle2;
+            No.HeaderText = "";
+            No.Name = "No";
+            No.ReadOnly = true;
+            No.Width = 18;
+            // 
+            // Column1
+            // 
+            Column1.HeaderText = "";
+            Column1.Name = "Column1";
+            Column1.Resizable = DataGridViewTriState.True;
+            Column1.SortMode = DataGridViewColumnSortMode.Automatic;
+            Column1.Width = 18;
+            // 
+            // OUT_FLAG
+            // 
+            OUT_FLAG.DataPropertyName = "OUT_FLAG";
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            OUT_FLAG.DefaultCellStyle = dataGridViewCellStyle3;
+            OUT_FLAG.HeaderText = "출고";
+            OUT_FLAG.Name = "OUT_FLAG";
+            OUT_FLAG.Width = 55;
+            // 
+            // Column3
+            // 
+            Column3.DataPropertyName = "BOX_NO";
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column3.DefaultCellStyle = dataGridViewCellStyle4;
+            Column3.HeaderText = "박스번호";
+            Column3.Name = "Column3";
+            Column3.ReadOnly = true;
+            Column3.Width = 79;
+            // 
+            // Column4
+            // 
+            Column4.DataPropertyName = "BOX_QTY";
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleRight;
+            Column4.DefaultCellStyle = dataGridViewCellStyle5;
+            Column4.HeaderText = "수량";
+            Column4.Name = "Column4";
+            Column4.ReadOnly = true;
+            Column4.Width = 55;
+            // 
+            // Column11
+            // 
+            Column11.DataPropertyName = "BOX_WT";
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleRight;
+            Column11.DefaultCellStyle = dataGridViewCellStyle6;
+            Column11.HeaderText = "중량";
+            Column11.Name = "Column11";
+            Column11.ReadOnly = true;
+            Column11.Width = 55;
+            // 
+            // Column5
+            // 
+            Column5.DataPropertyName = "TRACE_NO";
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column5.DefaultCellStyle = dataGridViewCellStyle7;
+            Column5.HeaderText = "생산이력번호";
+            Column5.Name = "Column5";
+            Column5.Width = 103;
+            // 
+            // Column6
+            // 
+            Column6.DataPropertyName = "FRZ_DIV";
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column6.DefaultCellStyle = dataGridViewCellStyle8;
+            Column6.HeaderText = "냉장구분";
+            Column6.Name = "Column6";
+            Column6.Width = 79;
+            // 
+            // Column7
+            // 
+            Column7.DataPropertyName = "ITEM_NAME";
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            Column7.DefaultCellStyle = dataGridViewCellStyle9;
+            Column7.HeaderText = "제품코드";
+            Column7.Name = "Column7";
+            Column7.ReadOnly = true;
+            Column7.Width = 79;
+            // 
+            // Column8
+            // 
+            Column8.DataPropertyName = "PROD_DATE";
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column8.DefaultCellStyle = dataGridViewCellStyle10;
+            Column8.HeaderText = "생산일자";
+            Column8.Name = "Column8";
+            Column8.ReadOnly = true;
+            Column8.Width = 79;
+            // 
+            // Column9
+            // 
+            Column9.DataPropertyName = "GRADE";
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column9.DefaultCellStyle = dataGridViewCellStyle11;
+            Column9.HeaderText = "등급";
+            Column9.Name = "Column9";
+            Column9.Width = 55;
+            // 
+            // Column10
+            // 
+            Column10.DataPropertyName = "PACK_NO";
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column10.DefaultCellStyle = dataGridViewCellStyle12;
+            Column10.HeaderText = "묶음번호";
+            Column10.Name = "Column10";
+            Column10.ReadOnly = true;
+            Column10.Width = 79;
+            // 
             // dgv_subItem
             // 
             dgv_subItem.Anchor = AnchorStyles.None;
@@ -582,8 +777,75 @@
             dgv_subItem.Name = "dgv_subItem";
             dgv_subItem.Size = new Size(598, 488);
             dgv_subItem.TabIndex = 21;
+            dgv_subItem.CellClick += dgv_subItem_CellClick;
             // 
-            // PCMLabelForm
+            // label8
+            // 
+            label8.Anchor = AnchorStyles.None;
+            label8.AutoSize = true;
+            label8.Font = new Font("맑은 고딕", 9F);
+            label8.Location = new Point(32, 2);
+            label8.Name = "label8";
+            label8.Size = new Size(47, 15);
+            label8.TabIndex = 0;
+            label8.Text = "총 개수";
+            // 
+            // label9
+            // 
+            label9.Anchor = AnchorStyles.None;
+            label9.AutoSize = true;
+            label9.Font = new Font("맑은 고딕", 9F);
+            label9.Location = new Point(143, 2);
+            label9.Name = "label9";
+            label9.Size = new Size(47, 15);
+            label9.TabIndex = 1;
+            label9.Text = "총 수량";
+            // 
+            // label11
+            // 
+            label11.Anchor = AnchorStyles.None;
+            label11.AutoSize = true;
+            label11.Font = new Font("맑은 고딕", 9F);
+            label11.Location = new Point(254, 2);
+            label11.Name = "label11";
+            label11.Size = new Size(47, 15);
+            label11.TabIndex = 2;
+            label11.Text = "총 중량";
+            // 
+            // label12
+            // 
+            label12.Anchor = AnchorStyles.None;
+            label12.AutoSize = true;
+            label12.Font = new Font("맑은 고딕", 9F);
+            label12.Location = new Point(32, 21);
+            label12.Name = "label12";
+            label12.Size = new Size(47, 15);
+            label12.TabIndex = 3;
+            label12.Text = "총 개수";
+            // 
+            // label13
+            // 
+            label13.Anchor = AnchorStyles.None;
+            label13.AutoSize = true;
+            label13.Font = new Font("맑은 고딕", 9F);
+            label13.Location = new Point(143, 21);
+            label13.Name = "label13";
+            label13.Size = new Size(47, 15);
+            label13.TabIndex = 4;
+            label13.Text = "총 수량";
+            // 
+            // label14
+            // 
+            label14.Anchor = AnchorStyles.None;
+            label14.AutoSize = true;
+            label14.Font = new Font("맑은 고딕", 9F);
+            label14.Location = new Point(254, 21);
+            label14.Name = "label14";
+            label14.Size = new Size(47, 15);
+            label14.TabIndex = 5;
+            label14.Text = "총 중량";
+            // 
+            // PCMLabelProdStdForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -598,7 +860,7 @@
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             KeyPreview = true;
-            Name = "PCMLabelForm";
+            Name = "PCMLabelProdStdForm";
             Text = "PCMLabelProdStdForm";
             FormClosing += PCMLabelForm_FormClosing;
             Load += PCMLabelForm_Load;
@@ -614,11 +876,13 @@
             groupBox2.ResumeLayout(false);
             groupBox4.ResumeLayout(false);
             groupBox5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgv_list3).EndInit();
             groupBox7.ResumeLayout(false);
             groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv_list2).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgv_subItem).EndInit();
             ResumeLayout(false);
         }
@@ -660,12 +924,31 @@
         private System.Drawing.Printing.PrintDocument pd_printDocument;
         private Label label10;
         private Button button1;
-        private DataGridView dataGridView1;
+        private DataGridView dgv_list3;
         private GroupBox groupBox6;
-        private DataGridView dataGridView2;
+        private DataGridView dgv_list2;
         private Button button4;
         private Button button3;
         private Button button2;
         private DataGridView dgv_subItem;
+        private DataGridViewTextBoxColumn No;
+        private DataGridViewCheckBoxColumn Column1;
+        private DataGridViewTextBoxColumn OUT_FLAG;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridViewTextBoxColumn Column11;
+        private DataGridViewTextBoxColumn Column5;
+        private DataGridViewTextBoxColumn Column6;
+        private DataGridViewTextBoxColumn Column7;
+        private DataGridViewTextBoxColumn Column8;
+        private DataGridViewTextBoxColumn Column9;
+        private DataGridViewTextBoxColumn Column10;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label label14;
+        private Label label13;
+        private Label label12;
+        private Label label11;
+        private Label label9;
+        private Label label8;
     }
 }

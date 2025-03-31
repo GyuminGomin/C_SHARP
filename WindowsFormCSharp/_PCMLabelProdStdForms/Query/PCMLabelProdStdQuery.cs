@@ -22,7 +22,7 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             try
             {
                 string sql = """
-                /* PCMLabelQuery.FindProductQry */
+                /* PCMLabelProdStdQuery.FindProductQry */
                 SELECT ITEM_CD,
                        KIND_CD,
                        ITEM_NAME,
@@ -86,10 +86,16 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             try
             {
                 string sql = """
-                /* PCMLabelQuery.FindProduct2Qry */
-                SELECT BOX_NO,
+                /* PCMLabelProdStdQuery.FindProduct2Qry */
+                SELECT ROWNUM,
+                       BOX_NO,
                        PROD_DATE,
                        ITEM_CD,
+                       (
+                        SELECT ITEM_NAME
+                          FROM TB_ITEM T
+                         WHERE T.ITEM_CD = PROD_CAT.ITEM_CD
+                       ) ITEM_NAME,
                        PACK_NO,
                        BOX_FLAG,
                        BOX_QTY,
@@ -119,12 +125,52 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
                 throw;
             }
         }
+
+        public List<Dictionary<string, object>> FindProduct3Qry(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelProdStdQuery.FindProduct3Qry */
+                SELECT 1 CHK,
+                       MAX(D.COMPANY_NAME)||' '||MAX(A.TRANS_MAN) COMPANY_NAME,
+                       MAX(C.ITEM_NAME) ITEM_NAME,
+                       MAX(B.ORDER_QTY) ORDER_QTY,
+                       TO_CHAR(D.NO_COMPANY_SEQ) JUMPO_CODE,
+                       TO_CHAR(A.ORDER_NO) BUNRYU_CODE,
+                       MAX(A.ORDER_NO) ORDER_NO,
+                       B.GRADE
+                  FROM ORDER_REF A,
+                       ORDER_DETAIL B,
+                       TB_ITEM C,
+                       TB_COMPANY D
+                 WHERE A.KIND_CD = 7
+                   AND A.ORDER_DATE = B.ORDER_DATE
+                   AND A.ORDER_NO = B.ORDER_NO
+                   AND B.ITEM_CD = C.ITEM_CD
+                   AND A.NO_COMPANY_SEQ = D.NO_COMPANY_SEQ
+                   AND A.CHANG_NO = 7
+                   AND A.ORDER_DATE = :ORDER_DATE
+                   AND B.ITEM_CD = :ITEM_CD
+                   AND D.COMPANY_NAME NOT LIKE '(주)이마트에브리데이%'
+                   AND A.COUPANG_NO IS NULL
+                 GROUP BY B.ITEM_CD, B.GRADE, D.NO_COMPANY_SEQ, A.ORDER_NO
+                """;
+
+                return _context.SelectRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
         public List<Dictionary<string, object>> GetSubItemCdKindQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
                 string sql = """
-                /* PCMLabelQuery.GetSubItemCdKindQry */
+                /* PCMLabelProdStdQuery.GetSubItemCdKindQry */
                 SELECT ITEM_CD,
                        ITEM_NAME,
                        FRZ_DIV3,
@@ -150,7 +196,7 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             try
             {
                 string sql = """
-                /* PCMLabelQuery.GetItemCdKindQry */
+                /* PCMLabelProdStdQuery.GetItemCdKindQry */
                 SELECT TI.ITEM_NAME,
                        TI.ITEM_CD
                   FROM TB_ITEM TI
@@ -166,25 +212,19 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             }
         }
 
-        
-
-        public List<Dictionary<string, object>> GetSubItemFilterEngNameQry(Dictionary<string, object>? input, IDbTransaction? transaction)
+        public List<Dictionary<string, object>> GetTraceInfoQry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try
             {
                 string sql = """
-                /* PCMLabelQuery.GetSubItemCdKindFilterQry */
-                SELECT ITEM_CD,
-                       ITEM_NAME,
-                       FRZ_DIV3,
-                       ENG_NAME
-                  FROM TB_ITEM TI
-                 WHERE SUBSTR(ITEM_CD,7,2) <> '00'
-                   AND TI.ITEM_MAIN = :ITEM_MAIN
-                   AND PROD_DIV = '1'
-                   AND KIND_CD = 7
-                   AND ENG_NAME LIKE '%1등급이상%'
-                 ORDER BY ITEM_CD
+                /* PCMLabelProdStdQuery.GetTraceInfoQry */
+                SELECT A.ID_CREATE TRACE_NO,
+                       DECODE(INSTR(B.ITEM_NAME, '1+', 1), 0, 3, 2) GRADE
+                  FROM JOB_DETAIL A, TB_ITEM B
+                 WHERE A.JOB_DATE = :TEMP_DATE
+                   AND A.KIND_CD = 7
+                   AND A.ITEM_CD = :ITEM_CD
+                   AND A.ITEM_CD = B.ITEM_CD
                 """;
 
                 return _context.SelectRawSql(sql, input, transaction);
@@ -208,27 +248,6 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
                    AND A.ITEM_CD = B.ITEM_CD
                    AND SUBSTR(NVL(A.TRACE_NO, A.ID_CREATE), 0, 2) = :GBN
                  GROUP BY NVL(A.TRACE_NO, A.ID_CREATE)
-                """;
-
-                return _context.SelectRawSql(sql, input, transaction);
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
-
-        public List<Dictionary<string, object>> GetTraceInfoQry(Dictionary<string, object>? input, IDbTransaction? transaction)
-        {
-            try
-            {
-                string sql = """
-                /* PCMLabelQuery.GetTraceInfoQry */
-                SELECT NVL(A.TRACE_NO, A.ID_CREATE) TRACE_NO
-                  FROM JOB_DETAIL A
-                 WHERE A.JOB_DATE = :TEMP_DATE
-                   AND A.KIND_CD = 7
-                   AND A.ITEM_CD = :ITEM_CD
                 """;
 
                 return _context.SelectRawSql(sql, input, transaction);

@@ -4,13 +4,17 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Policy;
+using WindowsFormCSharp._PCMLabelProdStdForms;
 using WindowsFormCSharp._PCMStartForms;
+using WindowsFormCSharp._PCMLabel;
+using System.Media;
+using System.Threading.Tasks;
 
-namespace WindowsFormCSharp._PCMLabel
+namespace WindowsFormCSharp._PCMLabelProdStdForms
 {
-    public partial class PCMLabelForm : Form
+    public partial class PCMLabelProdStdForm : Form
     {
-        public PCMLabelForm(PrinterSettings ps, PageSettings ps2)
+        public PCMLabelProdStdForm(PrinterSettings ps, PageSettings ps2)
         {
             InitializeComponent();
             // 프린트 설정
@@ -53,114 +57,9 @@ namespace WindowsFormCSharp._PCMLabel
         }
 
         /* ********************---------------------------------------- */
-        // Region : Global Variables 전역 변수
+        // Region : Functions 직접 만든 함수 (Grid Format)
+        // 절대 제일 위에 설정 (디자인과 관련된 부분은)
         /* ********************---------------------------------------- */
-        PCMLabelProdStdQuery pcmLabelProdStdQuery = new PCMLabelProdStdQuery();
-        MySelfLibrary mySelfLibrary = new MySelfLibrary();
-        MySelfStyle mySelfStyle = new MySelfStyle();
-        MyselfDate mySelfDate = new MyselfDate();
-        PrinterManage printerManage = new PrinterManage();
-        private PrinterSettings printerSettings;
-        private PageSettings pageSettings;
-
-        private string item_main; // 대표품목코드
-        private string item_cd; // 제품코드
-        private int print_cnt; // 발행수량
-        private int count; // 수량[Ea]
-        private string group_code; // 그룹코드
-
-        private string temp_date; // 정보 처리를 위한 일자 (작업일자)
-        private string order_date; // 정보 처리를 위한 일자 (주문일자)
-        private int item_kind_cd; // 제품구분 (1: 한우, 2: 돈육)
-        
-        
-        private int frz_div = 2; // 냉장구분(1: 냉동, 2: 냉장)
-
-        private int prevRowIndexDgvItem = 0; // dgv_item (이전 정보)
-        private int prevColindexDgvItem = 0;
-        private int prevRowIndexDgvSub = 0; // dgv_subItem (이전 정보)
-        private int prevColIndexDgvSub = 0;
-        /* ********************---------------------------------------- */
-        // Region : Global Variables 전역 변수 ( DataTable )
-        /* ********************---------------------------------------- */
-        private DataTable dt_list;
-        private DataTable dt_list2;
-        private DataTable dt_itemCdKindList;
-        private DataTable dt_subItem;
-        private DataTable dt_subItemEngName;
-        private DataTable dt_subItemDetail;
-        private DataTable dt_subItemOrderQtyEvery;
-        private DataTable dt_subItemOrderQtyNotEvery;
-        private DataTable dt_yukgagongItem;
-        private DataTable dt_yukgagongKillArea;
-        private DataTable dt_yukgagongTraceInfo;
-        /* ********************---------------------------------------- */
-        // Region : Functions 직접만든 함수
-        /* ********************---------------------------------------- */
-
-        private void fn_init()
-        {
-            this.mtb_count.Focus();
-
-            // 작업일자, 주문일자 초기 값
-            this.dtp_workDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
-            this.dtp_orderDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
-
-            // temp_date, order_date 초기 값 가져오기
-            temp_date = mySelfLibrary.DateTimeFormat(this.dtp_workDate);
-            order_date = mySelfLibrary.DateTimeFormat(this.dtp_orderDate);
-
-            
-
-            // 발행수량
-            this.mtb_printCnt.Text = mySelfLibrary.NumberFormatIntToString(1);
-
-            mySelfStyle.DataGridViewRectangle(this.dgv_item);
-            mySelfStyle.DataGridViewRectangle(this.dgv_subItem);
-
-            // 초기 버튼 설정
-            this.btn_kindCd2.FlatStyle = FlatStyle.Flat;
-            this.btn_kindCd2.FlatAppearance.BorderSize = 0;
-            this.btn_kindCd2.BackColor = Color.SkyBlue;
-            this.btn_kindCd2.ForeColor = Color.White;
-            this.btn_kindCd1.FlatStyle = FlatStyle.Flat;
-            this.btn_kindCd1.FlatAppearance.BorderSize = 0;
-            this.btn_kindCd1.BackColor = DefaultBackColor;
-            this.btn_kindCd1.ForeColor = DefaultForeColor;
-            this.btn_frzDiv2.BackColor = Color.HotPink;
-            this.btn_frzDiv2.ForeColor = Color.White;
-        }
-
-        private void fn_itemView(int item_kind_cd)
-        {
-            dt_itemCdKindList.Columns.Clear(); // 값을 다시 할당하려고 하면, Column도 존재하면 안되므로!!
-            Dictionary<string, object> dict;
-            if (item_kind_cd == 2)
-            {
-                dict = new Dictionary<string, object>();
-                dict.Add("KIND_CD", "7150__");
-                dt_itemCdKindList = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetItemCdKindQry(dict, null));
-                
-                Grid_CellFormat(dt_itemCdKindList, this.dgv_item, "ITEM_NAME", null);
-                this.tb_status.Text = "";
-            }
-            else if (item_kind_cd == 1)
-            {
-                dict = new Dictionary<string, object>();
-                dict.Add("KIND_CD", "7151__");
-                dt_itemCdKindList = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetItemCdKindQry(dict, null));
-
-                Grid_CellFormat(dt_itemCdKindList, this.dgv_item, "ITEM_NAME", null);
-                this.tb_status.Text = "3";
-            }
-
-            this.BeginInvoke((MethodInvoker)(() =>
-            {
-                // CellClick 이벤트 강제 호출
-                DataGridViewCellEventArgs args = new DataGridViewCellEventArgs(0, 0);
-                dgv_item_CellClick(this.dgv_item, args);
-            }));
-        }
 
         /*
          * DataGridView에 dataTable (ITEM_NAME) 데이터 바인딩 (5열로 나누어서)
@@ -226,7 +125,7 @@ namespace WindowsFormCSharp._PCMLabel
         private void Grid_CellFormat2(DataTable dt, DataGridView dgv, string showValueColumn, Font? font)
         {
             // 먼저 그리드 초기화
-            dgv.Columns.Clear();
+            //dgv.Rows.Clear();
             dgv.ColumnHeadersVisible = true; // 이걸 추가하니까 컬럼 헤더가 추가잘된다.
             if (dt.Rows.Count > 0)
             {
@@ -235,18 +134,6 @@ namespace WindowsFormCSharp._PCMLabel
                 dgv.AllowUserToResizeRows = false; // 로우 조절 불가능
                 dgv.AllowUserToResizeColumns = false; // 컬럼 조절 불가능
                 dgv.ReadOnly = true; // 다른 TextBoxColumn 수정 불가능
-                // 1, 2열은 텍스트, 3열은 버튼
-                DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
-                dgv.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "WORK_FRZ2", HeaderText = "재고수량", Width = 80 });
-                dgv.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TRACE_NO", HeaderText = "묶음번호", Width = 120 });
-                buttonColumn.Width = 250;
-                buttonColumn.HeaderText = "";
-                buttonColumn.Text = showValueColumn;
-                buttonColumn.UseColumnTextForButtonValue = true;
-                buttonColumn.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                if (font != null) buttonColumn.DefaultCellStyle.Font = font;
-                else buttonColumn.DefaultCellStyle.Font = new Font("맑은 고딕", 10, FontStyle.Bold);
-                dgv.Columns.Add(buttonColumn);
 
                 // 헤더, 셀 높이 지정
                 dgv.RowTemplate.Height = 30; // 모든 행의 기본 높이 설정
@@ -257,6 +144,117 @@ namespace WindowsFormCSharp._PCMLabel
 
                 dgv.DataSource = bindingSource;
             }
+        }
+
+        /* ********************---------------------------------------- */
+        // Region : Global Variables 전역 변수
+        /* ********************---------------------------------------- */
+        PCMLabelProdStdQuery pcmLabelProdStdQuery = new PCMLabelProdStdQuery();
+        MySelfLibrary mySelfLibrary = new MySelfLibrary();
+        MySelfStyle mySelfStyle = new MySelfStyle();
+        MyselfDate mySelfDate = new MyselfDate();
+        PrinterManage printerManage = new PrinterManage();
+        private PrinterSettings printerSettings;
+        private PageSettings pageSettings;
+
+        private string item_main; // 대표품목코드
+        private string item_cd; // 제품코드
+        private int print_cnt; // 발행수량
+        private int count; // 수량[Ea]
+        private string group_code; // 그룹코드
+
+        private string temp_date; // 정보 처리를 위한 일자 (작업일자)
+        private string order_date; // 정보 처리를 위한 일자 (주문일자)
+        private int item_kind_cd; // 제품구분 (1: 한우, 2: 돈육)
+
+
+        private int frz_div = 2; // 냉장구분(1: 냉동, 2: 냉장)
+
+        private int prevRowIndexDgvItem = 0; // dgv_item (이전 정보)
+        private int prevColindexDgvItem = 0;
+        private int prevRowIndexDgvSub = 0; // dgv_subItem (이전 정보)
+        private int prevColIndexDgvSub = 0;
+        /* ********************---------------------------------------- */
+        // Region : Global Variables 전역 변수 ( DataTable )
+        /* ********************---------------------------------------- */
+        private DataTable dt_list;
+        private DataTable dt_list2;
+        private DataTable dt_list3;
+        private DataTable dt_itemCdKindList;
+        private DataTable dt_subItem;
+        private DataTable dt_subItemDetail;
+
+        private DataTable dt_subItemOrderQtyEvery;
+        private DataTable dt_subItemOrderQtyNotEvery;
+        private DataTable dt_yukgagongItem;
+        private DataTable dt_yukgagongKillArea;
+        private DataTable dt_yukgagongTraceInfo;
+        /* ********************---------------------------------------- */
+        // Region : Functions 직접만든 함수
+        /* ********************---------------------------------------- */
+
+        private void fn_init()
+        {
+            this.mtb_count.Focus();
+
+            // 작업일자, 주문일자 초기 값
+            this.dtp_workDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            this.dtp_orderDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
+            // temp_date, order_date 초기 값 가져오기
+            temp_date = mySelfLibrary.DateTimeFormat(this.dtp_workDate);
+            order_date = mySelfLibrary.DateTimeFormat(this.dtp_orderDate);
+
+            // 품목정보 조회 (내수인것만 조회)
+            dt_list = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).FindProductQry(null, null));
+
+            // 발행수량
+            this.mtb_printCnt.Text = mySelfLibrary.NumberFormatIntToString(1);
+
+            mySelfStyle.DataGridViewRectangle(this.dgv_item);
+            mySelfStyle.DataGridViewRectangle(this.dgv_subItem);
+
+            // 초기 버튼 설정
+            this.btn_kindCd2.FlatStyle = FlatStyle.Flat;
+            this.btn_kindCd2.FlatAppearance.BorderSize = 0;
+            this.btn_kindCd2.BackColor = Color.SkyBlue;
+            this.btn_kindCd2.ForeColor = Color.White;
+            this.btn_kindCd1.FlatStyle = FlatStyle.Flat;
+            this.btn_kindCd1.FlatAppearance.BorderSize = 0;
+            this.btn_kindCd1.BackColor = DefaultBackColor;
+            this.btn_kindCd1.ForeColor = DefaultForeColor;
+            this.btn_frzDiv2.BackColor = Color.HotPink;
+            this.btn_frzDiv2.ForeColor = Color.White;
+        }
+
+        private void fn_itemView(int item_kind_cd)
+        {
+            Dictionary<string, object> dict;
+            if (item_kind_cd == 2)
+            {
+                dict = new Dictionary<string, object>();
+                dict.Add("KIND_CD", "7150__");
+                dt_itemCdKindList = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetItemCdKindQry(dict, null));
+
+                Grid_CellFormat(dt_itemCdKindList, this.dgv_item, "ITEM_NAME", null);
+                this.tb_status.Text = "";
+            }
+            else if (item_kind_cd == 1)
+            {
+                dict = new Dictionary<string, object>();
+                dict.Add("KIND_CD", "7151__");
+                dt_itemCdKindList = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetItemCdKindQry(dict, null));
+
+                Grid_CellFormat(dt_itemCdKindList, this.dgv_item, "ITEM_NAME", null);
+                this.tb_status.Text = "3";
+            }
+
+            this.BeginInvoke((MethodInvoker)(() =>
+            {
+                // CellClick 이벤트 강제 호출
+                DataGridViewCellEventArgs args = new DataGridViewCellEventArgs(0, 0);
+                dgv_item_CellClick(this.dgv_item, args);
+            }));
         }
 
         private void InventoryLabelPrint()
@@ -473,7 +471,7 @@ namespace WindowsFormCSharp._PCMLabel
         }
 
         // 상세제품 셀 클릭
-        private void dgv_subItem_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async void dgv_subItem_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // 클릭한 셀이 버튼 셀인지 확인
             if (this.dgv_subItem.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewButtonCell)
@@ -481,56 +479,51 @@ namespace WindowsFormCSharp._PCMLabel
                 DataGridViewButtonCell buttonCell = (DataGridViewButtonCell)this.dgv_subItem.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 var cellData = (Dictionary<string, object>)buttonCell.Tag;
                 item_cd = cellData["ITEM_CD"].ToString();
-                this.mtb_traceNo.Text = item_cd;
-
-                Dictionary<string, object> dic = new Dictionary<string, object>();
-                dic.Add("TEMP_DATE", temp_date);
-                dic.Add("ITEM_CD", item_cd);
-                // 품목정보 조회 (내수인것만 조회)
-                dt_list = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).FindProductQry(null, null));
-                // TODO - 오류 발생 부분 수정 해야햇
-                //dt_list2 = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).FindProduct2Qry(null, null));
-                /*
-                prevRowIndexDgvSub = e.RowIndex;
-                prevColIndexDgvSub = e.ColumnIndex;
-
-                DataGridViewButtonCell buttonCell = (DataGridViewButtonCell)this.dgv_subItem.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                var cellData = (Dictionary<string, object>)buttonCell.Tag;
-                item_cd = cellData["ITEM_CD"].ToString();
-
-                Dictionary<string, object> dic = new Dictionary<string, object>();
-                dic.Add("TEMP_DATE", temp_date);
-                dic.Add("ITEM_CD", item_cd);
-                dt_yukgagongTraceInfo = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetTraceInfoQry(dic, null));
-                dt_subItemDetail = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetSubItemDetailQry(dic, null));
-                Grid_CellFormat2(dt_subItemDetail, this.dgv_traceInfo, "재고 라벨발행", null);
-
                 this.mtb_itemCd.Text = item_cd;
-                this.mtb_traceNo.Text = dt_yukgagongTraceInfo.Rows.Count > 0 ? dt_yukgagongTraceInfo.Rows[0]["TRACE_NO"]?.ToString() : "";
-                this.mtb_printCnt.Focus();
 
-                DataRow[] foundRows = dt_list.Select($"ITEM_CD = '{item_cd}'");
-                if (foundRows.Length < 1)
+                DataRow[] foundRow = dt_list.Select($"ITEM_CD = '{item_cd}'");
+                if (foundRow.Length < 1)
                 {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        // 비프음 3번 발생
+                        SystemSounds.Beep.Play();
+                        await Task.Delay(300); // .3s 딜레이
+                    }
                     this.mtb_itemCd.Text = "";
+                    this.tb_status.Text = "제품코드 오류";
                     return;
                 }
                 else
                 {
-                    this.mtb_boxWt.Text = string.Format("{0:0.00}", foundRows[0]["BASE_WT_COOL"].ToString()); // 기준 중량
-                    this.mtb_weight.Text = string.Format("{0:0.00}", foundRows[0]["BASE_WT_COOL"].ToString()); // 중량
+                    this.mtb_boxWt.Text = foundRow[0]["BASE_WT_COOL"].ToString(); // 기준중량
                 }
 
-                dic = new Dictionary<string, object>();
+                // 생산정보에 데이터 값 출력
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic.Add("TEMP_DATE", temp_date);
+                dic.Add("ITEM_CD", item_cd);
+                dt_list2 = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).FindProduct2Qry(dic, null));
+                dt_subItemDetail = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetTraceInfoQry(dic, null));
+                dic.Clear();
                 dic.Add("ORDER_DATE", order_date);
                 dic.Add("ITEM_CD", item_cd);
+                dt_list3 = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).FindProduct3Qry(dic, null));
+                this.mtb_traceNo.Text = dt_subItemDetail.Rows.Count > 0 ? dt_subItemDetail.Rows[0]["TRACE_NO"].ToString() : "";
+                this.tb_status.Text = dt_subItemDetail.Rows.Count > 0 ? dt_subItemDetail.Rows[0]["GRADE"].ToString() : "";
+                this.mtb_count.Text = "1";
+                this.mtb_printCnt.Text = "1";
+                this.mtb_count.Focus();
+                this.mtb_count.SelectAll();
 
-                dt_subItemOrderQtyEvery = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetOrderQtyEveryQry(dic, null));
-                dt_subItemOrderQtyNotEvery = Query.fn_createDataTable(pcmLabelProdStdQuery, q => ((PCMLabelProdStdQuery)q).GetOrderQtyNotEveryQry(dic, null));
-
-                int cnt = 0;
-                this.mtb_printCnt.Text = cnt.ToString();
-                */
+                this.dgv_list2.AutoGenerateColumns = false;
+                this.dgv_list3.AutoGenerateColumns = false;
+                this.dgv_list3.DataSource = dt_list3;
+                this.dgv_list2.DataSource = dt_list2;
+                // 집계 구하는 로직 TODO -> 수정해야함
+                int totalRowQty = dt_list2.AsEnumerable().Count(r => Convert.ToInt32(r["ROWNUM"])> 0);
+                int totalQty = dt_list2.AsEnumerable().Sum(r => Convert.ToInt32(r["WEIGHT"]));
+                int totalWeight = dt_list2.AsEnumerable().Sum(r => Convert.ToInt32(r["WEIGHT"]));
             }
             else // 버튼 셀이 아닐 때,
             {
@@ -733,6 +726,39 @@ namespace WindowsFormCSharp._PCMLabel
         private void btn_exit_Click(object sender, EventArgs e)
         {
             this.FindForm().Close();
+        }
+
+        // dgv_list2의 형식 지정
+        private void dgv_list2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (sender is DataGridView dgv)
+            {
+                if (dgv.Columns[e.ColumnIndex].DataPropertyName == "OUT_FLAG")
+                {
+                    int value = Convert.ToInt32(e.Value);
+                    if (value == 0) e.Value = "미출고";
+                    else if (value == 8) e.Value = "스켄";
+                    else e.Value = "마감";
+                    //e.FormattingApplied = true; // 사람이 포맷 다 했으니 DGV에게 더 이상 기본 포맷팅 하지 마! 라는 의미
+                }
+
+                if (dgv.Columns[e.ColumnIndex].DataPropertyName == "FRZ_DIV")
+                {
+                    int value = Convert.ToInt32(e.Value);
+                    if (value == 1) e.Value = "냉동";
+                    else if (value == 2) e.Value = "냉장";
+                    else e.Value = "생육";
+                }
+
+                if (dgv.Columns[e.ColumnIndex].DataPropertyName == "GRADE")
+                {
+                    int value = Convert.ToInt32(e.Value);
+                    if (value == 0) e.Value = "공통";
+                    else if (value == 1) e.Value = "1++";
+                    else if (value == 2) e.Value = "1+";
+                    else e.Value = "1";
+                }
+            }
         }
     }
 }

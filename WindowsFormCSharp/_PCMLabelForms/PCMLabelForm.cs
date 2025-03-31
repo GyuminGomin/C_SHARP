@@ -8,9 +8,9 @@ using WindowsFormCSharp._PCMStartForms;
 
 namespace WindowsFormCSharp._PCMLabel
 {
-    public partial class PCMLabelProdStdForm : Form
+    public partial class PCMLabelForm : Form
     {
-        public PCMLabelProdStdForm(PrinterSettings ps, PageSettings ps2)
+        public PCMLabelForm(PrinterSettings ps, PageSettings ps2)
         {
             InitializeComponent();
             // 프린트 설정
@@ -55,7 +55,7 @@ namespace WindowsFormCSharp._PCMLabel
         /* ********************---------------------------------------- */
         // Region : Global Variables 전역 변수
         /* ********************---------------------------------------- */
-        PCMLabelProdStdQuery pcmLabelQuery = new PCMLabelQuery();
+        PCMLabelQuery pcmLabelQuery = new PCMLabelQuery();
         MySelfLibrary mySelfLibrary = new MySelfLibrary();
         MySelfStyle mySelfStyle = new MySelfStyle();
         MyselfDate mySelfDate = new MyselfDate();
@@ -146,7 +146,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     dict = new Dictionary<string, object>();
                     dict.Add("KIND_CD", "7150__");
-                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetItemCdKindQry(dict, null));
+                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict, null));
 
                     this.btn_kindCd1.Enabled = true;
 
@@ -156,7 +156,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     dict = new Dictionary<string, object>();
                     dict.Add("KIND_CD", "710155");
-                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetItemCdKindQry(dict, null));
+                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict, null));
 
                     this.btn_kindCd1.Enabled = false;
 
@@ -170,7 +170,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     dict = new Dictionary<string, object>();
                     dict.Add("KIND_CD", "7151__");
-                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetItemCdKindQry(dict, null));
+                    dataTable = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetItemCdKindQry(dict, null));
 
                     Grid_CellFormat(dataTable, this.dgv_item, "ITEM_NAME", null);
                 }
@@ -205,7 +205,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     // 냉동일 때, 필터링 추가
                     this.dgv_subItem.Columns.Clear();
-                    dt_subItemEngName = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetSubItemFilterEngNameQry(dic, null));
+                    dt_subItemEngName = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemFilterEngNameQry(dic, null));
                     DataTable filteredDataTable = dt_subItemEngName.Clone();
                     if (dt_subItemEngName.Columns.Contains("FRZ_DIV3"))
                     {
@@ -221,7 +221,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     // 데이터 초기화
                     this.dgv_subItem.Columns.Clear();
-                    dt_subItemEngName = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetSubItemFilterEngNameQry(dic, null));
+                    dt_subItemEngName = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemFilterEngNameQry(dic, null));
 
                     Grid_CellFormat(dt_subItemEngName, this.dgv_subItem, "ITEM_NAME", new Font("맑은 고딕", 10, FontStyle.Bold));
                 }
@@ -232,7 +232,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     // 냉동일 때, 필터링 추가
                     this.dgv_subItem.Columns.Clear();
-                    dt_subItem = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetSubItemCdKindQry(dic, null));
+                    dt_subItem = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemCdKindQry(dic, null));
                     DataTable filteredDataTable = dt_subItem.Clone();
                     if (dt_subItem.Columns.Contains("FRZ_DIV3"))
                     {
@@ -248,7 +248,7 @@ namespace WindowsFormCSharp._PCMLabel
                 {
                     // 데이터 초기화
                     this.dgv_subItem.Columns.Clear();
-                    dt_subItem = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetSubItemCdKindQry(dic, null));
+                    dt_subItem = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemCdKindQry(dic, null));
 
                     Grid_CellFormat(dt_subItem, this.dgv_subItem, "ITEM_NAME", new Font("맑은 고딕", 10, FontStyle.Bold));
                 }
@@ -450,7 +450,7 @@ namespace WindowsFormCSharp._PCMLabel
 
             dic.Clear();
             dic.Add("PCM_ITEM", pcm_item);
-            dt_yukgagongItem = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetYukGagongItemInfoQry(dic, null));
+            dt_yukgagongItem = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetYukGagongItemInfoQry(dic, null));
 
             string circul_date = dt_yukgagongItem.Rows[0]["CIRCUL_DATE"]?.ToString();
             if (Convert.ToInt32(circul_date).Equals("0"))
@@ -471,14 +471,14 @@ namespace WindowsFormCSharp._PCMLabel
                 if (dt_yukgagongKillArea != null) dt_yukgagongKillArea.Columns.Clear();
                 dic.Clear();
                 dic.Add("TRACE_NO", trace_no);
-                dt_yukgagongKillArea = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetYukGagongKillAreaL1Qry(dic, null));
+                dt_yukgagongKillArea = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetYukGagongKillAreaL1Qry(dic, null));
             }
             else if (trace_no.Substring(0, 2).Equals("L0")) // 한우
             {
                 if (dt_yukgagongKillArea != null) dt_yukgagongKillArea.Columns.Clear();
                 dic.Clear();
                 dic.Add("TRACE_NO", trace_no);
-                dt_yukgagongKillArea = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetYukGagongKillAreaL0Qry(dic, null));
+                dt_yukgagongKillArea = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetYukGagongKillAreaL0Qry(dic, null));
             }
 
             this.pd_printDocument.PrinterSettings = printerSettings;
@@ -586,7 +586,7 @@ namespace WindowsFormCSharp._PCMLabel
             if (this.dgv_subItem.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewButtonCell)
             {
                 // 품목정보 조회 (내수인것만 조회)
-                dt_list = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).FindProductQry(null, null));
+                dt_list = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).FindProductQry(null, null));
 
                 prevRowIndexDgvSub = e.RowIndex;
                 prevColIndexDgvSub = e.ColumnIndex;
@@ -598,8 +598,8 @@ namespace WindowsFormCSharp._PCMLabel
                 Dictionary<string, object> dic = new Dictionary<string, object>();
                 dic.Add("TEMP_DATE", temp_date);
                 dic.Add("ITEM_CD", item_cd);
-                dt_yukgagongTraceInfo = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetTraceInfoQry(dic, null));
-                dt_subItemDetail = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetSubItemDetailQry(dic, null));
+                dt_yukgagongTraceInfo = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetTraceInfoQry(dic, null));
+                dt_subItemDetail = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemDetailQry(dic, null));
                 Grid_CellFormat2(dt_subItemDetail, this.dgv_traceInfo, "재고 라벨발행", null);
 
                 this.mtb_itemCd.Text = item_cd;
@@ -622,8 +622,8 @@ namespace WindowsFormCSharp._PCMLabel
                 dic.Add("ORDER_DATE", order_date);
                 dic.Add("ITEM_CD", item_cd);
 
-                dt_subItemOrderQtyEvery = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetOrderQtyEveryQry(dic, null));
-                dt_subItemOrderQtyNotEvery = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetOrderQtyNotEveryQry(dic, null));
+                dt_subItemOrderQtyEvery = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetOrderQtyEveryQry(dic, null));
+                dt_subItemOrderQtyNotEvery = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetOrderQtyNotEveryQry(dic, null));
                 this.mtb_orderQtyNotEvery.Text = dt_subItemOrderQtyNotEvery.Rows[0]["ORDER_QTY"].ToString();
                 this.mtb_orderQtyEvery.Text = dt_subItemOrderQtyEvery.Rows[0]["ORDER_QTY"].ToString();
 
@@ -683,7 +683,7 @@ namespace WindowsFormCSharp._PCMLabel
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("ORDER_DATE", order_date);
             dic.Add("ITEM_CD", item_cd);
-            dt_subItemOrderQtyEvery = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelProdStdQuery)q).GetOrderQtyEveryQry(dic, null));
+            dt_subItemOrderQtyEvery = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetOrderQtyEveryQry(dic, null));
             this.mtb_orderQtyEvery.Text = dt_subItemOrderQtyEvery.Rows[0]["ORDER_QTY"]?.ToString();
         }
 

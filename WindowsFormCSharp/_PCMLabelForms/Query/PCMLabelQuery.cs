@@ -5,10 +5,10 @@ using System.Data;
 
 namespace WindowsFormCSharp._PCMLabel
 {
-    class PCMLabelProdStdQuery : Query
+    class PCMLabelQuery : Query
     {
         private readonly ODBC _context;
-        public PCMLabelProdStdQuery()
+        public PCMLabelQuery()
         {
             _context = ODBC.GetInstance();
         }

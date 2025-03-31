@@ -10,7 +10,7 @@
 		<Snippet>
 			<Code Language="CSharp">
 				<![CDATA[
-                public List<Dictionary<string, object>> Query (Dictionary<string, object>? input)
+                public List<Dictionary<string, object>> Query (Dictionary<string, object>? input, IDbTransaction? transaction)
                 {
                     try
                     {
@@ -18,7 +18,7 @@
 
                 """;
 
-                        return _context.SelectRawSql(sql, input);
+                        return _context.SelectRawSql(sql, input, transaction);
                     } catch (Exception e)
                     {
                         throw;

@@ -157,6 +157,7 @@ namespace WindowsFormCSharp
             dgv.AllowUserToResizeColumns = false;
             dgv.BackgroundColor = Color.SkyBlue;
             dgv.GridColor = Color.SkyBlue;
+            dgv.MultiSelect = false;
             //this.dgv_kindCd.CellBorderStyle = DataGridViewCellBorderStyle.None;
             //this.dgv_kindCd.DefaultCellStyle.SelectionBackColor = this.dgv_kindCd.DefaultCellStyle.BackColor;
             //this.dgv_kindCd.DefaultCellStyle.SelectionForeColor = this.dgv_kindCd.DefaultCellStyle.ForeColor;
