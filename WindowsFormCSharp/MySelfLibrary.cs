@@ -82,7 +82,6 @@ namespace WindowsFormCSharp
             return text.PadRight(padding);
         }
 
-        // DataTable -> TODO -> 아직 수정이 제대로 안되었다!!!!!!!!!!!! 수정 필요!!!!!!!!!
         public void DataTableTotalValue(DataTable dt)
         {
             int columnCount = dt.Columns.Count;
@@ -143,7 +142,6 @@ namespace WindowsFormCSharp
 
     }
 
-
     class MySelfStyle
     {
         public void DataGridViewRectangle(DataGridView dgv)
@@ -155,13 +153,24 @@ namespace WindowsFormCSharp
             dgv.AllowUserToAddRows = false;
             dgv.AllowUserToResizeRows = false;
             dgv.AllowUserToResizeColumns = false;
-            dgv.BackgroundColor = Color.SkyBlue;
-            dgv.GridColor = Color.SkyBlue;
+            dgv.BackgroundColor = Color.DarkGray;
+            dgv.GridColor = Color.DarkGray;
             dgv.MultiSelect = false;
             //this.dgv_kindCd.CellBorderStyle = DataGridViewCellBorderStyle.None;
             //this.dgv_kindCd.DefaultCellStyle.SelectionBackColor = this.dgv_kindCd.DefaultCellStyle.BackColor;
             //this.dgv_kindCd.DefaultCellStyle.SelectionForeColor = this.dgv_kindCd.DefaultCellStyle.ForeColor;
             dgv.RowTemplate.Height = 60;
+        }
+
+        public void MaskedTextBoxNumber(MaskedTextBox mtb)
+        {
+            mtb.KeyPress += (s, e) =>
+            {
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                {
+                    e.Handled = true; // 숫자 이외 입력 차단
+                }
+            };
         }
     }
 

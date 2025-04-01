@@ -130,10 +130,13 @@ namespace WindowsFormCSharp._PCMLabel
             this.btn_kindCd2.ForeColor = Color.White;
             this.btn_kindCd1.FlatStyle = FlatStyle.Flat;
             this.btn_kindCd1.FlatAppearance.BorderSize = 0;
-            this.btn_kindCd1.BackColor = DefaultBackColor;
+            this.btn_kindCd1.BackColor = Color.DarkGray;
             this.btn_kindCd1.ForeColor = DefaultForeColor;
             this.btn_frzDiv2.BackColor = Color.HotPink;
             this.btn_frzDiv2.ForeColor = Color.White;
+
+            // 초기 숫자만 입력가능 MaskedTextBox 설정
+            mySelfStyle.MaskedTextBoxNumber(this.mtb_count);
         }
 
         private void fn_itemView(int item_kind_cd)
@@ -513,7 +516,7 @@ namespace WindowsFormCSharp._PCMLabel
             this.btn_kindCd2.BackColor = Color.SkyBlue;
             this.btn_kindCd2.ForeColor = Color.White;
 
-            this.btn_kindCd1.BackColor = DefaultBackColor;
+            this.btn_kindCd1.BackColor = Color.DarkGray;
             this.btn_kindCd1.ForeColor = DefaultForeColor;
 
             item_kind_cd = 2;
@@ -525,7 +528,7 @@ namespace WindowsFormCSharp._PCMLabel
             this.btn_kindCd1.BackColor = Color.SkyBlue;
             this.btn_kindCd1.ForeColor = Color.White;
 
-            this.btn_kindCd2.BackColor = DefaultBackColor;
+            this.btn_kindCd2.BackColor = Color.DarkGray;
             this.btn_kindCd2.ForeColor = DefaultForeColor;
 
             // 한우 클릭
@@ -599,6 +602,9 @@ namespace WindowsFormCSharp._PCMLabel
                 dic.Add("TEMP_DATE", temp_date);
                 dic.Add("ITEM_CD", item_cd);
                 dt_yukgagongTraceInfo = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetTraceInfoQry(dic, null));
+                // TODO -> 지금은 이해하기가 어려우니 그냥 이 로직은 없다면 그냥 빼고 진행하자
+                // 지금 로직도 문제가 발생하는 부분이 라벨 발행 시 작업날짜에 라벨발행을 할 때, 과거 정보도 받아오니까 발생하는 문제인데
+                // 과거정보도 가져오면서 생기는 크랙은 이 로직을 확실히 이해했을 때, 해결할 수 있다.
                 dt_subItemDetail = Query.fn_createDataTable(pcmLabelQuery, q => ((PCMLabelQuery)q).GetSubItemDetailQry(dic, null));
                 Grid_CellFormat2(dt_subItemDetail, this.dgv_traceInfo, "재고 라벨발행", null);
 
@@ -721,6 +727,7 @@ namespace WindowsFormCSharp._PCMLabel
             }
         }
 
+        // TODO - 여기서 .Print()만 호출해도 바로 호출 // 그리고 출력할 때는 반드시 발행개수에 맞춰서 발행할 수 있도록 수정해야함
         private void pd_printDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             string trace_no = this.mtb_traceNo.Text;

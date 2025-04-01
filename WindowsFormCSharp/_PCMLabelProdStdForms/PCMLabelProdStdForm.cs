@@ -225,6 +225,9 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             this.btn_kindCd1.ForeColor = DefaultForeColor;
             this.btn_frzDiv2.BackColor = Color.HotPink;
             this.btn_frzDiv2.ForeColor = Color.White;
+
+            // 초기 숫자만 입력가능 MaskedTextBox 설정
+            mySelfStyle.MaskedTextBoxNumber(this.mtb_count);
         }
 
         private void fn_itemView(int item_kind_cd)
@@ -399,7 +402,7 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             this.btn_kindCd2.BackColor = Color.SkyBlue;
             this.btn_kindCd2.ForeColor = Color.White;
 
-            this.btn_kindCd1.BackColor = DefaultBackColor;
+            this.btn_kindCd1.BackColor = Color.DarkGray;
             this.btn_kindCd1.ForeColor = DefaultForeColor;
 
             item_kind_cd = 2;
@@ -411,7 +414,7 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             this.btn_kindCd1.BackColor = Color.SkyBlue;
             this.btn_kindCd1.ForeColor = Color.White;
 
-            this.btn_kindCd2.BackColor = DefaultBackColor;
+            this.btn_kindCd2.BackColor = Color.DarkGray;
             this.btn_kindCd2.ForeColor = DefaultForeColor;
 
             // 한우 클릭
@@ -497,6 +500,7 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
                 else
                 {
                     this.mtb_boxWt.Text = foundRow[0]["BASE_WT_COOL"].ToString(); // 기준중량
+                    this.mtb_weight.Text = foundRow[0]["BASE_WT_COOL"].ToString(); // 중량
                 }
 
                 // 생산정보에 데이터 값 출력
@@ -520,10 +524,14 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
                 this.dgv_list3.AutoGenerateColumns = false;
                 this.dgv_list3.DataSource = dt_list3;
                 this.dgv_list2.DataSource = dt_list2;
-                // 집계 구하는 로직 TODO -> 수정해야함
-                int totalRowQty = dt_list2.AsEnumerable().Count(r => Convert.ToInt32(r["ROWNUM"])> 0);
-                int totalQty = dt_list2.AsEnumerable().Sum(r => Convert.ToInt32(r["WEIGHT"]));
-                int totalWeight = dt_list2.AsEnumerable().Sum(r => Convert.ToInt32(r["WEIGHT"]));
+
+                int totalRowQty = dt_list2.AsEnumerable().Count(r => Convert.ToInt32(r["ROWNUM"]) > 0);
+                int totalQty = dt_list2.AsEnumerable().Sum(r => Convert.ToInt32(r["BOX_QTY"]));
+                double totalWeight = dt_list2.AsEnumerable().Sum(r => Convert.ToDouble(r["BOX_WT"]));
+                this.lb_totalCount.Text = totalRowQty.ToString();
+                this.lb_totalQty.Text = totalQty.ToString();
+                this.lb_totalWeight.Text = totalWeight.ToString();
+
             }
             else // 버튼 셀이 아닐 때,
             {
@@ -758,6 +766,47 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
                     else if (value == 2) e.Value = "1+";
                     else e.Value = "1";
                 }
+            }
+        }
+
+        private void mtb_count_TextChanged(object sender, EventArgs e)
+        {
+            // 수량 변경 시 중량 변경
+            if (sender is MaskedTextBox mtb)
+            {
+                this.mtb_weight.Text = Math.Round(Convert.ToInt32(mtb.Text) * Convert.ToDouble(this.mtb_boxWt.Text), 2).ToString();
+            }
+        }
+
+        // 통계 창 오픈
+        private void btn_statistic_Click(object sender, EventArgs e)
+        {
+            using (PCMLabelProdStdForm_P1 popup = new PCMLabelProdStdForm_P1())
+            {
+                var result = popup.ShowDialog(); // 이 시점부터 모달 창이라 부모창 클릭 안됨
+                if (result == DialogResult.OK)
+                {
+                    // TODO 아직 아무것도 안함
+                }
+            }
+        }
+
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            this.mtb_count.Focus();
+            // 현재 클릭되어 있는 셀 강제 클릭 이벤트 발생
+            if (this.dgv_subItem.Rows.Count > 0)
+            {
+                int row = this.dgv_subItem.SelectedCells[0].RowIndex;
+                int col = this.dgv_subItem.SelectedCells[0].ColumnIndex;
+                // CellClick 이벤트 강제 호출
+                DataGridViewCellEventArgs args = new DataGridViewCellEventArgs(col, row);
+                dgv_subItem_CellClick(this.dgv_subItem, args);
+            }
+            else
+            {
+                // 만약 비어있다면 셀 클릭할때만 발생하는 재고정보 초기화가 안될 수도 있기 때문에
+                this.dgv_traceInfo.Columns.Clear();
             }
         }
     }
