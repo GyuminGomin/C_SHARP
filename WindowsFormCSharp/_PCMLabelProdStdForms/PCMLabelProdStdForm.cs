@@ -153,6 +153,7 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
         MySelfLibrary mySelfLibrary = new MySelfLibrary();
         MySelfStyle mySelfStyle = new MySelfStyle();
         MyselfDate mySelfDate = new MyselfDate();
+        MyselfBinding myselfBinding = new MyselfBinding();
         PrinterManage printerManage = new PrinterManage();
         private PrinterSettings printerSettings;
         private PageSettings pageSettings;
@@ -228,6 +229,32 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
 
             // 초기 숫자만 입력가능 MaskedTextBox 설정
             mySelfStyle.MaskedTextBoxNumber(this.mtb_count);
+
+            // 초기 바인딩 컬럼 설정
+            var raw = new[]
+            {
+                new { Text = "미출고", Value = "0" },
+                new { Text = "마감", Value = "1" },
+                new { Text = "스켄", Value = "8" }
+            }.ToList();
+            myselfBinding.BindComboColumn(this.dgv_list2, "OUT_FLAG", raw, x => x.Text, x => x.Value);
+            
+            raw = new[]
+            {
+                new { Text = "냉동", Value = "1" },
+                new { Text = "냉장", Value = "2" },
+                new { Text = "생육", Value = "3" }
+            }.ToList();
+            myselfBinding.BindComboColumn(this.dgv_list2, "FRZ_DI", raw, x => x.Text, x => x.Value);
+
+            raw = new[]
+            {
+                new { Text = "공통", Value = "0" },
+                new { Text = "1++", Value = "1" },
+                new { Text = "1+", Value = "2" },
+                new { Text = "1", Value = "3" }
+            }.ToList();
+            myselfBinding.BindComboColumn(this.dgv_list2, "GRADE", raw, x => x.Text, x => x.Value);
         }
 
         private void fn_itemView(int item_kind_cd)
@@ -449,11 +476,7 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
                     DataGridViewCellEventArgs args = new DataGridViewCellEventArgs(0, 0);
                     dgv_subItem_CellClick(this.dgv_subItem, args);
                 }
-                else
-                {
-                    // 만약 비어있다면 셀 클릭할때만 발생하는 재고정보 초기화가 안될 수도 있기 때문에
-                    this.dgv_traceInfo.Columns.Clear();
-                }
+                else { }
             }
             else
             {
@@ -736,39 +759,6 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             this.FindForm().Close();
         }
 
-        // dgv_list2의 형식 지정
-        private void dgv_list2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (sender is DataGridView dgv)
-            {
-                if (dgv.Columns[e.ColumnIndex].DataPropertyName == "OUT_FLAG")
-                {
-                    int value = Convert.ToInt32(e.Value);
-                    if (value == 0) e.Value = "미출고";
-                    else if (value == 8) e.Value = "스켄";
-                    else e.Value = "마감";
-                    //e.FormattingApplied = true; // 사람이 포맷 다 했으니 DGV에게 더 이상 기본 포맷팅 하지 마! 라는 의미
-                }
-
-                if (dgv.Columns[e.ColumnIndex].DataPropertyName == "FRZ_DIV")
-                {
-                    int value = Convert.ToInt32(e.Value);
-                    if (value == 1) e.Value = "냉동";
-                    else if (value == 2) e.Value = "냉장";
-                    else e.Value = "생육";
-                }
-
-                if (dgv.Columns[e.ColumnIndex].DataPropertyName == "GRADE")
-                {
-                    int value = Convert.ToInt32(e.Value);
-                    if (value == 0) e.Value = "공통";
-                    else if (value == 1) e.Value = "1++";
-                    else if (value == 2) e.Value = "1+";
-                    else e.Value = "1";
-                }
-            }
-        }
-
         private void mtb_count_TextChanged(object sender, EventArgs e)
         {
             // 수량 변경 시 중량 변경
@@ -803,10 +793,37 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
                 DataGridViewCellEventArgs args = new DataGridViewCellEventArgs(col, row);
                 dgv_subItem_CellClick(this.dgv_subItem, args);
             }
-            else
+            else { }
+        }
+
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+            pcmLabelProdStdQuery.ExecuteWithTransaction(transaction =>
             {
-                // 만약 비어있다면 셀 클릭할때만 발생하는 재고정보 초기화가 안될 수도 있기 때문에
-                this.dgv_traceInfo.Columns.Clear();
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+
+                int result = pcmLabelProdStdQuery.SaveProduct2Qry(dic, transaction);
+
+                if (result == 1)
+                {
+                    MessageBox.Show("저장 성공!", "확인");
+                } else
+                {
+                    MessageBox.Show("저장 실패!", "확인");
+                }
+
+                throw new Exception("user exception");
+            });
+        }
+
+        private void dgv_list2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (sender is DataGridView dgv)
+            {
+                if (dgv.CurrentCell is DataGridViewTextBoxCell && dgv.EditingControl is TextBox tb)
+                {
+                    tb.SelectAll();
+                }
             }
         }
     }

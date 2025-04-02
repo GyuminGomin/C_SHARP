@@ -265,3 +265,42 @@ this.BeginInvoke((MethodInvoker)delegate
 - `Ctrl + R, Ctrl + G` : import 정리
 
 
+# Mock 트랜잭션 (테스트 중심 개발(TDD), CI/CD 파이프라인)
+## Mock 트랜잭션 또는 In-Memory DB 기반의 단위 테스트(Unit Test) 선호
+
+```
+1. NuGet Pakage -> Moq 패키지 설치
+
+2. 인터페이스 기반 설계
+public interface IDbService
+{
+    void ExecuteWithTransaction(Action<IDbTransaction> action);
+}
+
+3. 테스트 코드에서 Mock 객체 생성
+
+using Moq;
+using System.Data;
+
+[TestMethod]
+public void Test_ExecuteWithTransaction_Mock()
+{
+    // Arrange
+    var mockTransaction = new Mock<IDbTransaction>();
+    var mockConnection = new Mock<IDbConnection>();
+    mockConnection.Setup(c => c.BeginTransaction()).Returns(mockTransaction.Object);
+
+    var service = new MyService(mockConnection.Object);
+
+    // Act
+    service.ExecuteWithTransaction(tran =>
+    {
+        // 내부 로직 테스트 (예: 호출 확인)
+        Assert.IsNotNull(tran);
+    });
+
+    // Assert
+    mockConnection.Verify(c => c.BeginTransaction(), Times.Once);
+    mockTransaction.Verify(t => t.Commit(), Times.Once);
+}
+```

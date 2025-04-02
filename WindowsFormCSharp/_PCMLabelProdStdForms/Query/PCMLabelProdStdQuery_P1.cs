@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,9 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
         {
             _context = ODBC.GetInstance();
         }
-        public IDbContextTransaction BeginTransaction()
+        public void ExecuteWithTransaction(Action<IDbTransaction> action)
         {
-            return _context.Database.BeginTransaction();
+            _context.ExecuteWithTransaction(action);
         }
 
 

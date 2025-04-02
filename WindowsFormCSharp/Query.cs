@@ -1,9 +1,17 @@
 ﻿using System.Data;
+using WindowsFormCSharp.Config;
 
 namespace WindowsFormCSharp
 {
     class Query
     {
+        protected readonly ODBC _context;
+
+        public Query()
+        {
+            _context = ODBC.GetInstance();
+        }
+
         public static DataTable fn_createDataTable<T>(T qry, Func<T, List<Dictionary<string, object>>> callback) where T : Query
         {
             DataTable dt = new DataTable();

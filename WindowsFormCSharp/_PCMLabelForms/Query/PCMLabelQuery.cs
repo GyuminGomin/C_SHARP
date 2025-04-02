@@ -12,9 +12,9 @@ namespace WindowsFormCSharp._PCMLabel
         {
             _context = ODBC.GetInstance();
         }
-        public IDbContextTransaction BeginTransaction()
+        public void ExecuteWithTransaction(Action<IDbTransaction> action)
         {
-            return _context.Database.BeginTransaction();
+            _context.ExecuteWithTransaction(action);
         }
 
         public List<Dictionary<string, object>> FindProductQry(Dictionary<string, object>? input, IDbTransaction? transaction)

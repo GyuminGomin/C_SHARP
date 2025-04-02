@@ -12,9 +12,9 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
         {
             _context = ODBC.GetInstance();
         }
-        public IDbContextTransaction BeginTransaction()
+        public void ExecuteWithTransaction(Action<IDbTransaction> action)
         {
-            return _context.Database.BeginTransaction();
+            _context.ExecuteWithTransaction(action);
         }
 
         public List<Dictionary<string, object>> FindProductQry(Dictionary<string, object>? input, IDbTransaction? transaction)
@@ -126,6 +126,30 @@ namespace WindowsFormCSharp._PCMLabelProdStdForms
             }
         }
 
+        public int SaveProduct2Qry(Dictionary<string, object>? input, IDbTransaction? transaction)
+        {
+            try
+            {
+                string sql = """
+                /* PCMLabelProdStdQuery.SaveProduct2Qry */
+                UPDATE PROD_CAT
+                   SET ID_MODIFY = :ID_MODIFY, -- 가져올 수 없다. (나중에 로그인 로직 최종적으로 완성되면 가능)
+                       DT_MODIFY = :DT_MODIFY,
+                       IP_MODIFY = :IP_MODIFY,
+                       TRACE_NO = :TRACE_NO,
+                       FRZ_DIV = :FRZ_DIV,
+                       GRADE = :GRADE,
+                       OUT_FLAG = :OUT_FLAG
+                 WHERE BOX_NO = :BOX_NO
+                """;
+
+                return _context.ExecuteRawSql(sql, input, transaction);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
         public List<Dictionary<string, object>> FindProduct3Qry(Dictionary<string, object>? input, IDbTransaction? transaction)
         {
             try

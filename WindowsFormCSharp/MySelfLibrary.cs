@@ -1,5 +1,7 @@
-﻿using System.Data;
+﻿using System.Configuration;
+using System.Data;
 using System.Text;
+using System.Web;
 
 namespace WindowsFormCSharp
 {
@@ -191,6 +193,41 @@ namespace WindowsFormCSharp
 
             // 문자열로 다시 형변환
             return parsedDateTime.ToString();
+        }
+        public string DateToChar(string date)
+        {
+            return date.Substring(0, 4) + date.Substring(5, 2) + date.Substring(8, 2);
+        }
+    }
+
+    class MyselfBinding
+    {
+        public void BindComboColumn<T>(DataGridView dgv, string columnName, List<T> items, Func<T, string> getText, Func<T, string> getValue)
+        {
+            var comboCol = (DataGridViewComboBoxColumn)dgv.Columns[columnName];
+            comboCol.DisplayMember = "Text";
+            comboCol.ValueMember = "Value";
+            comboCol.DataSource = items.Select(item => new { Text = getText(item), Value = getValue(item) }).ToList();
+        }
+    }
+
+    class OzReport
+    {
+        public string SearchOzReport(Dictionary<string, string> parameters)
+        {
+            string uri = ConfigurationManager.ConnectionStrings["OzReportURI"].ConnectionString;
+
+            // 파라미터를 key=value 형태로 URL 인코딩
+            List<string> encodedParams = new List<string>();
+            foreach(var kvp in parameters)
+            {
+                string encoded = $"{HttpUtility.UrlEncode(kvp.Key)}%3D{HttpUtility.UrlEncode(kvp.Value)}";
+                encodedParams.Add(encoded);
+            }
+            string formParam = string.Join("%7C", encodedParams);
+
+            string url = $"{uri}?fileNm=/label/YG/PCM1/YGLB_PCM1_01.ozr&odiParam=&formParam={formParam}";
+            return url;
         }
     }
 }

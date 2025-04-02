@@ -156,7 +156,7 @@ namespace WindowsFormCSharp.Config
                 {
                     _connection.Open();
                 }
-                var result = _connection.Execute(sql, parameters);
+                var result = _connection.Execute(sql, parameters, transaction);
                 return result;
             }
             catch (Exception e)

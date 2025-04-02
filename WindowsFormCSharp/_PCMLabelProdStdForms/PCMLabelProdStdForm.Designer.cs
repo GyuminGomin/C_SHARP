@@ -28,34 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle41 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle47 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle42 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle43 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle44 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle45 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle46 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PCMLabelProdStdForm));
-            DataGridViewCellStyle dataGridViewCellStyle48 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle60 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle49 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle50 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle51 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle52 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle53 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle54 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle55 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle56 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle57 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle58 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle59 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle20 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle17 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle18 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle19 = new DataGridViewCellStyle();
             btn_kindCd2 = new Button();
             btn_kindCd1 = new Button();
             dgv_item = new DataGridView();
             groupBox1 = new GroupBox();
             label10 = new Label();
-            groupBox8 = new GroupBox();
-            dgv_traceInfo = new DataGridView();
             panel1 = new Panel();
             mtb_traceNo = new MaskedTextBox();
             label1 = new Label();
@@ -108,21 +106,19 @@
             dgv_list2 = new DataGridView();
             No = new DataGridViewTextBoxColumn();
             Column1 = new DataGridViewCheckBoxColumn();
-            OUT_FLAG = new DataGridViewTextBoxColumn();
+            OUT_FLAG = new DataGridViewComboBoxColumn();
             Column3 = new DataGridViewTextBoxColumn();
             Column4 = new DataGridViewTextBoxColumn();
             Column11 = new DataGridViewTextBoxColumn();
             Column5 = new DataGridViewTextBoxColumn();
-            Column6 = new DataGridViewTextBoxColumn();
+            FRZ_DI = new DataGridViewComboBoxColumn();
             Column7 = new DataGridViewTextBoxColumn();
             Column8 = new DataGridViewTextBoxColumn();
-            Column9 = new DataGridViewTextBoxColumn();
+            GRADE = new DataGridViewComboBoxColumn();
             Column10 = new DataGridViewTextBoxColumn();
             dgv_subItem = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgv_item).BeginInit();
             groupBox1.SuspendLayout();
-            groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgv_traceInfo).BeginInit();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -203,29 +199,6 @@
             label10.TabIndex = 5;
             label10.Text = "일반냉장발주 라벨";
             label10.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // groupBox8
-            // 
-            groupBox8.Anchor = AnchorStyles.None;
-            groupBox8.Controls.Add(dgv_traceInfo);
-            groupBox8.ForeColor = Color.Black;
-            groupBox8.Location = new Point(285, 313);
-            groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(274, 104);
-            groupBox8.TabIndex = 19;
-            groupBox8.TabStop = false;
-            groupBox8.Text = "재고정보";
-            // 
-            // dgv_traceInfo
-            // 
-            dgv_traceInfo.BorderStyle = BorderStyle.Fixed3D;
-            dgv_traceInfo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_traceInfo.ColumnHeadersVisible = false;
-            dgv_traceInfo.Location = new Point(6, 20);
-            dgv_traceInfo.Name = "dgv_traceInfo";
-            dgv_traceInfo.Size = new Size(262, 76);
-            dgv_traceInfo.TabIndex = 5;
-            dgv_traceInfo.CellClick += dgv_traceInfo_CellClick;
             // 
             // panel1
             // 
@@ -453,9 +426,9 @@
             groupBox4.Anchor = AnchorStyles.None;
             groupBox4.Controls.Add(panel3);
             groupBox4.ForeColor = Color.Black;
-            groupBox4.Location = new Point(285, 423);
+            groupBox4.Location = new Point(285, 313);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(274, 74);
+            groupBox4.Size = new Size(274, 102);
             groupBox4.TabIndex = 4;
             groupBox4.TabStop = false;
             groupBox4.Text = "주문일자";
@@ -467,14 +440,14 @@
             panel3.Controls.Add(dtp_orderDate);
             panel3.Location = new Point(6, 16);
             panel3.Name = "panel3";
-            panel3.Size = new Size(262, 52);
+            panel3.Size = new Size(262, 80);
             panel3.TabIndex = 8;
             // 
             // dtp_orderDate
             // 
             dtp_orderDate.CustomFormat = "yyyy-MM-dd";
             dtp_orderDate.Format = DateTimePickerFormat.Custom;
-            dtp_orderDate.Location = new Point(51, 13);
+            dtp_orderDate.Location = new Point(50, 26);
             dtp_orderDate.Name = "dtp_orderDate";
             dtp_orderDate.Size = new Size(160, 23);
             dtp_orderDate.TabIndex = 8;
@@ -484,9 +457,9 @@
             groupBox5.Anchor = AnchorStyles.None;
             groupBox5.Controls.Add(dgv_list3);
             groupBox5.ForeColor = Color.Black;
-            groupBox5.Location = new Point(285, 500);
+            groupBox5.Location = new Point(285, 415);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(348, 308);
+            groupBox5.Size = new Size(348, 393);
             groupBox5.TabIndex = 5;
             groupBox5.TabStop = false;
             groupBox5.Text = "일반발주 주문리스트";
@@ -497,24 +470,24 @@
             dgv_list3.AllowUserToResizeColumns = false;
             dgv_list3.AllowUserToResizeRows = false;
             dgv_list3.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewCellStyle41.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle41.BackColor = SystemColors.ActiveCaption;
-            dataGridViewCellStyle41.Font = new Font("맑은 고딕", 9F);
-            dataGridViewCellStyle41.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle41.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle41.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle41.WrapMode = DataGridViewTriState.True;
-            dgv_list3.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle41;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.ActiveCaption;
+            dataGridViewCellStyle1.Font = new Font("맑은 고딕", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgv_list3.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgv_list3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv_list3.Columns.AddRange(new DataGridViewColumn[] { V, Col, Column2, Column12, Column13, Column14 });
-            dataGridViewCellStyle47.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle47.BackColor = SystemColors.Window;
-            dataGridViewCellStyle47.Font = new Font("맑은 고딕", 9F);
-            dataGridViewCellStyle47.ForeColor = Color.Black;
-            dataGridViewCellStyle47.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle47.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle47.WrapMode = DataGridViewTriState.False;
-            dgv_list3.DefaultCellStyle = dataGridViewCellStyle47;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = SystemColors.Window;
+            dataGridViewCellStyle7.Font = new Font("맑은 고딕", 9F);
+            dataGridViewCellStyle7.ForeColor = Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
+            dgv_list3.DefaultCellStyle = dataGridViewCellStyle7;
             dgv_list3.EnableHeadersVisualStyles = false;
             dgv_list3.Location = new Point(6, 17);
             dgv_list3.MultiSelect = false;
@@ -522,7 +495,7 @@
             dgv_list3.RowHeadersVisible = false;
             dgv_list3.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgv_list3.RowTemplate.DefaultCellStyle.ForeColor = Color.Black;
-            dgv_list3.Size = new Size(336, 280);
+            dgv_list3.Size = new Size(336, 369);
             dgv_list3.TabIndex = 17;
             // 
             // V
@@ -537,8 +510,8 @@
             // Col
             // 
             Col.DataPropertyName = "COMPANY_NAME";
-            dataGridViewCellStyle42.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            Col.DefaultCellStyle = dataGridViewCellStyle42;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            Col.DefaultCellStyle = dataGridViewCellStyle2;
             Col.HeaderText = "거래처명";
             Col.Name = "Col";
             Col.Resizable = DataGridViewTriState.True;
@@ -548,8 +521,8 @@
             // Column2
             // 
             Column2.DataPropertyName = "JUMPO_CODE";
-            dataGridViewCellStyle43.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column2.DefaultCellStyle = dataGridViewCellStyle43;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column2.DefaultCellStyle = dataGridViewCellStyle3;
             Column2.HeaderText = "코드";
             Column2.Name = "Column2";
             Column2.Resizable = DataGridViewTriState.True;
@@ -558,8 +531,8 @@
             // Column12
             // 
             Column12.DataPropertyName = "ORDER_NO";
-            dataGridViewCellStyle44.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column12.DefaultCellStyle = dataGridViewCellStyle44;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column12.DefaultCellStyle = dataGridViewCellStyle4;
             Column12.HeaderText = "번호";
             Column12.Name = "Column12";
             Column12.Width = 40;
@@ -567,8 +540,8 @@
             // Column13
             // 
             Column13.DataPropertyName = "ORDER_QTY";
-            dataGridViewCellStyle45.Alignment = DataGridViewContentAlignment.MiddleRight;
-            Column13.DefaultCellStyle = dataGridViewCellStyle45;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleRight;
+            Column13.DefaultCellStyle = dataGridViewCellStyle5;
             Column13.HeaderText = "수량";
             Column13.Name = "Column13";
             Column13.Width = 40;
@@ -576,8 +549,8 @@
             // Column14
             // 
             Column14.DataPropertyName = "GRADE";
-            dataGridViewCellStyle46.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column14.DefaultCellStyle = dataGridViewCellStyle46;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column14.DefaultCellStyle = dataGridViewCellStyle6;
             Column14.HeaderText = "등급";
             Column14.Name = "Column14";
             Column14.Width = 40;
@@ -676,9 +649,9 @@
             groupBox6.Controls.Add(btn_search);
             groupBox6.Controls.Add(dgv_list2);
             groupBox6.ForeColor = Color.Black;
-            groupBox6.Location = new Point(639, 500);
+            groupBox6.Location = new Point(639, 415);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(530, 308);
+            groupBox6.Size = new Size(530, 393);
             groupBox6.TabIndex = 20;
             groupBox6.TabStop = false;
             groupBox6.Text = "생산정보";
@@ -695,7 +668,7 @@
             tableLayoutPanel1.Controls.Add(label11, 2, 0);
             tableLayoutPanel1.Controls.Add(label9, 1, 0);
             tableLayoutPanel1.Controls.Add(label8, 0, 0);
-            tableLayoutPanel1.Location = new Point(2, 267);
+            tableLayoutPanel1.Location = new Point(2, 350);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
@@ -787,6 +760,7 @@
             btn_save.TabIndex = 19;
             btn_save.Text = "저장";
             btn_save.UseVisualStyleBackColor = true;
+            btn_save.Click += btn_save_Click;
             // 
             // btn_search
             // 
@@ -806,24 +780,25 @@
             dgv_list2.AllowUserToResizeColumns = false;
             dgv_list2.AllowUserToResizeRows = false;
             dgv_list2.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewCellStyle48.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle48.BackColor = SystemColors.ActiveCaption;
-            dataGridViewCellStyle48.Font = new Font("맑은 고딕", 9F);
-            dataGridViewCellStyle48.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle48.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle48.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle48.WrapMode = DataGridViewTriState.True;
-            dgv_list2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle48;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = SystemColors.ActiveCaption;
+            dataGridViewCellStyle8.Font = new Font("맑은 고딕", 9F);
+            dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dgv_list2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dgv_list2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgv_list2.Columns.AddRange(new DataGridViewColumn[] { No, Column1, OUT_FLAG, Column3, Column4, Column11, Column5, Column6, Column7, Column8, Column9, Column10 });
-            dataGridViewCellStyle60.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle60.BackColor = SystemColors.Window;
-            dataGridViewCellStyle60.Font = new Font("맑은 고딕", 9F);
-            dataGridViewCellStyle60.ForeColor = Color.Black;
-            dataGridViewCellStyle60.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle60.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle60.WrapMode = DataGridViewTriState.False;
-            dgv_list2.DefaultCellStyle = dataGridViewCellStyle60;
+            dgv_list2.Columns.AddRange(new DataGridViewColumn[] { No, Column1, OUT_FLAG, Column3, Column4, Column11, Column5, FRZ_DI, Column7, Column8, GRADE, Column10 });
+            dataGridViewCellStyle20.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle20.BackColor = SystemColors.Window;
+            dataGridViewCellStyle20.Font = new Font("맑은 고딕", 9F);
+            dataGridViewCellStyle20.ForeColor = Color.Black;
+            dataGridViewCellStyle20.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = DataGridViewTriState.False;
+            dgv_list2.DefaultCellStyle = dataGridViewCellStyle20;
+            dgv_list2.EditMode = DataGridViewEditMode.EditOnEnter;
             dgv_list2.EnableHeadersVisualStyles = false;
             dgv_list2.Location = new Point(6, 57);
             dgv_list2.MultiSelect = false;
@@ -831,18 +806,19 @@
             dgv_list2.RowHeadersVisible = false;
             dgv_list2.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgv_list2.RowTemplate.DefaultCellStyle.ForeColor = Color.Black;
-            dgv_list2.Size = new Size(518, 207);
+            dgv_list2.Size = new Size(518, 287);
             dgv_list2.TabIndex = 17;
-            dgv_list2.CellFormatting += dgv_list2_CellFormatting;
+            dgv_list2.CellContentClick += dgv_list2_CellContentClick;
             // 
             // No
             // 
             No.DataPropertyName = "ROWNUM";
-            dataGridViewCellStyle49.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            No.DefaultCellStyle = dataGridViewCellStyle49;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            No.DefaultCellStyle = dataGridViewCellStyle9;
             No.HeaderText = "";
             No.Name = "No";
             No.ReadOnly = true;
+            No.Resizable = DataGridViewTriState.True;
             No.Width = 20;
             // 
             // Column1
@@ -859,17 +835,19 @@
             // OUT_FLAG
             // 
             OUT_FLAG.DataPropertyName = "OUT_FLAG";
-            dataGridViewCellStyle50.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            OUT_FLAG.DefaultCellStyle = dataGridViewCellStyle50;
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            OUT_FLAG.DefaultCellStyle = dataGridViewCellStyle10;
             OUT_FLAG.HeaderText = "출고";
             OUT_FLAG.Name = "OUT_FLAG";
-            OUT_FLAG.Width = 40;
+            OUT_FLAG.Resizable = DataGridViewTriState.True;
+            OUT_FLAG.SortMode = DataGridViewColumnSortMode.Automatic;
+            OUT_FLAG.Width = 80;
             // 
             // Column3
             // 
             Column3.DataPropertyName = "BOX_NO";
-            dataGridViewCellStyle51.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column3.DefaultCellStyle = dataGridViewCellStyle51;
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column3.DefaultCellStyle = dataGridViewCellStyle11;
             Column3.HeaderText = "박스번호";
             Column3.Name = "Column3";
             Column3.ReadOnly = true;
@@ -877,8 +855,8 @@
             // Column4
             // 
             Column4.DataPropertyName = "BOX_QTY";
-            dataGridViewCellStyle52.Alignment = DataGridViewContentAlignment.MiddleRight;
-            Column4.DefaultCellStyle = dataGridViewCellStyle52;
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleRight;
+            Column4.DefaultCellStyle = dataGridViewCellStyle12;
             Column4.HeaderText = "수량";
             Column4.Name = "Column4";
             Column4.ReadOnly = true;
@@ -887,8 +865,8 @@
             // Column11
             // 
             Column11.DataPropertyName = "BOX_WT";
-            dataGridViewCellStyle53.Alignment = DataGridViewContentAlignment.MiddleRight;
-            Column11.DefaultCellStyle = dataGridViewCellStyle53;
+            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleRight;
+            Column11.DefaultCellStyle = dataGridViewCellStyle13;
             Column11.HeaderText = "중량";
             Column11.Name = "Column11";
             Column11.ReadOnly = true;
@@ -897,26 +875,28 @@
             // Column5
             // 
             Column5.DataPropertyName = "TRACE_NO";
-            dataGridViewCellStyle54.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column5.DefaultCellStyle = dataGridViewCellStyle54;
+            dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column5.DefaultCellStyle = dataGridViewCellStyle14;
             Column5.HeaderText = "생산이력번호";
             Column5.Name = "Column5";
             Column5.Width = 120;
             // 
-            // Column6
+            // FRZ_DI
             // 
-            Column6.DataPropertyName = "FRZ_DIV";
-            dataGridViewCellStyle55.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column6.DefaultCellStyle = dataGridViewCellStyle55;
-            Column6.HeaderText = "냉장구분";
-            Column6.Name = "Column6";
-            Column6.Width = 60;
+            FRZ_DI.DataPropertyName = "FRZ_DIV";
+            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            FRZ_DI.DefaultCellStyle = dataGridViewCellStyle15;
+            FRZ_DI.HeaderText = "냉장구분";
+            FRZ_DI.Name = "FRZ_DI";
+            FRZ_DI.Resizable = DataGridViewTriState.True;
+            FRZ_DI.SortMode = DataGridViewColumnSortMode.Automatic;
+            FRZ_DI.Width = 70;
             // 
             // Column7
             // 
             Column7.DataPropertyName = "ITEM_NAME";
-            dataGridViewCellStyle56.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            Column7.DefaultCellStyle = dataGridViewCellStyle56;
+            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            Column7.DefaultCellStyle = dataGridViewCellStyle16;
             Column7.HeaderText = "제품코드";
             Column7.Name = "Column7";
             Column7.ReadOnly = true;
@@ -925,27 +905,29 @@
             // Column8
             // 
             Column8.DataPropertyName = "PROD_DATE";
-            dataGridViewCellStyle57.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column8.DefaultCellStyle = dataGridViewCellStyle57;
+            dataGridViewCellStyle17.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column8.DefaultCellStyle = dataGridViewCellStyle17;
             Column8.HeaderText = "생산일자";
             Column8.Name = "Column8";
             Column8.ReadOnly = true;
             Column8.Width = 80;
             // 
-            // Column9
+            // GRADE
             // 
-            Column9.DataPropertyName = "GRADE";
-            dataGridViewCellStyle58.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column9.DefaultCellStyle = dataGridViewCellStyle58;
-            Column9.HeaderText = "등급";
-            Column9.Name = "Column9";
-            Column9.Width = 40;
+            GRADE.DataPropertyName = "GRADE";
+            dataGridViewCellStyle18.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GRADE.DefaultCellStyle = dataGridViewCellStyle18;
+            GRADE.HeaderText = "등급";
+            GRADE.Name = "GRADE";
+            GRADE.Resizable = DataGridViewTriState.True;
+            GRADE.SortMode = DataGridViewColumnSortMode.Automatic;
+            GRADE.Width = 60;
             // 
             // Column10
             // 
             Column10.DataPropertyName = "PACK_NO";
-            dataGridViewCellStyle59.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            Column10.DefaultCellStyle = dataGridViewCellStyle59;
+            dataGridViewCellStyle19.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Column10.DefaultCellStyle = dataGridViewCellStyle19;
             Column10.HeaderText = "묶음번호";
             Column10.Name = "Column10";
             Column10.ReadOnly = true;
@@ -957,7 +939,7 @@
             dgv_subItem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_subItem.Location = new Point(571, 9);
             dgv_subItem.Name = "dgv_subItem";
-            dgv_subItem.Size = new Size(598, 488);
+            dgv_subItem.Size = new Size(598, 406);
             dgv_subItem.TabIndex = 21;
             dgv_subItem.CellClick += dgv_subItem_CellClick;
             // 
@@ -969,7 +951,6 @@
             ClientSize = new Size(1184, 839);
             Controls.Add(dgv_subItem);
             Controls.Add(groupBox6);
-            Controls.Add(groupBox8);
             Controls.Add(groupBox7);
             Controls.Add(groupBox5);
             Controls.Add(groupBox4);
@@ -983,8 +964,6 @@
             KeyDown += PCMLabelForm_KeyDown;
             ((System.ComponentModel.ISupportInitialize)dgv_item).EndInit();
             groupBox1.ResumeLayout(false);
-            groupBox8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgv_traceInfo).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
@@ -1010,7 +989,6 @@
         private Button btn_kindCd1;
         private DataGridView dgv_item;
         private GroupBox groupBox1;
-        private GroupBox groupBox8;
         private Panel panel1;
         private MaskedTextBox mtb_traceNo;
         private Label label1;
@@ -1033,7 +1011,6 @@
         private GroupBox groupBox4;
         private GroupBox groupBox5;
         private GroupBox groupBox7;
-        private DataGridView dgv_traceInfo;
         private PrintPreviewDialog ppd_printView;
         private System.Drawing.Printing.PrintDocument pd_printDocument;
         private Label label10;
@@ -1051,18 +1028,6 @@
         private Label label11;
         private Label label9;
         private Label label8;
-        private DataGridViewTextBoxColumn No;
-        private DataGridViewCheckBoxColumn Column1;
-        private DataGridViewTextBoxColumn OUT_FLAG;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column4;
-        private DataGridViewTextBoxColumn Column11;
-        private DataGridViewTextBoxColumn Column5;
-        private DataGridViewTextBoxColumn Column6;
-        private DataGridViewTextBoxColumn Column7;
-        private DataGridViewTextBoxColumn Column8;
-        private DataGridViewTextBoxColumn Column9;
-        private DataGridViewTextBoxColumn Column10;
         private Panel panel3;
         private DateTimePicker dtp_orderDate;
         private Panel panel4;
@@ -1076,5 +1041,17 @@
         private DataGridViewTextBoxColumn Column12;
         private DataGridViewTextBoxColumn Column13;
         private DataGridViewTextBoxColumn Column14;
+        private DataGridViewTextBoxColumn No;
+        private DataGridViewCheckBoxColumn Column1;
+        private DataGridViewComboBoxColumn OUT_FLAG;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridViewTextBoxColumn Column11;
+        private DataGridViewTextBoxColumn Column5;
+        private DataGridViewComboBoxColumn FRZ_DI;
+        private DataGridViewTextBoxColumn Column7;
+        private DataGridViewTextBoxColumn Column8;
+        private DataGridViewComboBoxColumn GRADE;
+        private DataGridViewTextBoxColumn Column10;
     }
 }
